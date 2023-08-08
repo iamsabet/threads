@@ -18,6 +18,8 @@ import Image from "next/image";
 import { Textarea } from "../ui/textarea";
 import { isBase64Image } from "@/lib/utils";
 import { useUploadThing } from "@/lib/uploadthing";
+import { updateUser } from "@/lib/actions/user.actions";
+import { usePathname, useRouter } from "next/navigation";
 interface PropsType {
   user: {
     id: string;
@@ -33,6 +35,8 @@ interface PropsType {
 export const AccountProfile = ({ user, btnTitle }: PropsType) => {
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("media");
+  const pathname = usePathname();
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(userValidation),
     defaultValues: {
@@ -65,6 +69,10 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
   const onSubmit = async (values: z.infer<typeof userValidation>) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    // Upload thing has no benefit just resize image
+    // and create base64 from it with the resource
+    // from other projects then set base64 then send to api
+
     const blob = values.profile_photo;
     const hasImageChanged = isBase64Image(blob);
     if (hasImageChanged) {
@@ -75,6 +83,21 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
     }
 
     // TODO: update user profile
+    await updateUser({
+      userId: user.id,
+      username: values.username,
+      name: values.name,
+      image: values.profile_photo,
+      // image: user.image,
+      bio: values.bio,
+      path: pathname,
+    });
+
+    if (pathname === "/profile/edit") {
+      router.back();
+    } else {
+      router.push("/");
+    }
   };
   return (
     <Form {...form}>

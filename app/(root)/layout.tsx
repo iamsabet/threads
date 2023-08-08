@@ -1,13 +1,13 @@
 import { ClerkProvider } from "@clerk/nextjs/app-beta";
 import "../globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import TopBar from "@/components/shared/TopBar";
 import LeftSidebar from "@/components/shared/LeftSidebar";
 import RightSidebar from "@/components/shared/RightSidebar";
 import BottomBar from "@/components/shared/BottomBar";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Threads",
@@ -22,7 +22,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className} suppressHydrationWarning={true}>
+        <body
+          // className={inter.className}
+          suppressHydrationWarning={true}
+        >
           <TopBar />
           <main className="flex flex-row">
             <LeftSidebar />
