@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { OrganizationSwitcher, SignedIn } from "@clerk/nextjs/app-beta/client";
-import { SignOutButton } from "@clerk/nextjs";
+import { OrganizationSwitcher } from "@clerk/nextjs/app-beta/client";
+import LogoutComponent from "./LogoutComponent";
+import { dark } from "@clerk/themes";
 const TopBar = () => {
   const isLoggedIn = true;
 
@@ -13,21 +14,11 @@ const TopBar = () => {
       </Link>
       <div className="flex flex-row items-center gap-1">
         <div className="block md:hidden">
-          <SignedIn>
-            <SignOutButton>
-              <div className="flex cursor-pointer">
-                <Image
-                  src="/assets/logout.svg"
-                  alt="logout"
-                  width="24"
-                  height="24"
-                />
-              </div>
-            </SignOutButton>
-          </SignedIn>
+          <LogoutComponent />
         </div>
         <OrganizationSwitcher
           appearance={{
+            baseTheme: dark,
             elements: {
               organizationSwitcherTrigger: "py-2 px2 ",
             },
