@@ -17,7 +17,7 @@ const SidebarLinks = ({
     <>
       {sidebarLinks.map((item, id) => {
         const isActive =
-          (pathname.includes(item.route) && item.route.length > 0) ||
+          (pathname.includes(item.route) && item.route.length > 1) ||
           pathname === item.route;
         return (
           <Link

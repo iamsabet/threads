@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-const userValidation = z.object({
+const UserValidation = z.object({
     profile_photo: z.string().url().nonempty(),
     name: z.string().min(4, 'Minimum 4 characters').max(30, 'Maximum 30 characters'),
     username: z.string().min(4, 'Minimum 4 characters').max(30, 'Maximum 30 characters'),
@@ -8,4 +8,4 @@ const userValidation = z.object({
 
 })
 
-export { userValidation }
+export { UserValidation }

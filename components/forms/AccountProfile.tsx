@@ -2,7 +2,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userValidation } from "@/lib/validations/user";
+import { UserValidation } from "@/lib/validations/user";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -38,7 +38,7 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
   const pathname = usePathname();
   const router = useRouter();
   const form = useForm({
-    resolver: zodResolver(userValidation),
+    resolver: zodResolver(UserValidation),
     defaultValues: {
       profile_photo: user?.image,
       name: user?.name,
@@ -66,7 +66,7 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
       fileReader.readAsDataURL(file);
     }
   };
-  const onSubmit = async (values: z.infer<typeof userValidation>) => {
+  const onSubmit = async (values: z.infer<typeof UserValidation>) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Upload thing has no benefit just resize image
