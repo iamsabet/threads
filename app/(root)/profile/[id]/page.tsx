@@ -7,7 +7,6 @@ import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import React from "react";
-import { table } from "console";
 import ThreadsTab from "@/components/shared/ThreadsTab";
 
 const Page = async ({ params }: { params: { id: string } }) => {

@@ -3,17 +3,17 @@
 import { revalidatePath } from "next/cache"
 import { connectToDb } from "../db/mongoose"
 import User from "../models/user.model"
-import Thread from "../models/thread.model";
+import Thread from "../models/thread.model"
+import { FilterQuery, SortOrder } from "mongoose"
 
 interface ParamsType {
 
-    userId: string;
-    username: string;
-    name: string;
-    bio: string;
-    image: string;
-    path: string;
-
+    userId: string
+    username: string
+    name: string
+    bio: string
+    image: string
+    path: string
 }
 
 const updateUser = async ({
@@ -47,7 +47,7 @@ const updateUser = async ({
 
 const fetchUser = async (userId: string) => {
     try {
-        await connectToDb();
+        await connectToDb()
         return await User
             .findOne({ id: userId })
         // .populate({
@@ -84,4 +84,58 @@ const fetchUserThreads = async (userId: string) => {
         throw new Error("Failed to fetch user threads " + e.message)
     }
 }
-export { updateUser, fetchUser, fetchUserThreads }
+interface SearchUsersType {
+    searchString: string
+    pageNumber: number
+    pageSize: number
+    userId: string
+    sortBy: SortOrder
+}
+const searchUsers = async ({
+    searchString = "",
+    pageNumber = 1,
+    pageSize = 30,
+    userId,
+    sortBy = "desc" }: SearchUsersType) => {
+    try {
+        await connectToDb()
+        // paginate 
+
+        const skipAmount = (1 - pageNumber) * pageSize
+
+        // regex search
+
+        const regex = new RegExp(searchString, 'i')
+
+        const query: FilterQuery<typeof User> = {
+            id: { $ne: userId },
+        }
+        if (searchString.trim().length > 0) {
+
+            query.$or = [
+                { username: { $regex: regex } },
+                { name: { $regex: regex } }
+            ]
+        }
+        const sortOptions = {
+            createdAt: sortBy
+        }
+
+        const usersQuery = User.find(query)
+            .sort(sortOptions)
+            .skip(skipAmount)
+            .limit(pageSize)
+
+        const totalUsersCount = await User.countDocuments(query)
+
+        const users = await usersQuery.exec()
+
+        const hasNext = totalUsersCount > skipAmount + users.length
+
+        return { hasNext, users, totalUsersCount, pageSize, pageNumber }
+
+    } catch (e: any) {
+        throw new Error("Failed fetch search users " + e.message)
+    }
+}
+export { updateUser, fetchUser, fetchUserThreads, searchUsers }
