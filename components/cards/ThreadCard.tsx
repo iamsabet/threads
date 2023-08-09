@@ -38,7 +38,7 @@ const ThreadCard = ({
   return (
     <article
       className={`flex w-full flex-col rounded-xl
-    ${isComment ? "px-0 xs:px-7 py-1" : "bg-dark-2 p-7"} `}
+    ${isComment ? "px-0 xs:px-7" : "bg-dark-2 p-7"} `}
     >
       <h2 className="text-small-regular text-light-2">
         <div className="flex justify-between items-start">
@@ -65,7 +65,11 @@ const ThreadCard = ({
                 </h4>
               </Link>
               <p className="mt-2 text-small-regular text-light-2">{content}</p>
-              <div className="mt-4 flex flex-col gap-3">
+              <div
+                className={`${
+                  isComment && "gap-3 mb-8"
+                } mt-4 flex flex-col gap-3`}
+              >
                 <div className="flex flex-row gap-3.5">
                   {/* Like */}
                   <Image
@@ -106,7 +110,7 @@ const ThreadCard = ({
                   // isComment &&
                   comments.length > 0 && (
                     <Link href={`/thread/${id}`}>
-                      <p className="-mt-1 text-subtle-medium text-gray-1">
+                      <p className="text-subtle-medium text-gray-1">
                         {comments.length} replies
                       </p>
                     </Link>
