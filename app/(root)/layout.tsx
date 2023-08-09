@@ -34,7 +34,6 @@ export default function RootLayout({
             </section>
             <RightSidebar />
           </main>
-          {children}
           <BottomBar />
         </body>
       </html>
