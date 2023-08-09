@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useAuth } from "@clerk/nextjs";
 
 const SidebarLinks = ({
   type,
@@ -13,6 +14,7 @@ const SidebarLinks = ({
   text_class: string;
 }) => {
   const pathname = usePathname();
+  const { userId } = useAuth();
   return (
     <>
       {sidebarLinks.map((item, id) => {
@@ -21,7 +23,7 @@ const SidebarLinks = ({
           pathname === item.route;
         return (
           <Link
-            href={item.route}
+            href={item.route === "/profile" ? `/profile/${userId}` : item.route}
             key={item.label}
             className={`${type} ${isActive && "bg-primary-500"}`}
           >
