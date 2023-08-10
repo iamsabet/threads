@@ -15,15 +15,15 @@ const connectToDb = async () => {
     }
     try {
         // console.log(process.env.MONGODB_URL);
-        const env = process.env.NODE_ENV
-        let url = "";
-        if (env === "development") {
-            url = process.env.MONGODB_URL;
-        }
-        else if (env === "production") {
-            // @ts-ignore
-            url = process.env.MONGODB_PROD;
-        }
+        // const env = process.env.NODE_ENV
+        // let url = "";
+        // if (env === "development") {
+        const url = process.env.MONGODB_URL;
+        // }
+        // else if (env === "production") {
+        //     // @ts-ignore
+        //     url = process.env.MONGODB_PROD;
+        // }
         console.log("Mongodb url " + url);
         await mongoose.connect(url)
         isConnected = true
