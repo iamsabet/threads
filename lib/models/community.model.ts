@@ -21,7 +21,12 @@ const communitySchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }
-    ]
+    ],
+}, { timestamps: true })
+
+
+communitySchema.pre('save', async (doc) => {
+    // console.log("saved " + this._id + " doc ")
 })
 
 const Community = mongoose.models.Community || mongoose.model('Community', communitySchema)

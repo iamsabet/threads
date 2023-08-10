@@ -14,6 +14,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
   if (!user) return null;
 
+  const current_user = await fetchUser(user.id);
+  if (!current_user) return redirect("/sign-in");
   const userInfo = await fetchUser(params.id);
   if (!userInfo?.onboarded) return redirect("/onboarding");
 
@@ -58,8 +60,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
                 className="w-full text-light-1"
               >
                 <ThreadsTab
-                  currentUserId={user.id}
-                  accountId={userInfo?.id}
+                  currentUserId={current_user._id}
+                  accountId={userInfo?._id}
                   accountType="User"
                 />
               </TabsContent>

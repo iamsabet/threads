@@ -7,6 +7,7 @@ import Thread from "../models/thread.model"
 import { FilterQuery, SortOrder } from "mongoose"
 import { ErrorMessage } from "uploadthing/server"
 import clerkClient from "@clerk/clerk-sdk-node"
+import { fetchThreadsByQuery } from "./thread.actions"
 
 interface ParamsType {
 
@@ -72,27 +73,14 @@ const fetchUser = async (userId: string) => {
     }
 }
 
-const fetchUserThreads = async (userId: string) => {
+const fetchUserThreads = async ({ pageNumber = 1, pageSize = 30, currentUserId, accountId }: PaginatePropsTypeByQuery) => {
     try {
         await connectToDb()
         // fetch all threads authored by the specific user
         // TODO: needs paginate like home threads
         // TODO: Populate Community
-        const threads = await User.findOne({ id: userId })
-            .populate({
-                path: "threads",
-                model: Thread,
-                populate: {
-                    path: "children",
-                    model: Thread,
-                    populate: {
-                        path: "author",
-                        model: User,
-                        select: "image id name username"
-                    }
-                }
-            }).sort({ createdAt: "desc" }).exec()
-        return threads
+        const result = await fetchThreadsByQuery({ pageNumber, pageSize, currentUserId, accountId })
+        return result
     } catch (e: any) {
         throw new Error("Failed to fetch user threads " + e.message)
     }
@@ -168,7 +156,7 @@ const getActivity = async (userId: string) => {
         }).populate({
             path: "author",
             model: User,
-            select: "_id name username image"
+            select: "_id name username image createdAt"
         })
 
         return replies
@@ -187,3 +175,4 @@ const checkUsernameExists = async (username: string) => {
     }
 }
 export { updateUser, fetchUser, fetchUserThreads, searchUsers, getActivity, checkUsernameExists }
+

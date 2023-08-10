@@ -12,7 +12,12 @@ const ThreadsTab = async ({
   accountId,
   accountType,
 }: ThreadsTabsPropsType) => {
-  let result = await fetchUserThreads(accountId);
+  let result = await fetchUserThreads({
+    pageNumber: 1,
+    pageSize: 30,
+    currentUserId: currentUserId,
+    accountId: accountId,
+  });
   if (!result) redirect("/");
   return (
     <section className="mt-9 flex flex-col gap-10">
@@ -21,28 +26,22 @@ const ThreadsTab = async ({
           <ThreadCard
             key={thread._id}
             id={thread._id}
-            currentUserId={currentUserId || ""}
+            currentUserId={currentUserId}
             parentId={thread.parentId}
             content={thread.text}
-            author={
-              accountType === "User"
-                ? {
-                    name: result.name,
-                    image: result.image,
-                    username: result.username,
-                    id: result.id,
-                  }
-                : {
-                    name: thread.author.name,
-                    image: thread.author.image,
-                    username: thread.author.username,
-                    id: thread.author.id,
-                  }
-            } // TODO: check owner or not
+            author={{
+              name: thread.author.name,
+              image: thread.author.image,
+              username: thread.author.username,
+              id: thread.author._id,
+            }} // TODO: check owner or not
             community={thread.community} // TODO: check owner or not
             createdAt={thread.createdAt}
             comments={thread.children}
             isComment
+            votes={thread.votes}
+            myVote={thread.myVote}
+            // votes={0}
           />
         );
       })}

@@ -10,13 +10,6 @@ const threadSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Community',
     },
-    createdAt: {
-        type: Date,
-
-        // must be like this as a function not a value like Date.now()
-        default: Date.now,
-
-    },
     parentId: {
         type: mongoose.Schema.Types.ObjectId,
         // ref
@@ -26,7 +19,17 @@ const threadSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Thread'
         }
-    ]
+    ],
+    votes: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: 'Vote'
+        }
+    ],
+}, { timestamps: true })
+
+threadSchema.pre('save', async (doc) => {
+    // console.log("saved " + this._id + " doc ")
 })
 
 const Thread = mongoose.models.Thread || mongoose.model('Thread', threadSchema)

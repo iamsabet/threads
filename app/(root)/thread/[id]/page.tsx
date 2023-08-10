@@ -14,7 +14,7 @@ const page = async ({ params }: { params: { id: string } }) => {
     redirect("/onboarding");
   }
 
-  const thread = await fetchThreadById(params.id);
+  const thread = await fetchThreadById(params.id, userInfo?._id);
 
   if (!thread) return null;
 
@@ -27,7 +27,7 @@ const page = async ({ params }: { params: { id: string } }) => {
         <ThreadCard
           key={thread._id}
           id={thread._id}
-          currentUserId={user?.id || ""}
+          currentUserId={userInfo?._id}
           parentId={thread.parentId}
           content={thread.text}
           author={thread.author}
@@ -35,11 +35,13 @@ const page = async ({ params }: { params: { id: string } }) => {
           createdAt={thread.createdAt}
           comments={thread.children}
           isComment={false}
+          votes={thread.votes}
+          myVote={thread.myVote}
         />
       </div>
       <div className="mt-6">
         <Comment
-          threadId={thread.id}
+          threadId={thread._id}
           currentUserImage={userInfo?.image || user.imageUrl}
           currentUserId={JSON.stringify(userInfo?._id)}
           currentUserName={userInfo?.name}
@@ -51,7 +53,7 @@ const page = async ({ params }: { params: { id: string } }) => {
             <ThreadCard
               key={comment._id}
               id={comment._id}
-              currentUserId={comment.author.id || ""}
+              currentUserId={userInfo?._id}
               parentId={comment.parentId}
               content={comment.text}
               author={comment.author}
@@ -59,6 +61,8 @@ const page = async ({ params }: { params: { id: string } }) => {
               createdAt={comment.createdAt}
               comments={comment.children}
               isComment
+              votes={comment.votes}
+              myVote={comment.myVote}
             />
           );
         })}
