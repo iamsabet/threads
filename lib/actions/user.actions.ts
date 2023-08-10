@@ -5,6 +5,7 @@ import { connectToDb } from "../db/mongoose"
 import User from "../models/user.model"
 import Thread from "../models/thread.model"
 import { FilterQuery, SortOrder } from "mongoose"
+import { ErrorMessage } from "uploadthing/server"
 
 interface ParamsType {
 
@@ -138,4 +139,31 @@ const searchUsers = async ({
         throw new Error("Failed fetch search users " + e.message)
     }
 }
-export { updateUser, fetchUser, fetchUserThreads, searchUsers }
+
+const getActivity = async (userId: string) => {
+    try {
+        await connectToDb()
+        const userThreads = await Thread.find({ author: userId })
+
+        // collect all the child thread id's from the 'children' field
+        const childThreadIds = userThreads.reduce((acc, userThread) => {
+            return acc.concat(userThread.children);
+        }, []);
+
+        const replies = await Thread.find({
+            _id: { $in: childThreadIds },
+            author: { $ne: userId }
+        }).populate({
+            path: "author",
+            model: User,
+            select: "_id name username image"
+        })
+
+        return replies
+
+    } catch (e: any) {
+        throw new Error("Failed to fetch activity " + e.message)
+    }
+}
+
+export { updateUser, fetchUser, fetchUserThreads, searchUsers, getActivity }
