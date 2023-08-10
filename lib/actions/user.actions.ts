@@ -6,6 +6,7 @@ import User from "../models/user.model"
 import Thread from "../models/thread.model"
 import { FilterQuery, SortOrder } from "mongoose"
 import { ErrorMessage } from "uploadthing/server"
+import clerkClient from "@clerk/clerk-sdk-node"
 
 interface ParamsType {
 
@@ -37,6 +38,17 @@ const updateUser = async ({
                 onboarded: true
             }, { upsert: true }
         )
+        // TODO: update user profile For Clerk as well
+        const params = {
+            username,
+            firstName: name,
+        };
+        // See table below for all supported attributes
+        const clerkUpdatedUser = await clerkClient.users.updateUser(
+            userId,
+            params
+        );
+        // console.log(clerkUpdatedUser);
         if (path === "/profile/edit") {
             revalidatePath(path)
         }

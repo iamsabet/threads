@@ -20,6 +20,7 @@ import { isBase64Image } from "@/lib/utils";
 import { useUploadThing } from "@/lib/uploadthing";
 import { updateUser } from "@/lib/actions/user.actions";
 import { usePathname, useRouter } from "next/navigation";
+import { clerkClient } from "@clerk/clerk-sdk-node";
 interface PropsType {
   user: {
     id: string;
@@ -82,17 +83,14 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
       }
     }
 
-    // TODO: update user profile
     await updateUser({
       userId: user.id,
       username: values.username,
       name: values.name,
       image: values.profile_photo,
-      // image: user.image,
       bio: values.bio,
       path: pathname,
     });
-
     if (pathname === "/profile/edit") {
       router.back();
     } else {
