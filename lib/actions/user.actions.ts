@@ -178,4 +178,12 @@ const getActivity = async (userId: string) => {
     }
 }
 
-export { updateUser, fetchUser, fetchUserThreads, searchUsers, getActivity }
+const checkUsernameExists = async (username: string) => {
+    try {
+        await connectToDb();
+        return !(await User.exists({ username: username }));
+    } catch (e: any) {
+        throw new Error("Check user exists error : " + e.message)
+    }
+}
+export { updateUser, fetchUser, fetchUserThreads, searchUsers, getActivity, checkUsernameExists }
