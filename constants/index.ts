@@ -1,3 +1,5 @@
+import { dark } from "@clerk/themes";
+
 export const sidebarLinks = [
     {
         imgURL: "/assets/home.svg",
@@ -42,3 +44,20 @@ export const communityTabs = [
     { value: "members", label: "Members", icon: "/assets/members.svg" },
     { value: "requests", label: "Requests", icon: "/assets/request.svg" },
 ];
+
+export const clerckComponentsOptions: any = {
+    baseTheme: dark,
+    variables: {},
+    layout: {
+        logoPlacement: "inside",
+        logoImageUrl: "/assets/logo.png",
+        shimmer: true,
+        socialButtonsVariant: "blockButton",
+    },
+    elements: {
+        formButtonPrimary: "bg-primary-500 hover:bg-opacity-90",
+        formButtonPrimary__loading: "bg-secondary-500",
+        // footerAction__signIn: "",
+        footerActionLink: "text-primary-500",
+    },
+}
