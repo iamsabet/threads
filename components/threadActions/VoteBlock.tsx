@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { voteToThread } from "@/lib/actions/thread.actions";
+import { redirect } from "next/navigation";
 type VoteType = "down" | "up" | "";
 interface VoteProps {
   threadId: string;
@@ -51,8 +52,8 @@ const VoteBlock = ({ threadId, voterId, myVote, votes }: VoteProps) => {
       });
     } else {
       // show login popup instead later
-      alert("You need to login first :)");
-      // redirect("/sign-in");
+      // alert("You need to login first :)");
+      redirect("/sign-in");
     }
   };
   return (
