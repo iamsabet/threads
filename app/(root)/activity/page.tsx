@@ -19,6 +19,27 @@ const Page = async () => {
 
   // get activity
   const activities = await getActivity(userInfo?._id);
+
+  const formattedDateString = (date: string) => {
+    const newDate = new Date(date);
+
+    const options = {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+      month: "short",
+      year: "numeric",
+    };
+
+    return (
+      newDate
+        // @ts-ignore
+        .toLocaleString("en-US", options)
+        .split(", ")
+        .reverse()
+        .join(", ")
+    );
+  };
   return (
     <section>
       <h1 className="head-text mb-10">Activities</h1>
@@ -29,20 +50,29 @@ const Page = async () => {
             {activities.map((act: any) => (
               <Link key={act._id} href={`/thread/${act.parentId}`}>
                 <article className="activity-card">
-                  <Image
-                    src={act.author.image}
-                    alt="Profile Picture"
-                    width="34"
-                    height="34"
-                    className="rounded-full object-cover"
-                  />
-                  <p className="!text-base-regular text-light-1 text-ellipsis line-clamp-1">
-                    <span className="mr-1 text-primary-500">
-                      {act.author.name}
-                    </span>{" "}
-                    replied to your thread :
-                    <span className="ml-1 text-light-2">{act.text}</span>
-                  </p>
+                  <div className="flex flex-col">
+                    <div className="flex justify-between overflow-hidden">
+                      <Image
+                        src={act.author.image}
+                        alt="Profile Picture"
+                        width="34"
+                        height="34"
+                        className="rounded-full object-cover mr-2"
+                      />
+                      <p className="!text-base-regular text-light-1 text-ellipsis line-clamp-2 mt-1">
+                        <span className="mr-1 text-primary-500">
+                          {act.author.name}
+                        </span>{" "}
+                        replied to your thread :
+                        <span className="ml-1 text-light-2">{act.text}</span>
+                      </p>
+                    </div>
+                    <div className="">
+                      <h5 className="text-subtle-medium text-gray-1 mt-3">
+                        {formattedDateString(act.createdAt)}
+                      </h5>
+                    </div>
+                  </div>
                 </article>
               </Link>
             ))}
