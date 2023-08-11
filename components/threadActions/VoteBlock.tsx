@@ -64,7 +64,7 @@ const VoteBlock = ({ threadId, voterId, myVote, votes }: VoteProps) => {
           alt={`down_vote${voteState === "down" ? "_filled" : ""}`}
           width="17"
           height="17"
-          className="cursor-pointer w-auto h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
+          className="cursor-pointer w-[18px] h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
         />
       </div>
       <p className="text-light-3 w-5 text-center">{votesCount}</p>
@@ -74,7 +74,7 @@ const VoteBlock = ({ threadId, voterId, myVote, votes }: VoteProps) => {
           alt={`up_vote${voteState === "up" ? "_filled" : ""}`}
           width="17"
           height="17"
-          className="cursor-pointer w-auto h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
+          className="cursor-pointer w-[18px] h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
         />
       </div>
     </>
