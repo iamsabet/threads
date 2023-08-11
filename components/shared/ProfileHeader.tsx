@@ -25,6 +25,7 @@ const ProfileHeader = ({
               src={img}
               alt="Profile Image"
               fill
+              // sizes=""
               className="rounded-full object-cover shadow-2xl"
             />
           </div>
