@@ -47,6 +47,12 @@ const Comment = ({
     });
 
     form.reset();
+    setTimeout(() => {
+      window.scrollTo({
+        top: window.document.body.offsetHeight + 100,
+        behavior: "smooth",
+      });
+    }, 500);
   };
   return (
     <Form {...form}>

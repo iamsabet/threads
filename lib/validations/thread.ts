@@ -2,7 +2,6 @@ import * as z from 'zod'
 
 const ThreadValidation = z.object({
     thread: z.string().min(4, 'Minimum 4 characters'),
-    accountId: z.string()
 
 })
 

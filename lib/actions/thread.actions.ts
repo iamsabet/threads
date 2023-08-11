@@ -37,7 +37,7 @@ const createThread = async ({ text, author, communityId, path }: PropsType) => {
 const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserId, accountId }: PaginatePropsTypeByQuery) => {
     const skipAmount = (pageNumber - 1) * pageSize
     // fetch threads that have no parent
-    console.log(accountId)
+    // console.log(accountId)
     const baseQuery = accountId ? { author: { $in: [accountId] }, parentId: { $in: [null, undefined] } } : { parentId: { $in: [null, undefined] } }
     const threadsQuery = Thread.find(baseQuery).sort({ createdAt: "desc" })
         .skip(skipAmount)
@@ -191,7 +191,7 @@ const addCommentToThread = async (
     try {
         //adding comment
         // find original thread by id
-        console.log(threadId)
+        // console.log(threadId)
         const originalThread = await Thread.findById(threadId)
         if (!originalThread) throw new Error("Thread Not Found")
 

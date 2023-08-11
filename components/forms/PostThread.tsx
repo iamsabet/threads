@@ -22,7 +22,6 @@ export const PostThread = ({ userId }: { userId: string }) => {
     resolver: zodResolver(ThreadValidation),
     defaultValues: {
       thread: "",
-      accountId: userId,
     },
   });
 
