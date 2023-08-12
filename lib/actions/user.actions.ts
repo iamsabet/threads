@@ -156,19 +156,38 @@ const getActivity = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pag
                 const hasNext = repliesDoc.hasNext || votesDoc.hasNext || mentionsDoc.hasNext
                 let docs: any = []
                 const mentions = mentionsDoc.mentions.reduce((acc, item) => {
-                    return acc.concat({ type: "mention", item })
+                    return acc.concat({
+                        type: "mention",
+                        message: "mentioned you here",
+                        subject: item.author,
+                        link: "/thread/" + item._id,
+                        createdAt: item.createdAt
+                    })
                 }, [])
                 const replies = repliesDoc.replies.reduce((acc, item) => {
-                    return acc.concat({ type: "reply", item })
+                    return acc.concat({
+                        type: "reply",
+                        message: "replied to your thread",
+                        subject: item.author,
+                        link: "/thread/" + item.parentId,
+                        createdAt: item.createdAt
+                    })
                 }, [])
                 const votes = votesDoc.votes.reduce((acc, item) => {
-                    return acc.concat({ type: "vote", item })
+
+                    return acc.concat({
+                        type: "vote",
+                        message: `${item.type.toString().toLowerCase()}voted your thread`,
+                        subject: item.voter,
+                        link: "/thread/" + item.thread._id,
+                        createdAt: item.createdAt
+                    })
                 }, [])
                 docs = docs.concat(mentions)
                 docs = docs.concat(replies)
                 docs = docs.concat(votes)
                 const sortedDocs = docs.sort(function (a: any, b: any) {
-                    return b.item.createdAt - a.item.createdAt;
+                    return b.createdAt - a.createdAt;
                 });
                 return { hasNext, docs: sortedDocs, pageSize, pageNumber };
             }
@@ -217,7 +236,7 @@ const getMentions = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pag
     const skipAmount = (pageNumber - 1) * pageSize
     const accountUsername = (await User.findOne({ _id: currentUserId }, { username: 1 })).username
     const regex = RegExp(`>@${accountUsername}</`, 'i') // only username matches having a tag around
-    const baseQuery = { text: { $regex: regex } }
+    const baseQuery = { text: { $regex: regex }, author: { $ne: currentUserId } }
 
     const mentions = await Thread.find(baseQuery)
         .populate({
@@ -238,7 +257,7 @@ const getReplies = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pagi
     const skipAmount = (1 - pageNumber) * pageSize
     const userThreads = await Thread.find({ author: currentUserId })
 
-    const childThreadIds = userThreads.reduce((acc, userThread) => {
+    const childThreadIds: any = userThreads.reduce((acc, userThread) => {
         return acc.concat(userThread.children);
     }, []);
     const query = {
