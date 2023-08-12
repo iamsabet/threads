@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import VoteBlock from "../threadActions/VoteBlock";
 import HTMLReactParser from "html-react-parser";
+import { formattedDateString } from "../shared/helpers";
 interface ThreadProps {
   id: string;
   currentUserId: string | undefined;
@@ -41,26 +42,6 @@ const ThreadCard = ({
   votes,
   myVote,
 }: ThreadProps) => {
-  const formattedDateString = (date: string) => {
-    const newDate = new Date(date);
-
-    const options = {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-      month: "short",
-      year: "numeric",
-    };
-
-    return (
-      newDate
-        // @ts-ignore
-        .toLocaleString("en-US", options)
-        .split(", ")
-        .reverse()
-        .join(", ")
-    );
-  };
   return (
     <article
       className={`flex w-full flex-col rounded-xl

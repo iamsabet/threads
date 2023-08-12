@@ -5,6 +5,7 @@ import Image from "next/image";
 import HTMLReactParser from "html-react-parser";
 import { useAuth } from "@clerk/nextjs";
 import Spinner from "../Spinner";
+import { formattedDateString } from "../shared/helpers";
 
 const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
   const [activities, setActivities] = useState<any[]>([]);
@@ -23,26 +24,6 @@ const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
       setLoading((_) => false);
     }
   };
-  const formattedDateString = (date: string) => {
-    const newDate = new Date(date);
-
-    const options = {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-      month: "short",
-      year: "numeric",
-    };
-
-    return (
-      newDate
-        // @ts-ignore
-        .toLocaleString("en-US", options)
-        .split(", ")
-        .reverse()
-        .join(", ")
-    );
-  };
 
   useEffect(() => {
     fetchActivities(user_id);
@@ -58,49 +39,51 @@ const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
             const act = activity.item;
             const type = activity.type;
             return (
-              <article key={`${type}"/"${act._id}`} className="activity-card">
-                {type === "mention" || type === "reply" ? (
-                  <>
-                    <div className="flex flex-col w-full">
-                      <div className="flex justify-between overflow-hidden">
-                        <Link href={`/profile/${act.author.id}`}>
+              <Link
+                key={`${type}"/"${act._id}`}
+                href={`/thread/${act.parentId}`}
+              >
+                <article className="activity-card">
+                  {type === "mention" || type === "reply" ? (
+                    <>
+                      <div className="flex flex-col justify-start sm:flex-row sm:justify-between w-full">
+                        <div className="flex justify-between overflow-hidden">
                           <Image
                             src={act.author.image}
                             alt="Profile Picture"
-                            width="36"
-                            height="36"
-                            className="rounded-full object-cover mr-2 mt-0"
+                            width="40"
+                            height="40"
+                            className="rounded-full object-fill mr-2 mt-2 w-[50px] h-[50px] sm:mt-0 sm:w-[40px] sm:h-[40px] "
                           />
-                        </Link>
-                        <p className="flex-1 !text-base-regular text-light-1 text-ellipsis line-clamp-1 mt-2 leading-[10rem]">
-                          <Link href={`/profile/${act.author.id}`}>
+                          <p className="flex flex-col sm:flex-row flex-1 !text-base-regular text-light-1 text-ellipsis line-clamp-1 mt-2 leading-[10rem]">
                             <span className="mr-1 text-primary-500">
                               {act.author.name}
-                            </span>
-                          </Link>{" "}
-                          replied to your thread :
-                          {/* <span className="ml-1 text-light-2">
+                            </span>{" "}
+                            replied to your thread :
+                            {/* <span className="ml-1 text-light-2">
                             {HTMLReactParser(act.text)}
                           </span> */}
-                        </p>
+                          </p>
+                        </div>
+                        <div className="w-30">
+                          <h5 className="text-subtle-medium text-gray-1 mt-3">
+                            {formattedDateString(act.createdAt)}
+                          </h5>
+                        </div>
                       </div>
-                      <div className="w-30">
-                        <h5 className="text-subtle-medium text-gray-1 mt-3">
-                          {formattedDateString(act.createdAt)}
-                        </h5>
-                      </div>
-                    </div>
-                    <Link
+                      {/* <Link
+                       href={`/thread/${act.parentId}`}
                       className="user-card_btn px-4 py-2 text-center text-body-bold"
-                      href={`/thread/${act.parentId}`}
+                   
                     >
                       View
-                    </Link>
-                  </>
-                ) : (
-                  <></>
-                )}
-              </article>
+                    </Link> */}
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </article>
+              </Link>
             );
           })}
         </>
