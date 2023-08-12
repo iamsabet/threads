@@ -1,3 +1,5 @@
+import User from "../models/user.model";
+
 const handleVotesCount = (threads: Omit<Omit<any, never>, never>[], threads_my_votes_only: Omit<any, never>[] | undefined, childrenVotesCount: boolean = false) => {
     let threads_final: any[] = []
     threads.forEach((thread, index) => {
@@ -47,4 +49,29 @@ const handleVotesCount = (threads: Omit<Omit<any, never>, never>[], threads_my_v
     return threads_final;
 }
 
-export { handleVotesCount }
+const replaceMentions = async (text: string): Promise<string> => {
+    let splitted = text.split(" ")
+    let textList = []
+    for (let i in splitted) {
+        let item = splitted[i]
+        if (item.startsWith("@")) {
+            const selectedUserName = item.split("@")[1]
+            const user = (await User.findOne({ username: selectedUserName })) as UserType
+            if (user && user.id) {
+                let newTextSlice = `<a class="text-primary-500" href="/profile/${user.id}">${item}</a>`
+                textList.push(newTextSlice)
+            }
+            else {
+                textList.push(item)
+            }
+        }
+        else {
+            textList.push(item)
+        }
+    }
+
+    text = textList.join(" ");
+    return text
+}
+
+export { handleVotesCount, replaceMentions }

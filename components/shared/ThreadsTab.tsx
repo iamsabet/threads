@@ -6,17 +6,22 @@ interface ThreadsTabsPropsType {
   currentUserId: string;
   accountId: string;
   accountType: string;
+  label: string;
 }
 const ThreadsTab = async ({
   currentUserId,
   accountId,
   accountType,
+  label,
 }: ThreadsTabsPropsType) => {
+  console.log("Label = " + label);
+
   let result = await fetchUserThreads({
     pageNumber: 1,
     pageSize: 30,
     currentUserId: currentUserId,
     accountId: accountId,
+    label:label,
   });
   if (!result) redirect("/");
   return (

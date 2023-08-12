@@ -27,8 +27,8 @@ const updateUser = async ({
     image,
     path
 }: ParamsType): Promise<void> => {
-    await connectToDb()
     try {
+        await connectToDb()
         await User.findOneAndUpdate(
             { id: userId },
             {
@@ -73,13 +73,13 @@ const fetchUser = async (userId: string) => {
     }
 }
 
-const fetchUserThreads = async ({ pageNumber = 1, pageSize = 30, currentUserId, accountId }: PaginatePropsTypeByQuery) => {
+const fetchUserThreads = async ({ pageNumber = 1, pageSize = 30, currentUserId, accountId, label }: PaginatePropsTypeByQuery) => {
     try {
         await connectToDb()
         // fetch all threads authored by the specific user
         // TODO: needs paginate like home threads
         // TODO: Populate Community
-        const result = await fetchThreadsByQuery({ pageNumber, pageSize, currentUserId, accountId })
+        const result = await fetchThreadsByQuery({ pageNumber, pageSize, currentUserId, accountId, label })
         return result
     } catch (e: any) {
         throw new Error("Failed to fetch user threads " + e.message)
@@ -174,5 +174,21 @@ const checkUsernameExists = async (username: string) => {
         throw new Error("Check user exists error : " + e.message)
     }
 }
-export { updateUser, fetchUser, fetchUserThreads, searchUsers, getActivity, checkUsernameExists }
+
+const autoCompleteUsernames = async ({ input }: { input: string }) => {
+    try {
+        if (input.length < 2) {
+            return JSON.stringify([])
+        }
+        await connectToDb()
+        const regex = RegExp(input, 'i')
+        return JSON.stringify(await User.find({ username: { $regex: regex } }, { _id: 1, username: 1, image: 1, name: 1 }))
+    } catch (e: any) {
+        console.error("Check user exists error : " + e.message)
+        return JSON.stringify([])
+
+    }
+}
+
+export { updateUser, fetchUser, fetchUserThreads, searchUsers, getActivity, checkUsernameExists, autoCompleteUsernames }
 

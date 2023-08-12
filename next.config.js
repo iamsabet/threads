@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    api: {
+        bodyParser: {
+            sizeLimit: '1mb',
+        },
+        responseLimit: '50mb',
+    },
     experimental: {
         serverActions: true,
         serverComponentsExternalPackages: ["mongoose"],

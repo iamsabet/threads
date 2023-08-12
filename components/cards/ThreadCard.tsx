@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import VoteBlock from "../threadActions/VoteBlock";
+import HTMLReactParser from "html-react-parser";
 interface ThreadProps {
   id: string;
   currentUserId: string | undefined;
@@ -86,7 +87,9 @@ const ThreadCard = ({
                 {author.name}
               </h4>
             </Link>
-            <p className="mt-2 text-small-regular text-light-2">{content}</p>
+            <p className="mt-2 text-small-regular text-light-2">
+              {HTMLReactParser(content)}
+            </p>
             <div
               className={`${
                 isComment && "gap-3 mb-2"

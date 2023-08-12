@@ -25,7 +25,6 @@ export const PostThread = ({ userId }: { userId: string }) => {
   const [usersList, setUsersList] = useState<UserType[]>([]);
   const [boxPosition, setBoxPosition] = useState<PositionType>({ x: 0, y: 0 });
   const [searchText, setSearchText] = useState<string>("");
-  const [autoCompleteNavigator, setAutoCompleteNavigator] = useState<number>(0);
   const form = useForm({
     resolver: zodResolver(ThreadValidation),
     defaultValues: {
@@ -39,54 +38,35 @@ export const PostThread = ({ userId }: { userId: string }) => {
     ) as HTMLInputElement;
     if (textArea) {
       textArea.onblur = (e) => {
+        console.log("unfocus()");
         document.getElementById("text-area-copy")?.remove();
       };
       textArea.onkeydown = (e) => {
-        // console.log(e.code);
-        const users = document.getElementById("usersList")?.children;
         if (
           ["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"].indexOf(e.code) >
           -1
         ) {
-          if (users && users.length > 0) {
-            console.log("2" + e.code);
+          switch (e.code) {
             // if box is open must e.preventDefault and navigate up and down to selected options
             // else just continue the default
-            e.preventDefault();
-            switch (e.code) {
-              case "ArrowLeft":
-                setAutoCompleteNavigator(() => 0);
-                break;
-              case "ArrowUp":
-                setAutoCompleteNavigator((prev) => {
-                  if (prev === 0) return users.length - 1;
-                  else return prev - 1;
-                });
-                break;
-              case "ArrowRight":
-                setAutoCompleteNavigator((_prev) => users.length - 1);
-                break;
-              case "ArrowDown":
-                setAutoCompleteNavigator((prev) => {
-                  if (prev === users.length - 1) return 0;
-                  else return prev + 1;
-                });
-
-                break;
-            }
-          } else {
-            // nop -- continue the default operation
+            case "ArrowLeft":
+              console.log("Left key");
+              break;
+            case "ArrowUp":
+              console.log("Up key");
+              break;
+            case "ArrowRight":
+              console.log("Right key");
+              break;
+            case "ArrowDown":
+              console.log("Down key");
+              break;
           }
 
           // if box is open must e.preventDefault and select the already hovered option and e.preventDefault
           // else just continue the default
         } else {
-          if (["Space", "Enter"].indexOf(e.code) > -1) {
-            if (users && users.length > 0) {
-              e.preventDefault();
-              clickOnSelected(users);
-              return;
-            }
+          if (["Space", "Enter"].indexOf(e.code)) {
           }
           const test: HTMLElement | null = document.getElementById("test");
           setCaretPosition(textArea, test);
@@ -100,7 +80,7 @@ export const PostThread = ({ userId }: { userId: string }) => {
             const searchText =
               splitedTextByAtSign[splitedTextByAtSign.length - 1];
             console.log(searchText);
-            if (searchText.length >= 2) {
+            if (searchText.length >= 3) {
               fetchUsersByUsername(searchText);
             } else {
               // clear and hide autocomplete box
@@ -117,7 +97,7 @@ export const PostThread = ({ userId }: { userId: string }) => {
     }
 
     return () => {
-      return clearAutoComplete();
+      return;
     };
   }, []);
   const setCaretPosition = (
@@ -139,7 +119,6 @@ export const PostThread = ({ userId }: { userId: string }) => {
     setBoxPosition({ x: 0, y: 0 });
     setSearchText((_) => "");
   };
-
   const fetchUsersByUsername = (input: string) => {
     setSearchText((_) => input);
     // fetch from api with cancel last one ability
@@ -172,8 +151,6 @@ export const PostThread = ({ userId }: { userId: string }) => {
       "borderTopWidth",
       "borderRightWidth",
       "borderBottomWidth",
-      "borderRadius",
-      "outline",
     ].forEach((key) => {
       // @ts-ignore
       copy.style[key] = style[key];
@@ -255,67 +232,21 @@ export const PostThread = ({ userId }: { userId: string }) => {
       );
     }
   };
-  const selectUsername = (username: string) => {
-    // clearAutoComplete();
-    const textArea: HTMLInputElement | null = document.getElementById(
-      "thread-text-area"
-    ) as HTMLInputElement;
-    let splitedVal = textArea.value.split("@");
-    splitedVal.pop();
-    // console.log(splitedVal);
-    const setValue = splitedVal.join("@") + "@" + username + " ";
-    console.log(setValue);
-    // textArea.value = setValue;
-    form.setValue("thread", setValue);
-    // textArea.selectionEnd = textArea.value.length;
-    setTimeout(() => {
-      document.getElementById("text-area-copy")?.remove();
-      clearAutoComplete();
-      textArea.focus();
-      setAutoCompleteNavigator(() => 0);
-    }, 20);
-  };
-  const clickOnSelected = (users: HTMLCollection) => {
-    setTimeout(() => {
-      console.log(autoCompleteNavigator);
-      let selectedIndex = 0;
-      for (let i in users) {
-        const item = users[i];
-        // means its the selected one
-        if (item.classList && item.classList[0].startsWith("bg-gray")) {
-          selectedIndex = parseInt(i);
-        }
-      }
-      // @ts-ignore
-      users[selectedIndex]?.click();
-      return;
-    }, 1);
-  };
-  const hoverOnItem = (index: number) => {
-    setAutoCompleteNavigator((_) => index);
-  };
   return (
     <>
-      {usersList.length > 0 ? (
+      {usersList.length > 0 && (
         <ul
-          id="usersList"
-          className="fixed z-10 w-[230px] h-auto p-0 m-0 list-none bg-dark-1"
+          className="fixed z-10 w-[230px] h-auto p-0 m-0 list-none bg-transparent"
           style={{ left: boxPosition.x + "px", top: boxPosition.y + "px" }}
         >
-          {usersList.map((user, index) => {
+          {usersList.map((user) => {
             // split with searchText
 
             const user_username = parseFoundText(user.username);
             return (
               <li
-                onMouseEnter={(e) => hoverOnItem(index)}
-                onClick={(e) => selectUsername(user.username)}
-                key={user.username}
-                className={`${
-                  autoCompleteNavigator === index ? "bg-gray-700" : ""
-                } ransition-all duration-150 ease-in-out flex flex-row justify-center 
-                items-center gap-3 h-fit shadow-xl rounded-lg  py-2 px-2
-              border-b-gray-50 cursor-pointer`}
+                key={user.name}
+                className="flex flex-row justify-center items-center gap-3 h-fit bg-dark-1 shadow-xl rounded-lg  py-2 px-2 border-b-gray-500 hover:bg-gray-700 cursor-pointer"
               >
                 <Image
                   className="rounded-full shadow-lg object-contain"
@@ -333,8 +264,6 @@ export const PostThread = ({ userId }: { userId: string }) => {
             );
           })}
         </ul>
-      ) : (
-        <></>
       )}
       <Form {...form}>
         <form

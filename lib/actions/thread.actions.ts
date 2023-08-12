@@ -6,13 +6,17 @@ import Thread from "../models/thread.model";
 import User from "../models/user.model";
 import { Types } from "mongoose";
 import Vote from "../models/vote.model";
-import { handleVotesCount } from "./_helper.actions";
+import { handleVotesCount, replaceMentions } from "./_helper.actions";
 
 
 const createThread = async ({ text, author, communityId, path }: PropsType) => {
     try {
         await connectToDb();
         // create thread model
+        // replace @usernames with <Link href={`/profile/${user.id}`}>@username</Link> if the equivalent user
+        // can be found with the exact same username
+
+        text = await replaceMentions(text)
         const newThread = await Thread.create({
             text,
             author,
@@ -34,11 +38,30 @@ const createThread = async ({ text, author, communityId, path }: PropsType) => {
 }
 
 
-const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserId, accountId }: PaginatePropsTypeByQuery) => {
+const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserId, accountId, label }: PaginatePropsTypeByQuery) => {
     const skipAmount = (pageNumber - 1) * pageSize
     // fetch threads that have no parent
     // console.log(accountId)
-    const baseQuery = accountId ? { author: { $in: [accountId] }, parentId: { $in: [null, undefined] } } : { parentId: { $in: [null, undefined] } }
+    let baseQuery = {};
+    if (accountId) {
+        if (label === "threads")
+            baseQuery = { author: { $in: [accountId] }, parentId: { $in: [null, undefined] } }
+        else if (label === "replies") {
+
+            const authorThreads = (await Thread.find({ author: accountId }, { _id: 1 }));
+            const authorThreadIds = authorThreads.reduce((acc: Types.ObjectId[], item) => {
+                return acc.concat(item._id)
+            }, [])
+            baseQuery = { parentId: { $in: authorThreadIds } }
+        }
+        else if (label === "tagged") {
+            const accountUsername = (await User.findOne({ _id: accountId }, { username: 1 })).username
+            const regex = RegExp(`@${accountUsername}`, 'i')
+            baseQuery = { text: { $regex: regex } }
+        }
+    } else {
+        baseQuery = { parentId: { $in: [null, undefined] } }
+    }
     const threadsQuery = Thread.find(baseQuery).sort({ createdAt: "desc" })
         .skip(skipAmount)
         .limit(pageSize)
@@ -100,7 +123,7 @@ const fetchThreads = async ({ pageNumber = 1, pageSize = 30, currentUserId }: Pa
     try {
         await connectToDb()
         // Calculate the number of posts to skip(page we are on)
-        return await fetchThreadsByQuery({ pageNumber, pageSize, currentUserId, accountId: null })
+        return await fetchThreadsByQuery({ pageNumber, pageSize, currentUserId, accountId: null, })
     }
     catch (e: any) {
         throw new Error("Fetch Threads Error " + e.message)
@@ -187,14 +210,16 @@ const addCommentToThread = async (
         threadId,
         path
     }: CommentType) => {
-    await connectToDb()
+
     try {
+        await connectToDb()
         //adding comment
         // find original thread by id
         // console.log(threadId)
+
         const originalThread = await Thread.findById(threadId)
         if (!originalThread) throw new Error("Thread Not Found")
-
+        text = await replaceMentions(text)
         // create new thread with comment text
         const commentThread = new Thread({
             text: text,

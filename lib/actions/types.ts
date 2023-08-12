@@ -16,5 +16,6 @@ interface PaginatePropsType {
     currentUserId: string | null;
 }
 interface PaginatePropsTypeByQuery extends PaginatePropsType {
-    accountId?: string | null
+    accountId?: string | null,
+    label?: string
 }
