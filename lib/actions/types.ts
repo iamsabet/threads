@@ -13,7 +13,7 @@ interface CommentType {
 interface PaginatePropsType {
     pageNumber: number;
     pageSize: number;
-    currentUserId: string | null;
+    currentUserId: any;
 }
 interface PaginatePropsTypeByQuery extends PaginatePropsType {
     accountId?: string | null,

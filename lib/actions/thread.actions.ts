@@ -56,7 +56,7 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
         }
         else if (label === "tagged") {
             const accountUsername = (await User.findOne({ _id: accountId }, { username: 1 })).username
-            const regex = RegExp(`@${accountUsername}`, 'i')
+            const regex = RegExp(`>@${accountUsername}</`, 'i') // only username matches having a tag around
             baseQuery = { text: { $regex: regex } }
         }
     } else {

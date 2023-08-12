@@ -8,6 +8,7 @@ import { FilterQuery, SortOrder } from "mongoose"
 import { ErrorMessage } from "uploadthing/server"
 import clerkClient from "@clerk/clerk-sdk-node"
 import { fetchThreadsByQuery } from "./thread.actions"
+import Vote from "../models/vote.model"
 
 interface ParamsType {
 
@@ -59,7 +60,7 @@ const updateUser = async ({
     }
 }
 
-const fetchUser = async (userId: string) => {
+const fetchUser = async (userId: string): Promise<any> => {
     try {
         await connectToDb()
         return await User
@@ -140,32 +141,126 @@ const searchUsers = async ({
     }
 }
 
-const getActivity = async (userId: string) => {
+const getActivity = async ({ pageNumber = 1, pageSize = 10, currentUserId }: PaginatePropsType) => {
     try {
         await connectToDb()
-        const userThreads = await Thread.find({ author: userId })
+        if (currentUserId) {
+            // currentUserId = JSON.parse(currentUserId)
+            const user = (await User.findOne({ id: currentUserId }))
+            if (user && user._id) {
 
-        // collect all the child thread id's from the 'children' field
-        const childThreadIds = userThreads.reduce((acc, userThread) => {
-            return acc.concat(userThread.children);
-        }, []);
+                const repliesDoc = await getReplies({ pageNumber, pageSize, currentUserId: user._id })
+                const votesDoc = await getVotes({ pageNumber, pageSize, currentUserId: user._id })
+                const mentionsDoc = await getMentions({ pageNumber, pageSize, currentUserId: user._id })
 
-        const replies = await Thread.find({
-            _id: { $in: childThreadIds },
-            author: { $ne: userId }
-        }).populate({
-            path: "author",
-            model: User,
-            select: "_id name username image createdAt"
-        })
-
-        return replies
+                const hasNext = repliesDoc.hasNext || votesDoc.hasNext || mentionsDoc.hasNext
+                let docs: any = []
+                const mentions = mentionsDoc.mentions.reduce((acc, item) => {
+                    return acc.concat({ type: "mention", item })
+                }, [])
+                const replies = repliesDoc.replies.reduce((acc, item) => {
+                    return acc.concat({ type: "reply", item })
+                }, [])
+                const votes = votesDoc.votes.reduce((acc, item) => {
+                    return acc.concat({ type: "vote", item })
+                }, [])
+                docs = docs.concat(mentions)
+                docs = docs.concat(replies)
+                docs = docs.concat(votes)
+                const sortedDocs = docs.sort(function (a: any, b: any) {
+                    return b.item.createdAt - a.item.createdAt;
+                });
+                return { hasNext, docs: sortedDocs, pageSize, pageNumber };
+            }
+            else {
+                return []
+            }
+        }
+        else {
+            return []
+        }
 
     } catch (e: any) {
         throw new Error("Failed to fetch activity " + e.message)
     }
 }
 
+const getVotes = async ({ pageNumber = 1, pageSize = 10, currentUserId }: PaginatePropsType) => {
+    const skipAmount = (pageNumber - 1) * pageSize
+    const userThreads = await Thread.find({ author: currentUserId })
+    const threadsIds = userThreads.reduce((acc, userThread) => {
+        return acc.concat(userThread._id);
+    }, []);
+    const baseQuery = { voter: { $ne: currentUserId }, thread: { $in: threadsIds } }
+
+    const votes = await Vote.find(baseQuery)
+        .populate({
+            path: "voter",
+            model: User,
+            select: "_id id name username image"
+        })
+        .populate({
+            path: "thread",
+            model: Thread,
+            select: "_id text"
+        })
+        .sort({ createdAt: "desc" })
+        .skip(skipAmount)
+        .limit(pageSize)
+
+    const totalVotes = await Vote.countDocuments(baseQuery)
+    const hasNext = totalVotes > skipAmount + votes.length
+    return { hasNext, votes, totalVotes, pageSize, pageNumber }
+}
+const getMentions = async ({ pageNumber = 1, pageSize = 10, currentUserId }: PaginatePropsType) => {
+
+    const skipAmount = (pageNumber - 1) * pageSize
+    const accountUsername = (await User.findOne({ _id: currentUserId }, { username: 1 })).username
+    const regex = RegExp(`>@${accountUsername}</`, 'i') // only username matches having a tag around
+    const baseQuery = { text: { $regex: regex } }
+
+    const mentions = await Thread.find(baseQuery)
+        .populate({
+            path: "author",
+            model: User,
+            select: "_id id name username image"
+        })
+        .sort({ createdAt: "desc" })
+        .skip(skipAmount)
+        .limit(pageSize)
+
+    const totalMentions = await Thread.countDocuments(baseQuery)
+    const hasNext = totalMentions > skipAmount + mentions.length
+    return { hasNext, mentions, totalMentions, pageSize, pageNumber }
+}
+
+const getReplies = async ({ pageNumber = 1, pageSize = 10, currentUserId }: PaginatePropsType) => {
+    const skipAmount = (1 - pageNumber) * pageSize
+    const userThreads = await Thread.find({ author: currentUserId })
+
+    const childThreadIds = userThreads.reduce((acc, userThread) => {
+        return acc.concat(userThread.children);
+    }, []);
+    const query = {
+        _id: { $in: childThreadIds },
+        author: { $ne: currentUserId }
+    }
+    const replies = await Thread.find(query).populate({
+        path: "author",
+        model: User,
+        select: "_id id name username image"
+    })
+        .sort({ createdAt: "desc" })
+        .skip(skipAmount)
+        .limit(pageSize)
+
+    const totalRepliesCount = await Thread.countDocuments(query)
+
+
+    const hasNext = totalRepliesCount > skipAmount + replies.length
+
+    return { hasNext, replies, totalRepliesCount, pageSize, pageNumber }
+}
 const checkUsernameExists = async (username: string) => {
     try {
         await connectToDb();
