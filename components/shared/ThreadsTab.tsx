@@ -21,12 +21,12 @@ const ThreadsTab = async ({
     pageSize: 30,
     currentUserId: currentUserId,
     accountId: accountId,
-    label:label,
+    label: label,
   });
   if (!result) redirect("/");
   return (
     <section className="mt-9 flex flex-col gap-10">
-      {result.threads.map((thread: any) => {
+      {result.docs.map((thread: any) => {
         return (
           <ThreadCard
             key={thread._id}
