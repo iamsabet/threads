@@ -1,32 +1,22 @@
-import { fetchUserThreads } from "@/lib/actions/user.actions";
+"use client";
 import { redirect } from "next/navigation";
 import React from "react";
 import ThreadCard from "../cards/ThreadCard";
-interface ThreadsTabsPropsType {
-  currentUserId: string;
-  accountId: string;
-  accountType: string;
-  label: string;
-}
+
 const ThreadsTab = async ({
   currentUserId,
   accountId,
   accountType,
   label,
+  threadsResult,
 }: ThreadsTabsPropsType) => {
-  console.log("Label = " + label);
+  // console.log("Label = " + label);
 
-  let result = await fetchUserThreads({
-    pageNumber: 1,
-    pageSize: 30,
-    currentUserId: currentUserId,
-    accountId: accountId,
-    label: label,
-  });
-  if (!result) redirect("/");
+  if (!threadsResult) redirect("/");
+
   return (
     <section className="mt-9 flex flex-col gap-10">
-      {result.docs.map((thread: any) => {
+      {threadsResult.docs.map((thread: any) => {
         return (
           <ThreadCard
             key={thread._id}

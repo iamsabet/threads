@@ -2,7 +2,7 @@
 import ProfileHeader from "@/components/shared/ProfileHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
-import { fetchUser } from "@/lib/actions/user.actions";
+import { fetchUser, fetchUserThreads } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import Image from "next/image";
@@ -19,6 +19,27 @@ const Page = async ({ params }: { params: { id: string } }) => {
   if (!current_user) return redirect("/sign-in");
   const userInfo = await fetchUser(params.id);
   if (!userInfo?.onboarded) return redirect("/onboarding");
+
+  let results: {
+    threads: any;
+    replies: any;
+    mentioned: any;
+  } = {
+    threads: {},
+    replies: {},
+    mentioned: {},
+  };
+  for (let p in profileTabs) {
+    let value = profileTabs[p].value;
+    // @ts-ignore
+    results[value] = await fetchUserThreads({
+      pageNumber: 1,
+      pageSize: 10,
+      currentUserId: current_user._id,
+      accountId: userInfo._id,
+      label: value,
+    });
+  }
 
   return (
     <section className="">
@@ -44,11 +65,13 @@ const Page = async ({ params }: { params: { id: string } }) => {
                     className="object-contain"
                   />
                   <p className="max-sm:hidden">{tab.label}</p>
-                  {tab.label === "Threads" && (
-                    <p className="ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2">
-                      {userInfo?.threads?.length}
-                    </p>
-                  )}
+
+                  <p className="ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2">
+                    {
+                      // @ts-ignore
+                      results[tab.value].docs.length
+                    }
+                  </p>
                 </TabsTrigger>
               );
             })}
@@ -61,10 +84,12 @@ const Page = async ({ params }: { params: { id: string } }) => {
                 className="w-full text-light-1"
               >
                 <ThreadsTab
-                  currentUserId={current_user._id}
+                  currentUserId={JSON.stringify(current_user._id)}
                   accountId={userInfo?._id}
                   label={tab.value}
                   accountType="User"
+                  // @ts-ignore
+                  threadsResult={results[tab.value]}
                 />
               </TabsContent>
             );

@@ -70,7 +70,9 @@ const VoteBlock = ({ threadId, voterId, myVote, votes }: VoteProps) => {
           className="cursor-pointer w-[18px] h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
         />
       </div>
-      <p className="text-light-3 w-full text-center my-2">{votesCount}</p>
+      <p className="text-light-3 w-full text-center mt-2 mb-2.5">
+        {votesCount}
+      </p>
       <div
         onClick={() => voteHanlder("down")}
         className="w-[18px] p-0 my-0 mx-auto"

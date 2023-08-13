@@ -15,15 +15,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
 import { ThreadValidation } from "@/lib/validations/thread";
 import { createThread } from "@/lib/actions/thread.actions";
-import { useEffect, useState } from "react";
-import { autoCompleteUsernames } from "@/lib/actions/user.actions";
-import Image from "next/image";
 import UsersSuggestions from "../shared/UserSuggestions";
+import Spinner from "../Spinner";
+import { useState } from "react";
+import { currentUser } from "@clerk/nextjs";
 // @ts-ignore
-export const PostThread = ({ userId }: { userId: string }) => {
+export const PostThread = ({
+  userId,
+  user_id,
+}: {
+  userId: string;
+  user_id: string;
+}) => {
   const pathname = usePathname();
   const router = useRouter();
-
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(ThreadValidation),
     defaultValues: {
@@ -32,13 +38,15 @@ export const PostThread = ({ userId }: { userId: string }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
+    setLoading((_) => true);
     await createThread({
       text: values.thread,
       author: userId,
       communityId: null,
       path: pathname,
     });
-    router.push("/");
+    setLoading((_) => true);
+    router.push("/profile/" + user_id);
   };
 
   const setFormValue = (value: string): void => {
@@ -55,7 +63,7 @@ export const PostThread = ({ userId }: { userId: string }) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col justify-start gap-10 mt-10"
+          className="flex flex-col justify-start gap-10 mt-10 mb-0 pb-0"
         >
           <FormField
             control={form.control}
@@ -85,11 +93,13 @@ export const PostThread = ({ userId }: { userId: string }) => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="bg-primary-500">
-            Post Thread
+
+          <Button disabled={loading} type="submit" className="bg-primary-500">
+            Post
           </Button>
         </form>
       </Form>
+      <div className="text-center my-0 py-0 h-8">{loading && <Spinner />}</div>
     </>
   );
 };

@@ -32,9 +32,13 @@ const ActivityIcon = ({
         />
       )}
       {type === "mention" && (
-        <h1 className="font-semibold text-[23px]" style={{ color: "#5C5C7B" }}>
-          @
-        </h1>
+        <Image
+          src="/assets/atsign.svg"
+          alt="mention"
+          width="30"
+          height="30"
+          className="cursor-pointer object-contain transition-all duration-150 ease-in-out hover:scale-110"
+        />
       )}
     </span>
   );

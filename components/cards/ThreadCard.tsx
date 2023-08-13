@@ -3,9 +3,10 @@ import Image from "next/image";
 import VoteBlock from "../threadActions/VoteBlock";
 import HTMLReactParser from "html-react-parser";
 import { formattedDateString } from "../shared/helpers";
+import DeleteThread from "../forms/DeleteThread";
 interface ThreadProps {
   id: string;
-  currentUserId: string | undefined;
+  currentUserId: string;
   parentId: string;
   content: string;
   author: {
@@ -129,6 +130,13 @@ const ThreadCard = ({
             </div>
           </div>
         </div>
+        <DeleteThread
+          threadId={JSON.stringify(id)}
+          currentUserId={currentUserId}
+          authorId={author.id}
+          parentId={parentId}
+          isComment={isComment}
+        />
       </div>
 
       {comments.length > 0 && (

@@ -5,7 +5,6 @@ import LogoutComponent from "./LogoutComponent";
 import { dark } from "@clerk/themes";
 const TopBar = () => {
   const isLoggedIn = true;
-
   return (
     <nav className="topbar">
       <Link href="/" className="flex flex-row items-center gap-4">
