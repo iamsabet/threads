@@ -296,7 +296,7 @@ const autoCompleteUsernames = async ({ input }: { input: string }) => {
         }
         await connectToDb()
         const regex = RegExp(input, 'i')
-        return JSON.stringify(await User.find({ username: { $regex: regex } }, { _id: 1, username: 1, image: 1, name: 1 }))
+        return JSON.stringify(await User.find({ username: { $regex: regex } }, { _id: 1, id: 1, username: 1, image: 1, name: 1 }))
     } catch (e: any) {
         console.error("Check user exists error : " + e.message)
         return JSON.stringify([])

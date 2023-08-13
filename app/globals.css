@@ -120,6 +120,28 @@
   }
 }
 
+/* width */
+textarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+textarea::-webkit-scrollbar-track {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle */
+textarea::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+textarea::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 /* Clerk Responsive fix */
 .cl-organizationSwitcherTrigger .cl-userPreview .cl-userPreviewTextContainer {
   @apply max-sm:hidden;
@@ -159,7 +181,7 @@ a.global-mention{
 
 /* Comment Form */
 .comment-form {
-  @apply mt-10 flex items-center gap-4 border-y border-y-dark-4 py-5 max-xs:flex-col !important;
+  @apply mt-8 flex items-center gap-4 border-y border-y-dark-4 py-5 max-xs:flex-col !important;
 }
 
 .comment-form_btn {

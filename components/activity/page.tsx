@@ -2,10 +2,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import HTMLReactParser from "html-react-parser";
+// import HTMLReactParser from "html-react-parser";
 import { useAuth } from "@clerk/nextjs";
 import Spinner from "../Spinner";
 import { formattedDateString } from "../shared/helpers";
+import ActivityIcon from "./ActivityIcon";
 
 const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
   const [activities, setActivities] = useState<any[]>([]);
@@ -19,7 +20,6 @@ const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
         headers: { Authorization: `Bearer ${token}` },
         cache: "no-cache",
       }).then((res) => res.json());
-      console.log(acts);
       setActivities((_) => acts.docs);
       setLoading((_) => false);
     }
@@ -41,36 +41,11 @@ const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
                 <article className="activity-card">
                   <div className="flex flex-col justify-start sm:flex-row sm:justify-between w-full">
                     <div className="flex justify-between overflow-hidden">
-                      <span className="flex justify-center items-center pr-1.5 w-[35px]">
-                        {act.type === "vote" && (
-                          <Image
-                            src={`/assets/arrow_${
-                              act.message.split(" ")[0].split("vote")[0]
-                            }.svg`}
-                            alt={`${act.message.split(" ")[0]} icon`}
-                            width="19"
-                            height="19"
-                            className="cursor-pointer w-[19px] h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
-                          />
-                        )}
-                        {act.type === "reply" && (
-                          <Image
-                            src="/assets/reply.svg"
-                            alt="reply"
-                            width="30"
-                            height="30"
-                            className="cursor-pointer object-contain transition-all duration-150 ease-in-out hover:scale-110"
-                          />
-                        )}
-                        {act.type === "mention" && (
-                          <h1
-                            className="font-semibold text-[23px]"
-                            style={{ color: "#5C5C7B" }}
-                          >
-                            @
-                          </h1>
-                        )}
-                      </span>
+                      <ActivityIcon
+                        type={act.type}
+                        message={act.message}
+                        styles="hidden xs:flex"
+                      />
                       <Image
                         src={act.subject.image}
                         alt="Profile Picture"
