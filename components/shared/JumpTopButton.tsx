@@ -46,12 +46,12 @@ const JumpTopButton = () => {
     <Button
       type="button"
       onClick={jumpToTop}
-      className={`fixed p-2 rounded-full shadow-lg flex justify-center items-center ${
-        show ? "right-7 opacity-100" : "-right-[100px] opacity-0"
-      } bottom-20 z-50 bg-primary-500 transition-all duration-200 ease-out`}
+      className={`fixed px-2 py-1 rounded-full shadow-lg flex justify-center items-center ${
+        show ? "right-7 opacity-100" : "-right-[50px] opacity-0"
+      } bottom-20 z-50 bg-primary-500 transition-all duration-300 ease-in-out`}
     >
-      <div className="rotate-90">
-        <IoChevronBackSharp size="32" />
+      <div className="rotate-90 mb-0.5">
+        <IoChevronBackSharp size="26" />
       </div>
     </Button>
   );
