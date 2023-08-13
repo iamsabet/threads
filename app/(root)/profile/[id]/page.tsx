@@ -85,7 +85,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
               >
                 <ThreadsTab
                   currentUserId={JSON.stringify(current_user._id)}
-                  accountId={userInfo?._id}
+                  accountId={JSON.stringify(userInfo?._id)}
                   label={tab.value}
                   accountType="User"
                   // @ts-ignore

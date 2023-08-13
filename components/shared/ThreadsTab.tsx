@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import ThreadCard from "../cards/ThreadCard";
 
-const ThreadsTab = async ({
+const ThreadsTab = ({
   currentUserId,
   accountId,
   accountType,
