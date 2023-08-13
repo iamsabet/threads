@@ -111,6 +111,13 @@ const ThreadCard = ({
                   height="24"
                   className="cursor-pointer object-contain transition-all duration-150 ease-in-out hover:scale-110"
                 />
+                {/* <Image
+                  src="/assets/edit.svg"
+                  alt="share"
+                  width="24"
+                  height="24"
+                  className="cursor-pointer object-contain transition-all duration-150 ease-in-out hover:scale-110"
+                /> */}
               </div>
               {/* {isComment && comments.length > 0 && (
                 <Link href={`/thread/${id}`}>
