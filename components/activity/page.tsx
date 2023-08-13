@@ -9,14 +9,14 @@ import { formattedDateString } from "../shared/helpers";
 import ActivityIcon from "./ActivityIcon";
 
 const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
-  const [activities, setActivities] = useState<any[]>([]);
+  const [activities, setActivities] = useState<any[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { getToken } = useAuth();
   const fetchActivities = async (user_id: string) => {
     if (!loading) {
       setLoading((_) => true);
       const token = await getToken();
-      const acts = await fetch(`/api/activity?pageNumber=1&pageSize=10&`, {
+      const acts = await fetch(`/api/activity?pageNumber=1&pageSize=2&`, {
         headers: { Authorization: `Bearer ${token}` },
         cache: "no-cache",
       }).then((res) => res.json());
@@ -24,11 +24,27 @@ const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
       setLoading((_) => false);
     }
   };
+  const scrollHandler = () => {
+    if (window.scrollY > 400) {
+      // console.log("middle")
+    } else if (window.scrollY > window.outerHeight - 400) {
+      console.log("reaches bottom");
+    }
+  };
+
+  const attachScrollHandler = () => {
+    window.addEventListener("scroll", scrollHandler);
+  };
+  const clearScrollHandler = () => {
+    window.removeEventListener("scroll", scrollHandler);
+  };
 
   useEffect(() => {
     fetchActivities(user_id);
-
-    return () => {};
+    attachScrollHandler();
+    return () => {
+      return clearScrollHandler();
+    };
   }, []);
 
   return (
