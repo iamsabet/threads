@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 // import HTMLReactParser from "html-react-parser";
 import { useAuth } from "@clerk/nextjs";
@@ -8,87 +7,23 @@ import Spinner from "../Spinner";
 import { formattedDateString } from "../shared/helpers";
 import ActivityIcon from "./ActivityIcon";
 import JumpTopButton from "../shared/JumpTopButton";
+import usePagination from "@/hooks/usePagination";
 
-const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
-  const [activities, setActivities] = useState<any[] | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [reaching, setReaching] = useState<boolean>(false);
-  const [pageNumber, setPageNumber] = useState<number>(1);
-  const pageSize = 10;
-  const [hasNext, setHasHext] = useState<boolean>(true);
+const ActivitiesComponent = () => {
   const { getToken } = useAuth();
-
-  const fetchActivities = async (page: number, next: boolean) => {
-    if (!loading && next) {
-      console.log("trigger fetching");
-      setLoading((_) => true);
-      const token = await getToken();
-      const acts = await fetch(
-        `/api/activity?pageNumber=${page}&pageSize=${pageSize}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          cache: "no-cache",
-        }
-      ).then((res) => res.json());
-
-      setHasHext((_) => acts.hasNext);
-      setActivities((_acts) => {
-        console.log(acts.hasNext);
-        if (!_acts) {
-          return acts.docs;
-        } else {
-          return _acts.concat(acts.docs);
-        }
-      });
-      setLoading((_) => false);
-    }
-  };
-  const scrollHandler = () => {
-    // console.log(
-    //   window.scrollY,
-    //   "/",
-    //   window.innerHeight,
-    //   "/",
-    //   window.outerHeight
-    // );
-
-    if (window.scrollY > 200) {
-      // console.log("middle")
-    }
-
-    setReaching((prev) => {
-      if (
-        Math.round(window.scrollY) + window.outerHeight >=
-        document.body.offsetHeight
-      ) {
-        if (!prev) {
-          setPageNumber((prev) => prev + 1);
-        }
-        return true;
-      } else {
-        return false;
-      }
-    });
-  };
-
-  const attachScrollHandler = () => {
-    window.addEventListener("scroll", scrollHandler);
-  };
-  const clearScrollHandler = () => {
-    window.removeEventListener("scroll", scrollHandler);
-  };
-
-  useEffect(() => {
-    fetchActivities(pageNumber, true);
-    attachScrollHandler();
-    return () => {
-      return clearScrollHandler();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (pageNumber > 1) fetchActivities(pageNumber, hasNext);
-  }, [pageNumber]);
+  const [loading, activities] = usePagination({
+    options: {
+      baseUrl: "/api/activity",
+      pageSize: 20,
+    },
+    initialValues: {
+      initialHasNext: true,
+      initailDocs: null,
+      initialLoading: false,
+      initialPageNumber: 1,
+    },
+    getToken: getToken,
+  });
 
   return (
     <>

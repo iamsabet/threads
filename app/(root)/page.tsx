@@ -1,5 +1,6 @@
 import ThreadCard from "@/components/cards/ThreadCard";
 import JumpTopButton from "@/components/shared/JumpTopButton";
+import usePagination from "@/hooks/usePagination";
 import { fetchThreads } from "@/lib/actions/thread.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
@@ -15,6 +16,19 @@ const Home = async () => {
     currentUserId: userInfo ? userInfo?._id : null,
   });
 
+  const [loading, docs] = usePagination({
+    options: {
+      baseUrl: "/api/activity",
+      pageSize: 20,
+    },
+    initialValues: {
+      initialHasNext: true,
+      initailDocs: null,
+      initialLoading: false,
+      initialPageNumber: 1,
+    },
+    // getToken: () => {},
+  });
   return (
     <>
       <h1 className="head-text text-left">Home</h1>
