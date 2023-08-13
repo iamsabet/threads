@@ -58,20 +58,26 @@ const VoteBlock = ({ threadId, voterId, myVote, votes }: VoteProps) => {
   };
   return (
     <>
-      <div onClick={() => voteHanlder("down")}>
+      <div
+        onClick={() => voteHanlder("up")}
+        className="w-[18px] p-0 my-0 mx-auto"
+      >
         <Image
-          src={`/assets/arrow_down${voteState === "down" ? "_filled" : ""}.svg`}
-          alt={`down_vote${voteState === "down" ? "_filled" : ""}`}
+          src={`/assets/arrow_up${voteState === "up" ? "_filled" : ""}.svg`}
+          alt={`up_vote${voteState === "up" ? "_filled" : ""}`}
           width="17"
           height="17"
           className="cursor-pointer w-[18px] h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
         />
       </div>
-      <p className="text-light-3 w-5 text-center">{votesCount}</p>
-      <div onClick={() => voteHanlder("up")}>
+      <p className="text-light-3 w-full text-center my-2">{votesCount}</p>
+      <div
+        onClick={() => voteHanlder("down")}
+        className="w-[18px] p-0 my-0 mx-auto"
+      >
         <Image
-          src={`/assets/arrow_up${voteState === "up" ? "_filled" : ""}.svg`}
-          alt={`up_vote${voteState === "up" ? "_filled" : ""}`}
+          src={`/assets/arrow_down${voteState === "down" ? "_filled" : ""}.svg`}
+          alt={`down_vote${voteState === "down" ? "_filled" : ""}`}
           width="17"
           height="17"
           className="cursor-pointer w-[18px] h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"

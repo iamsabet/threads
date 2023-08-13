@@ -48,7 +48,15 @@ const ThreadCard = ({
     ${isComment ? "px-0 xs:px-7 mt-5" : "bg-dark-2 p-7"} `}
     >
       <div className="flex justify-between items-start">
-        <div className="flex w-full flex-1 flex-row gap-4">
+        <div className="flex w-full flex-1 flex-row gap-2">
+          <div className="w-10">
+            <VoteBlock
+              threadId={JSON.stringify(id)}
+              voterId={JSON.stringify(currentUserId)}
+              myVote={myVote ? myVote : ""}
+              votes={votes}
+            />
+          </div>
           <div className="flex flex-col items-center">
             <Link href={`/profile/${author.id}`} className="relative w-11 h-11">
               <Image
@@ -77,13 +85,6 @@ const ThreadCard = ({
               } mt-4 flex flex-col gap-3`}
             >
               <div className="flex flex-row gap-3.5">
-                <VoteBlock
-                  threadId={JSON.stringify(id)}
-                  voterId={JSON.stringify(currentUserId)}
-                  myVote={myVote ? myVote : ""}
-                  votes={votes}
-                />
-
                 {/* Reply */}
                 <Link href={`/thread/${id}`}>
                   <Image
@@ -122,20 +123,28 @@ const ThreadCard = ({
           </div>
         </div>
       </div>
+
       {comments.length > 0 && (
         <div
           className={`${
             comments.length === 1 ? "ml-2.5" : "ml-1"
           } mt-3 flex items-center gap-2`}
         >
-          {comments.slice(0, 2).map((comment, index) => (
+          <div
+            className={`${comments.length >= 3 ? "w-[22px]" : "w-[30px]"}`}
+          ></div>
+          {comments.slice(0, 3).map((comment, index) => (
             <Image
               key={index}
               src={comment.author.image}
               alt={`user_${index}`}
-              width={24}
-              height={24}
-              className={`${index !== 0 && "-ml-5"} rounded-full object-cover`}
+              width={26}
+              height={26}
+              className={`${
+                index !== 0 && "-ml-5"
+              } rounded-full object-contain ${
+                comments.length >= 3 && index === 1 && "mb-3 z-[10]"
+              }`}
             />
           ))}
 

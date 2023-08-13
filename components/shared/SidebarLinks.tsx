@@ -25,7 +25,9 @@ const SidebarLinks = ({
           <Link
             href={item.route === "/profile" ? `/profile/${userId}` : item.route}
             key={item.label}
-            className={`${type} ${isActive && "bg-primary-500"}`}
+            className={`${type} ${
+              isActive ? "bg-primary-500 hover:shadow-xl" : "hover:bg-dark-1"
+            }`}
           >
             <Image src={item.imgURL} alt={item.label} width="24" height="24" />
             <p className={`${text_class}`}>

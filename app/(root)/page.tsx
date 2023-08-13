@@ -30,7 +30,7 @@ const Home = async () => {
                 <ThreadCard
                   key={thread._id}
                   id={thread._id}
-                  currentUserId={userInfo ? userInfo?._id : null}
+                  currentUserId={userInfo?._id}
                   parentId={thread.parentId}
                   content={thread.text}
                   author={thread.author}
@@ -44,9 +44,7 @@ const Home = async () => {
               );
             })}
             {result.hasNext && (
-              <ThreadCardsClient
-                currentUserId={userInfo ? userInfo?._id : undefined}
-              />
+              <ThreadCardsClient currentUserId={userInfo?._id} />
             )}
           </>
         )}

@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import React from "react";
 import ThreadsTab from "@/components/shared/ThreadsTab";
+import JumpTopButton from "@/components/shared/JumpTopButton";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const user = await currentUser();
@@ -70,6 +71,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
           })}
         </Tabs>
       </div>
+      <JumpTopButton />
     </section>
   );
 };
