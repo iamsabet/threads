@@ -1,4 +1,5 @@
 import ThreadCard from "@/components/cards/ThreadCard";
+import JumpTopButton from "@/components/shared/JumpTopButton";
 import { fetchThreads } from "@/lib/actions/thread.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
@@ -44,6 +45,7 @@ const Home = async () => {
           </>
         )}
       </section>
+      <JumpTopButton />
     </>
   );
 };

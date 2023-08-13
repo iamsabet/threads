@@ -7,16 +7,19 @@ import { useAuth } from "@clerk/nextjs";
 import Spinner from "../Spinner";
 import { formattedDateString } from "../shared/helpers";
 import ActivityIcon from "./ActivityIcon";
+import JumpTopButton from "../shared/JumpTopButton";
 
 const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
   const [activities, setActivities] = useState<any[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { getToken } = useAuth();
+  const pageSize = 10;
+  const [pageNumber, setPageNumber] = useState(2);
   const fetchActivities = async (user_id: string) => {
     if (!loading) {
       setLoading((_) => true);
       const token = await getToken();
-      const acts = await fetch(`/api/activity?pageNumber=1&pageSize=2&`, {
+      const acts = await fetch(`/api/activity?pageNumber=1&pageSize=10&`, {
         headers: { Authorization: `Bearer ${token}` },
         cache: "no-cache",
       }).then((res) => res.json());
@@ -25,10 +28,19 @@ const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
     }
   };
   const scrollHandler = () => {
-    if (window.scrollY > 400) {
+    // console.log(
+    //   window.scrollY,
+    //   "/",
+    //   window.innerHeight,
+    //   "/",
+    //   window.outerHeight
+    // );
+
+    if (window.scrollY > 200) {
       // console.log("middle")
-    } else if (window.scrollY > window.outerHeight - 400) {
-      console.log("reaches bottom");
+    }
+    if (window.scrollY > window.innerHeight - 200) {
+      // console.log("reaches bottom");
     }
   };
 
@@ -109,6 +121,7 @@ const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
           <Spinner />
         </div>
       )}
+      <JumpTopButton />
     </>
   );
 };

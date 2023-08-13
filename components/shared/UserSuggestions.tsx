@@ -25,14 +25,12 @@ const UsersSuggestions = ({
         document.getElementById("text-area-copy")?.remove();
       };
       textArea.onkeydown = (e) => {
-        // console.log(e.code);
         const users = document.getElementById("usersList")?.children;
         if (
           ["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"].indexOf(e.code) >
           -1
         ) {
           if (users && users.length > 0) {
-            console.log("2" + e.code);
             // if box is open must e.preventDefault and navigate up and down to selected options
             // else just continue the default
             e.preventDefault();
@@ -82,16 +80,13 @@ const UsersSuggestions = ({
           if (splitedTextByAtSign.length > 1) {
             const searchText =
               splitedTextByAtSign[splitedTextByAtSign.length - 1];
-            console.log(searchText);
             if (searchText.length >= 2) {
               fetchUsersByUsername(searchText);
             } else {
               // clear and hide autocomplete box
-              // console.log("Clear");
               clearAutoComplete();
             }
           } else {
-            // console.log("Clear");
             clearAutoComplete();
             // clear and hide autocomplete box
           }
@@ -134,12 +129,8 @@ const UsersSuggestions = ({
       if (users.length > 0) {
         // show autocomplete box bellow caret position
         setUsersList((_) => users);
-
-        console.log(users);
       } else {
         clearAutoComplete();
-        // clear and hide autocomplete box
-        // console.log("Clear");
       }
     });
   };
@@ -238,7 +229,6 @@ const UsersSuggestions = ({
     let splitedVal = textArea.value.split("@");
     splitedVal.pop();
     const setValue = splitedVal.join("@") + "@" + username + " ";
-    console.log(setValue);
     // @ts-ignore
     setFormValue(setValue);
     setTimeout(() => {
@@ -250,7 +240,6 @@ const UsersSuggestions = ({
   };
   const clickOnSelected = (users: HTMLCollection) => {
     setTimeout(() => {
-      console.log(autoCompleteNavigator);
       let selectedIndex = 0;
       for (let i in users) {
         const item = users[i];
