@@ -1,9 +1,9 @@
+import ThreadCardsClient from "@/components/ThreadCardsClient";
 import ThreadCard from "@/components/cards/ThreadCard";
 import JumpTopButton from "@/components/shared/JumpTopButton";
-import usePagination from "@/hooks/usePagination";
 import { fetchThreads } from "@/lib/actions/thread.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
-import { currentUser } from "@clerk/nextjs";
+import { currentUser, useAuth } from "@clerk/nextjs";
 
 const Home = async () => {
   const user = await currentUser();
@@ -12,33 +12,20 @@ const Home = async () => {
   }
   const result = await fetchThreads({
     pageNumber: 1,
-    pageSize: 30,
+    pageSize: 20,
     currentUserId: userInfo ? userInfo?._id : null,
   });
 
-  const [loading, docs] = usePagination({
-    options: {
-      baseUrl: "/api/activity",
-      pageSize: 20,
-    },
-    initialValues: {
-      initialHasNext: true,
-      initailDocs: null,
-      initialLoading: false,
-      initialPageNumber: 1,
-    },
-    // getToken: () => {},
-  });
   return (
     <>
       <h1 className="head-text text-left">Home</h1>
 
       <section className="mt-8 flex flex-col gap-10">
-        {result.threads.length === 0 ? (
+        {result.docs.length === 0 ? (
           <p className="no-result">No Threads found</p>
         ) : (
           <>
-            {result.threads.map((thread: any) => {
+            {result.docs.map((thread: any) => {
               return (
                 <ThreadCard
                   key={thread._id}
@@ -56,6 +43,11 @@ const Home = async () => {
                 />
               );
             })}
+            {result.hasNext && (
+              <ThreadCardsClient
+                currentUserId={userInfo ? userInfo?._id : undefined}
+              />
+            )}
           </>
         )}
       </section>

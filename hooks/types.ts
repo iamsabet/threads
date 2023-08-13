@@ -9,5 +9,5 @@ interface UsePaginationProps {
         initialHasNext: boolean;
         initialPageNumber: number;
     };
-    getToken?: Function;
+    getToken: () => Promise<string | null>;
 }

@@ -111,7 +111,7 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
 
     return {
         // @ts-ignore
-        threads: threads_final,
+        docs: threads_final,
         hasNext,
         totalThreadsCount,
         pageNumber,

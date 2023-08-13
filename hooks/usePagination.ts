@@ -14,10 +14,9 @@ const usePagination = ({ options, initialValues, getToken }: UsePaginationProps)
             setLoading((_) => true);
 
             let headers: { Authorization?: string } = {}
-            if (getToken) {
-                const token = await getToken();
+            const token = await getToken();
+            if (token)
                 headers["Authorization"] = `Bearer ${token}`
-            }
 
             const acts = await fetch(
                 `${baseUrl}?pageNumber=${page}&pageSize=${pageSize}`,
@@ -71,7 +70,7 @@ const usePagination = ({ options, initialValues, getToken }: UsePaginationProps)
     }, []);
 
     useEffect(() => {
-        if (pageNumber > 1) fetchActivities(pageNumber, hasNext);
+        if (pageNumber > initialPageNumber) fetchActivities(pageNumber, hasNext);
     }, [pageNumber]);
 
 
