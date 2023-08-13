@@ -103,7 +103,7 @@ const searchUsers = async ({
         await connectToDb()
         // paginate 
 
-        const skipAmount = (1 - pageNumber) * pageSize
+        const skipAmount = (pageNumber - 1) * pageSize
 
         // regex search
 
@@ -254,7 +254,7 @@ const getMentions = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pag
 }
 
 const getReplies = async ({ pageNumber = 1, pageSize = 10, currentUserId }: PaginatePropsType) => {
-    const skipAmount = (1 - pageNumber) * pageSize
+    const skipAmount = (pageNumber - 1) * pageSize
     const userThreads = await Thread.find({ author: currentUserId })
 
     const childThreadIds: any = userThreads.reduce((acc, userThread) => {

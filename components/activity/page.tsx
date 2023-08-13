@@ -12,18 +12,34 @@ import JumpTopButton from "../shared/JumpTopButton";
 const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
   const [activities, setActivities] = useState<any[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const { getToken } = useAuth();
+  const [reaching, setReaching] = useState<boolean>(false);
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const pageSize = 10;
-  const [pageNumber, setPageNumber] = useState(2);
-  const fetchActivities = async (user_id: string) => {
-    if (!loading) {
+  const [hasNext, setHasHext] = useState<boolean>(true);
+  const { getToken } = useAuth();
+
+  const fetchActivities = async (page: number, next: boolean) => {
+    if (!loading && next) {
+      console.log("trigger fetching");
       setLoading((_) => true);
       const token = await getToken();
-      const acts = await fetch(`/api/activity?pageNumber=1&pageSize=10&`, {
-        headers: { Authorization: `Bearer ${token}` },
-        cache: "no-cache",
-      }).then((res) => res.json());
-      setActivities((_) => acts.docs);
+      const acts = await fetch(
+        `/api/activity?pageNumber=${page}&pageSize=${pageSize}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          cache: "no-cache",
+        }
+      ).then((res) => res.json());
+
+      setHasHext((_) => acts.hasNext);
+      setActivities((_acts) => {
+        console.log(acts.hasNext);
+        if (!_acts) {
+          return acts.docs;
+        } else {
+          return _acts.concat(acts.docs);
+        }
+      });
       setLoading((_) => false);
     }
   };
@@ -39,9 +55,20 @@ const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
     if (window.scrollY > 200) {
       // console.log("middle")
     }
-    if (window.scrollY > window.innerHeight - 200) {
-      // console.log("reaches bottom");
-    }
+
+    setReaching((prev) => {
+      if (
+        Math.round(window.scrollY) + window.outerHeight >=
+        document.body.offsetHeight
+      ) {
+        if (!prev) {
+          setPageNumber((prev) => prev + 1);
+        }
+        return true;
+      } else {
+        return false;
+      }
+    });
   };
 
   const attachScrollHandler = () => {
@@ -52,12 +79,16 @@ const ActivitiesComponent = ({ user_id }: { user_id: string }) => {
   };
 
   useEffect(() => {
-    fetchActivities(user_id);
+    fetchActivities(pageNumber, true);
     attachScrollHandler();
     return () => {
       return clearScrollHandler();
     };
   }, []);
+
+  useEffect(() => {
+    if (pageNumber > 1) fetchActivities(pageNumber, hasNext);
+  }, [pageNumber]);
 
   return (
     <>

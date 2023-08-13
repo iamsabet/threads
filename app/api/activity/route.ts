@@ -12,5 +12,6 @@ export async function GET(req: Request) {
     const pageNumber_int = parseInt(pageNumber)
     const pageSize_int = parseInt(pageSize)
     const data = await getActivity({ pageNumber: pageNumber_int, pageSize: pageSize_int, currentUserId: userId });
+
     return NextResponse.json(data);
 }
