@@ -28,7 +28,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         <ThreadCard
           key={thread._id}
           id={thread._id}
-          currentUserId={userInfo?._id}
+          currentUserId={userInfo?.id}
           parentId={thread.parentId}
           content={thread.text}
           author={thread.author}
@@ -54,7 +54,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             <ThreadCard
               key={comment._id}
               id={comment._id}
-              currentUserId={userInfo?._id}
+              currentUserId={userInfo?.id}
               parentId={comment.parentId}
               content={comment.text}
               author={comment.author}
@@ -73,4 +73,4 @@ const Page = async ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default page;
+export default Page;

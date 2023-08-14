@@ -13,7 +13,9 @@ const ThreadsTab = ({
   // console.log("Label = " + label);
 
   if (!threadsResult) redirect("/");
-
+  if (label === "replies") {
+    console.log("s");
+  }
   return (
     <section className="mt-9 flex flex-col gap-10">
       {threadsResult.docs.map((thread: any) => {

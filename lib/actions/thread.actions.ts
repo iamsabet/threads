@@ -47,12 +47,7 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
         if (label === "threads")
             baseQuery = { author: { $in: [accountId] }, parentId: { $in: [null, undefined] } }
         else if (label === "replies") {
-
-            const authorThreads = (await Thread.find({ author: accountId }, { _id: 1 }));
-            const authorThreadIds = authorThreads.reduce((acc: Types.ObjectId[], item) => {
-                return acc.concat(item._id)
-            }, [])
-            baseQuery = { parentId: { $in: authorThreadIds } }
+            baseQuery = { author: { $in: [accountId] }, parentId: { $nin: [null, undefined] } }
         }
         else if (label === "mentioned") {
             const accountUsername = (await User.findOne({ _id: accountId }, { username: 1 })).username
@@ -77,6 +72,18 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
             }],
 
         })
+    if (label === "replies") {
+        threadsQuery.populate({
+            path: "parentId",
+            model: Thread,
+            select: "_id text createdAt author",
+            populate: {
+                path: "author",
+                model: User,
+                select: "_id id name username image"
+            }
+        })
+    }
     threadsQuery.populate({
         path: "votes",
         model: Vote,
@@ -297,23 +304,26 @@ const addCommentToThread = async (
 const voteToThread = async (userId: string, type: VoteType, threadId: string) => {
     try {
         await connectToDb()
-        const model = await Vote.findOneAndUpdate(
-            { voter: JSON.parse(userId), thread: JSON.parse(threadId) },
-            {
-                type: type
-            }, { upsert: true, new: true }
-        )
+        const user = await User.findOne({ id: userId })
+        if (user) {
+            const model = await Vote.findOneAndUpdate(
+                { voter: user._id, thread: JSON.parse(threadId) },
+                {
+                    type: type
+                }, { upsert: true, new: true }
+            )
 
-        // console.log(model)
-        if (type === "") {
-            await Thread.findOneAndUpdate({ _id: model.thread }, {
-                $pull: { votes: model._id }
-            });
-        }
-        else {
-            await Thread.findOneAndUpdate({ _id: model.thread }, {
-                $addToSet: { votes: model._id }
-            });
+            // console.log(model)
+            if (type === "") {
+                await Thread.findOneAndUpdate({ _id: model.thread }, {
+                    $pull: { votes: model._id }
+                });
+            }
+            else {
+                await Thread.findOneAndUpdate({ _id: model.thread }, {
+                    $addToSet: { votes: model._id }
+                });
+            }
         }
         return true
     } catch (e: any) {

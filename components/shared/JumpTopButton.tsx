@@ -31,6 +31,13 @@ const JumpTopButton = () => {
   };
 
   const attachScrollHandler = () => {
+    setShow((_) => {
+      if (window.scrollY > 150 && !show) {
+        return true;
+      } else {
+        return false;
+      }
+    });
     window.addEventListener("scroll", scrollHandler);
   };
   const clearScrollHandler = () => {
@@ -46,11 +53,9 @@ const JumpTopButton = () => {
     <Button
       type="button"
       onClick={jumpToTop}
-      className={`fixed px-2 py-1 rounded-full shadow-lg flex justify-center items-center ${
-        show
-          ? "right-8 xl:right-[298px] opacity-100"
-          : "-right-[50px] opacity-0"
-      } bottom-20 lg:bottom-10 z-50 bg-primary-500 transition-all duration-500 ease-in-out hover:bg-secondary-500`}
+      className={`fixed px-2 py-1 rounded-full shadow-lg flex justify-center items-center right-8 xl:right-[298px] ${
+        show ? "bottom-20 lg:bottom-10 opacity-100" : "bottom-[-50px] opacity-0"
+      }z-50 bg-primary-500 transition-all duration-300 ease-in-out hover:bg-secondary-500 hover:text-dark-2`}
     >
       <div className="rotate-90 mb-0.5">
         <IoChevronBackSharp size="26" />

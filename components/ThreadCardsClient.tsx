@@ -5,7 +5,7 @@ import React from "react";
 import ThreadCard from "./cards/ThreadCard";
 import Spinner from "./Spinner";
 
-const ThreadCardsClient = ({ currentUserId }: { currentUserId?: string }) => {
+const ThreadCardsClient = ({ currentUserId }: { currentUserId: string }) => {
   const { getToken } = useAuth();
   const [loading, docs] = usePagination({
     options: {

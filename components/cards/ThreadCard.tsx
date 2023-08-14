@@ -43,6 +43,7 @@ const ThreadCard = ({
   votes,
   myVote,
 }: ThreadProps) => {
+  const parentThread = typeof parentId === "object" ? parentId : null;
   return (
     <article
       className={`flex w-full flex-col rounded-xl
@@ -53,7 +54,7 @@ const ThreadCard = ({
           <div className="w-10">
             <VoteBlock
               threadId={JSON.stringify(id)}
-              voterId={JSON.stringify(currentUserId)}
+              voterId={currentUserId}
               myVote={myVote ? myVote : ""}
               votes={votes}
             />
@@ -69,7 +70,11 @@ const ThreadCard = ({
               />
             </Link>
 
-            <div className="thread-card_bar" />
+            <div
+              className={`thread-card_bar ${
+                comments.length > 0 ? "opacity-100" : "opacity-0"
+              }`}
+            />
           </div>
           <div className="flex w-full flex-col">
             <Link href={`/profile/${author.id}`} className="w-fit">
@@ -77,6 +82,23 @@ const ThreadCard = ({
                 {author.name}
               </h4>
             </Link>
+            {parentThread && (
+              <Link
+                href={`/thread/${
+                  // @ts-ignore
+                  parentThread._id
+                }}`}
+                className="w-fit"
+              >
+                <h5 className="text-subtle-medium text-light-3">
+                  Replying to @
+                  {
+                    // @ts-ignore
+                    parentThread.author.username
+                  }
+                </h5>
+              </Link>
+            )}
             <p className="mt-2 text-small-regular text-light-2">
               {HTMLReactParser(content)}
             </p>
@@ -146,7 +168,7 @@ const ThreadCard = ({
           } mt-3 flex items-center gap-2`}
         >
           <div
-            className={`${comments.length >= 3 ? "w-[22px]" : "w-[30px]"}`}
+            className={`${comments.length >= 3 ? "w-[22px]" : "w-[33px]"}`}
           ></div>
           {comments.slice(0, 3).map((comment, index) => (
             <Image
