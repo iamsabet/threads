@@ -14,9 +14,7 @@ const ThreadsTab = ({
   // console.log("Label = " + label);
 
   if (!threadsResult) redirect("/");
-  if (label === "replies") {
-    console.log("s");
-  }
+
   try {
     accountId = JSON.parse(accountId);
   } catch (e) {}
@@ -45,7 +43,6 @@ const ThreadsTab = ({
             isComment
             votes={thread.votes}
             myVote={thread.myVote}
-            // votes={0}
           />
         );
       })}
