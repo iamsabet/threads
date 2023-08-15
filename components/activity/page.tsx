@@ -35,19 +35,21 @@ const ActivitiesComponent = () => {
                 <article className="activity-card">
                   <div className="flex flex-col justify-start sm:flex-row sm:justify-between w-full">
                     <div className="flex justify-between overflow-hidden">
-                      <ActivityIcon
-                        type={act.type}
-                        message={act.message}
-                        styles="hidden xs:flex"
-                      />
-                      <Image
-                        src={act.subject.image}
-                        alt="Profile Picture"
-                        width="40"
-                        height="40"
-                        className="rounded-full object-fill mr-2 mt-2 w-[50px] h-[50px] sm:mt-0 sm:w-[40px] sm:h-[40px] "
-                      />
-                      <p className="flex flex-col sm:flex-row flex-1 !text-base-regular text-light-1 mt-2 leading-[10rem]">
+                      <div className="relative h-full">
+                        <Image
+                          src={act.subject.image}
+                          alt="Profile Picture"
+                          width="50"
+                          height="50"
+                          className="rounded-full object-fill mr-2 mt-2 w-[60px] sm:mt-0 sm:w-[40px] sm:h-[40px] "
+                        />
+                        <ActivityIcon
+                          type={act.type}
+                          message={act.message}
+                          styles="flex absolute z-[10] top-10 sm:top-5 left-10 sm:left-7"
+                        />
+                      </div>
+                      <p className="flex flex-col sm:flex-row flex-1 !text-base-regular text-light-1 mt-2 ml-2 leading-[10rem]">
                         <span className="mr-1 text-primary-500 text-ellipsis line-clamp-1 w-max-[132px]  h-full">
                           {act.subject.name}
                         </span>
