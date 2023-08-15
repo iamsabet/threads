@@ -5,12 +5,23 @@ import React from "react";
 import ThreadCard from "./cards/ThreadCard";
 import Spinner from "./Spinner";
 
-const ThreadCardsClient = ({ currentUserId }: { currentUserId: string }) => {
+const ThreadCardsClient = ({
+  currentUserId,
+  baseUrl,
+  label,
+  isComment,
+}: {
+  currentUserId: string;
+  baseUrl: string;
+  label?: string;
+  isComment: boolean;
+}) => {
   const { getToken } = useAuth();
   const [loading, docs] = usePagination({
     options: {
-      baseUrl: "/api/thread",
-      pageSize: 20,
+      baseUrl: baseUrl,
+      postFixQs: label ? `&label=${label}` : "",
+      pageSize: 10,
     },
     initialValues: {
       initialHasNext: true,
@@ -30,13 +41,18 @@ const ThreadCardsClient = ({ currentUserId }: { currentUserId: string }) => {
             currentUserId={currentUserId}
             parentId={thread.parentId}
             content={thread.text}
-            author={thread.author}
+            author={{
+              name: thread.author.name,
+              image: thread.author.image,
+              username: thread.author.username,
+              id: thread.author._id,
+            }} // TODO: check owner or not
             community={thread.community}
             createdAt={thread.createdAt}
             comments={thread.children}
             votes={thread.votes}
             myVote={thread.myVote}
-            isComment={false}
+            isComment={isComment}
           />
         );
       })}

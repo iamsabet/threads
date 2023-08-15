@@ -30,7 +30,7 @@ const Home = async () => {
                 <ThreadCard
                   key={thread._id}
                   id={thread._id}
-                  currentUserId={userInfo?._id}
+                  currentUserId={JSON.stringify(userInfo?._id)}
                   parentId={thread.parentId}
                   content={thread.text}
                   author={thread.author}
@@ -44,7 +44,11 @@ const Home = async () => {
               );
             })}
             {result.hasNext && (
-              <ThreadCardsClient currentUserId={userInfo?._id} />
+              <ThreadCardsClient
+                currentUserId={userInfo?._id}
+                baseUrl="/api/thread"
+                isComment={false}
+              />
             )}
           </>
         )}

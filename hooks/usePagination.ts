@@ -5,7 +5,7 @@ const usePagination = ({ options, initialValues, getToken }: UsePaginationProps)
     const [loading, setLoading] = useState<boolean>(initialLoading);
     const [reaching, setReaching] = useState<boolean>(false);
     const [pageNumber, setPageNumber] = useState<number>(initialPageNumber);
-    const { baseUrl, pageSize } = options;
+    const { baseUrl, pageSize, postFixQs } = options;
     const [hasNext, setHasHext] = useState<boolean>(initialHasNext);
 
     const fetchActivities = async (page: number, next: boolean) => {
@@ -19,7 +19,7 @@ const usePagination = ({ options, initialValues, getToken }: UsePaginationProps)
                 headers["Authorization"] = `Bearer ${token}`
 
             const acts = await fetch(
-                `${baseUrl}?pageNumber=${page}&pageSize=${pageSize}`,
+                `${baseUrl}?pageNumber=${page}&pageSize=${pageSize}${postFixQs}`,
                 {
                     headers: headers,
                     cache: "no-cache",

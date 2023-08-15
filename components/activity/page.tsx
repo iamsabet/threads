@@ -14,6 +14,7 @@ const ActivitiesComponent = () => {
   const [loading, activities] = usePagination({
     options: {
       baseUrl: "/api/activity",
+      postFixQs: "",
       pageSize: 20,
     },
     initialValues: {

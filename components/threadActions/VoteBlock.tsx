@@ -66,7 +66,7 @@ const VoteBlock = ({ threadId, voterId, myVote, votes }: VoteProps) => {
     <>
       <div
         onClick={() => voteHanlder("up")}
-        className="w-8"
+        className="w-4"
         // className="w-[18px] p-0 my-0 mx-auto"
       >
         <Image
@@ -78,15 +78,19 @@ const VoteBlock = ({ threadId, voterId, myVote, votes }: VoteProps) => {
         />
       </div>
       <p
-        className={`text-light-3 w-full text-center mt-2 mb-2.5 ${
-          voteState === "up" && "text-green-300"
-        } ${voteState === "down" && "text-red-400"}`}
+        className={`w-10 text-center mt-2 mb-2.5 ${
+          voteState === "up"
+            ? "text-green-400"
+            : voteState === "down"
+            ? "text-red-400"
+            : "text-light-3"
+        }`}
       >
         {votesCount}
       </p>
       <div
         onClick={() => voteHanlder("down")}
-        className="w-8"
+        className="w-4"
         // className="w-[18px] p-0 my-0 mx-auto"
       >
         <Image

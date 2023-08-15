@@ -2,6 +2,7 @@
 import { redirect } from "next/navigation";
 import React from "react";
 import ThreadCard from "../cards/ThreadCard";
+import ThreadCardsClient from "../ThreadCardsClient";
 
 const ThreadsTab = ({
   currentUserId,
@@ -16,6 +17,9 @@ const ThreadsTab = ({
   if (label === "replies") {
     console.log("s");
   }
+  try {
+    accountId = JSON.parse(accountId);
+  } catch (e) {}
   return (
     <section className="mt-9 flex flex-col gap-10">
       {threadsResult.docs.length === 0 && (
@@ -45,6 +49,14 @@ const ThreadsTab = ({
           />
         );
       })}
+      {threadsResult.hasNext && (
+        <ThreadCardsClient
+          currentUserId={currentUserId}
+          baseUrl={`/api/account-threads/${accountId}`}
+          label={label}
+          isComment={true}
+        />
+      )}
     </section>
   );
 };

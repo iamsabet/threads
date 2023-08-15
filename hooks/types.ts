@@ -2,6 +2,7 @@ interface UsePaginationProps {
     options: {
         baseUrl: string;
         pageSize: number;
+        postFixQs: string
     };
     initialValues: {
         initailDocs: any[] | null;
