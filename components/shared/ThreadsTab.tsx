@@ -18,6 +18,9 @@ const ThreadsTab = ({
   }
   return (
     <section className="mt-9 flex flex-col gap-10">
+      {threadsResult.docs.length === 0 && (
+        <h3 className="w-full mt-10 text-center">No {label} found</h3>
+      )}
       {threadsResult.docs.map((thread: any) => {
         return (
           <ThreadCard

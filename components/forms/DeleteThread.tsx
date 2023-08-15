@@ -25,7 +25,7 @@ function DeleteThread({
   const pathname = usePathname();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  console.log(currentUserId, "?", authorId);
+  // console.log(currentUserId, "?", authorId);
   if (currentUserId !== authorId || pathname === "/") return null;
 
   return (

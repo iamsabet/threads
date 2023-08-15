@@ -69,7 +69,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                   <p className="ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2">
                     {
                       // @ts-ignore
-                      results[tab.value].docs.length
+                      results[tab.value].totalThreadsCount
                     }
                   </p>
                 </TabsTrigger>

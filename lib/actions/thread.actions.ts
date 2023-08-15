@@ -304,10 +304,11 @@ const addCommentToThread = async (
 const voteToThread = async (userId: string, type: VoteType, threadId: string) => {
     try {
         await connectToDb()
-        const user = await User.findOne({ id: userId })
-        if (user) {
+        // const user = await User.findOne({ id: userId })
+        console.log(userId, "?", threadId)
+        if (userId) {
             const model = await Vote.findOneAndUpdate(
-                { voter: user._id, thread: JSON.parse(threadId) },
+                { voter: userId, thread: threadId },
                 {
                     type: type
                 }, { upsert: true, new: true }

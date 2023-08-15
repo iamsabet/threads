@@ -4,6 +4,7 @@ import VoteBlock from "../threadActions/VoteBlock";
 import HTMLReactParser from "html-react-parser";
 import { formattedDateString } from "../shared/helpers";
 import DeleteThread from "../forms/DeleteThread";
+import { comment } from "postcss";
 interface ThreadProps {
   id: string;
   currentUserId: string;
@@ -43,7 +44,11 @@ const ThreadCard = ({
   votes,
   myVote,
 }: ThreadProps) => {
-  const parentThread = typeof parentId === "object" ? parentId : null;
+  const parentThread: {
+    _id: string;
+    text: string;
+    author: { _id: string; name: string; username: string; image: string };
+  } | null = typeof parentId === "object" ? parentId : null;
   return (
     <article
       className={`flex w-full flex-col rounded-xl
@@ -51,14 +56,6 @@ const ThreadCard = ({
     >
       <div className="flex justify-between items-start">
         <div className="flex w-full flex-1 flex-row gap-2">
-          <div className="w-10">
-            <VoteBlock
-              threadId={JSON.stringify(id)}
-              voterId={currentUserId}
-              myVote={myVote ? myVote : ""}
-              votes={votes}
-            />
-          </div>
           <div className="flex flex-col items-center">
             <Link href={`/profile/${author.id}`} className="relative w-11 h-11">
               <Image
@@ -86,8 +83,9 @@ const ThreadCard = ({
               <Link
                 href={`/thread/${
                   // @ts-ignore
-                  parentThread._id
-                }}`}
+                  parentThread?._id
+                }
+                `}
                 className="w-fit"
               >
                 <h5 className="text-subtle-medium text-light-3">
@@ -108,19 +106,31 @@ const ThreadCard = ({
               } mt-4 flex flex-col gap-3`}
             >
               <div className="flex flex-row gap-3.5">
+                {/* Vote Block */}
+                <div className="flex items-center justify-cente gap-1">
+                  <VoteBlock
+                    threadId={JSON.stringify(id)}
+                    voterId={currentUserId}
+                    myVote={myVote ? myVote : ""}
+                    votes={votes}
+                  />
+                </div>
                 {/* Reply */}
-                <Link href={`/thread/${id}`}>
+                <Link
+                  href={`/thread/${id}`}
+                  className="flex flex-col items-center"
+                >
                   <Image
                     src="/assets/reply.svg"
                     alt="reply"
                     width="24"
                     height="24"
-                    className="cursor-pointer object-contain transition-all duration-150 ease-in-out hover:scale-110"
+                    className="cursor-pointer object-contain my-auto transition-all duration-150 ease-in-out hover:scale-110"
                   />
                 </Link>
                 {/* Repost */}
                 <Image
-                  src="/assets/repost.svg"
+                  src="/assets/repost_2.svg"
                   alt="repost"
                   width="24"
                   height="24"
@@ -133,6 +143,13 @@ const ThreadCard = ({
                   width="24"
                   height="24"
                   className="cursor-pointer object-contain transition-all duration-150 ease-in-out hover:scale-110"
+                />
+                <DeleteThread
+                  threadId={JSON.stringify(id)}
+                  currentUserId={currentUserId}
+                  authorId={JSON.stringify(author.id)}
+                  parentId={parentId}
+                  isComment={isComment}
                 />
                 {/* <Image
                   src="/assets/edit.svg"
@@ -152,24 +169,18 @@ const ThreadCard = ({
             </div>
           </div>
         </div>
-        <DeleteThread
-          threadId={JSON.stringify(id)}
-          currentUserId={currentUserId}
-          authorId={JSON.stringify(author.id)}
-          parentId={parentId}
-          isComment={isComment}
-        />
       </div>
 
       {comments.length > 0 && (
         <div
-          className={`${
-            comments.length === 1 ? "ml-2.5" : "ml-1"
-          } mt-3 flex items-center gap-2`}
+          className={`${comments.length === 1 && "ml-2.5"}
+            ${comments.length === 2 && "ml-1"}
+            ${comment.length >= 3 && "-ml-3"}
+          } mt-2 flex items-center gap-3`}
         >
-          <div
+          {/* <div
             className={`${comments.length >= 3 ? "w-[22px]" : "w-[33px]"}`}
-          ></div>
+          ></div> */}
           {comments.slice(0, 3).map((comment, index) => (
             <Image
               key={index}
@@ -178,9 +189,9 @@ const ThreadCard = ({
               width={26}
               height={26}
               className={`${
-                index !== 0 && "-ml-5"
+                index !== 0 && "-ml-7"
               } rounded-full object-contain ${
-                comments.length >= 3 && index === 1 && "mb-3 z-[10]"
+                comments.length >= 3 && index === 1 && "mb-7 z-[10]"
               }`}
             />
           ))}

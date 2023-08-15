@@ -19,6 +19,12 @@ const VoteBlock = ({ threadId, voterId, myVote, votes }: VoteProps) => {
     vote_type: VoteType,
     threadId: string
   ) => {
+    try {
+      userId = JSON.parse(userId);
+    } catch (e) {}
+    try {
+      threadId = JSON.parse(threadId);
+    } catch (e) {}
     return await voteToThread(userId, vote_type, threadId);
   };
   const voteHanlder = (type: VoteType) => {
@@ -60,29 +66,35 @@ const VoteBlock = ({ threadId, voterId, myVote, votes }: VoteProps) => {
     <>
       <div
         onClick={() => voteHanlder("up")}
-        className="w-[18px] p-0 my-0 mx-auto"
+        className="w-8"
+        // className="w-[18px] p-0 my-0 mx-auto"
       >
         <Image
           src={`/assets/arrow_up${voteState === "up" ? "_filled" : ""}.svg`}
           alt={`up_vote${voteState === "up" ? "_filled" : ""}`}
           width="17"
           height="17"
-          className="cursor-pointer w-[18px] h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
+          className="cursor-pointer w-full h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
         />
       </div>
-      <p className="text-light-3 w-full text-center mt-2 mb-2.5">
+      <p
+        className={`text-light-3 w-full text-center mt-2 mb-2.5 ${
+          voteState === "up" && "text-green-300"
+        } ${voteState === "down" && "text-red-400"}`}
+      >
         {votesCount}
       </p>
       <div
         onClick={() => voteHanlder("down")}
-        className="w-[18px] p-0 my-0 mx-auto"
+        className="w-8"
+        // className="w-[18px] p-0 my-0 mx-auto"
       >
         <Image
           src={`/assets/arrow_down${voteState === "down" ? "_filled" : ""}.svg`}
           alt={`down_vote${voteState === "down" ? "_filled" : ""}`}
           width="17"
           height="17"
-          className="cursor-pointer w-[18px] h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
+          className="cursor-pointer w-full h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
         />
       </div>
     </>
