@@ -17,9 +17,9 @@ const ActivityIcon = ({
       case "reply":
         return "bg-primary-500";
       case "repost":
-        return "bg-blue-600";
+        return "bg-yellow-500";
       case "mention":
-        return "bg-primary-500";
+        return "bg-sky-700";
       default:
         return "bg-secondary-500";
     }
@@ -29,7 +29,7 @@ const ActivityIcon = ({
 
   return (
     <span
-      className={`${styles} flex justify-center items-center w-5 h-5 overflow-hidden rounded-full p-1 ${iconColor}`}
+      className={`${styles} flex justify-center items-center w-5 h-5 overflow-hidden rounded-full p-1 ${iconColor} bg-ye`}
     >
       {type === "vote" && (
         <Image
