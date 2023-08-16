@@ -5,6 +5,7 @@ import HTMLReactParser from "html-react-parser";
 import { formattedDateString } from "../shared/helpers";
 import DeleteThread from "../forms/DeleteThread";
 import { comment } from "postcss";
+import RepostModal from "../modals/RepostModal";
 interface ThreadProps {
   id: string;
   currentUserId: string;
@@ -129,12 +130,12 @@ const ThreadCard = ({
                   />
                 </Link>
                 {/* Repost */}
-                <Image
-                  src="/assets/repost_2.svg"
-                  alt="repost"
-                  width="24"
-                  height="24"
-                  className="cursor-pointer object-contain transition-all duration-150 ease-in-out hover:scale-110"
+
+                <RepostModal
+                  threadId={id}
+                  threadText={content}
+                  authorId={author.id}
+                  authorUsername={author.username}
                 />
                 {/* Share */}
                 <Image

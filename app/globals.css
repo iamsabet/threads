@@ -185,3 +185,11 @@ a.global-mention{
 .comment-form_btn {
   @apply rounded-3xl bg-primary-500 px-8 py-2 !text-small-regular text-light-1 max-xs:w-full !important;
 }
+
+/* Force modal background */
+.data-\[state\=open\]\:fade-in-0 {
+  @apply !bg-dark-2/80
+}
+div[role=dialog] > button > svg{
+  @apply !text-light-2
+}

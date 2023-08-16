@@ -6,6 +6,7 @@ import TopBar from "@/components/shared/TopBar";
 import LeftSidebar from "@/components/shared/LeftSidebar";
 import RightSidebar from "@/components/shared/RightSidebar";
 import BottomBar from "@/components/shared/BottomBar";
+import { ThemeProvider } from "@/components/theme/theme.-provider";
 
 // const inter = Inter({ subsets: ["latin"] });
 
