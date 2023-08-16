@@ -10,5 +10,5 @@ interface ThreadsTabsPropsType {
     accountId: string;
     accountType: string;
     label: string;
-    threadsResult: ThreadsResultType;
+    threadsResult: ThreadsResultType
 }

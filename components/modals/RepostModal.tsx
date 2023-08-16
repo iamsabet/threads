@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
@@ -14,101 +14,126 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import HTMLReactParser from "html-react-parser";
-import { ThemeProvider } from "../theme/theme.-provider";
-
+import { useAuth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import SignInModal from "./SignInModal";
+import Spinner from "../Spinner";
 interface RepostProps {
   threadId: string;
   threadText: string;
   authorUsername: string;
-  authorId: string;
 }
 
-const RepostModal = ({
-  threadId,
-  threadText,
-  authorUsername,
-  authorId,
-}: RepostProps) => {
-  const [showRepostConfirmation, setShowRepostConfirmation] =
-    React.useState(false);
+const RepostModal = ({ threadId, threadText, authorUsername }: RepostProps) => {
+  const [showRepostConfirmation, setShowRepostConfirmation] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const { getToken, userId } = useAuth();
 
   const handleRepostClick = (state: boolean) => {
-    setShowRepostConfirmation(state);
+    if (!loading) setShowRepostConfirmation(state);
   };
 
   const handleCancelRepost = () => {
     handleRepostClick(false);
-    setShowRepostConfirmation(false);
   };
 
-  const handleRepost = () => {
+  const handleRepost = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
     // Perform the Repost action here -> post create-thread action with extra repost thread_id
     // .
-    handleRepostClick(false);
-    setShowRepostConfirmation(false);
+    repostApiCall();
   };
 
+  const repostApiCall = async () => {
+    setLoading((_) => true);
+
+    let headers: { Authorization?: string; "Content-Type": string } = {
+      "Content-Type": "application/json",
+    };
+    const token = await getToken();
+
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    const response = await fetch(`/api/repost`, {
+      method: "POST",
+      headers: headers,
+      cache: "no-cache",
+      body: JSON.stringify({ pathname: "/api/repost", threadId: threadId }),
+    });
+    // console.log(response);
+    window.location.replace("/profile/" + userId);
+    setLoading((_) => false);
+  };
+
+  const repostIcon = (
+    <Image
+      src="/assets/repost_2.svg"
+      alt="repost"
+      width="24"
+      height="24"
+      className="cursor-pointer object-contain transition-all duration-150 ease-in-out hover:scale-110"
+    />
+  );
+
   return (
-    // <ThemeProvider attribute="class" defaultTheme="dark">
-    <Dialog
-      open={showRepostConfirmation}
-      onOpenChange={setShowRepostConfirmation}
-    >
-      <DialogTrigger asChild>
-        <Button
-          className="outline-none bg-transparent w-fit py-1 px-0 hover:bg-transparent"
-          onClick={() => handleRepostClick(true)}
+    <>
+      {!userId && <SignInModal icon={repostIcon} />}
+      {userId && ( // <ThemeProvider attribute="class" defaultTheme="dark">
+        <Dialog
+          open={showRepostConfirmation}
+          onOpenChange={setShowRepostConfirmation}
         >
-          <Image
-            src="/assets/repost_2.svg"
-            alt="repost"
-            width="24"
-            height="24"
-            className="cursor-pointer object-contain transition-all duration-150 ease-in-out hover:scale-110"
-          />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-dark-2 outline-none border-light-3 shadow-lg">
-        <DialogHeader>
-          <DialogTitle className="text-light-1 flex items-center justify-start gap-2">
-            <Image
-              src="/assets/repost_2.svg"
-              alt="repost"
-              width="30"
-              height="30"
-              className="object-contain"
-            />
-            <p className="text-[18px]"> Repost Thread</p>
-          </DialogTitle>
-          <DialogDescription className="text-light-2 mt-2 text-[15px]">
-            Are you sure you want to repost this thread by{" "}
-            <span className="text-primary-500">@{authorUsername}</span> ?
-          </DialogDescription>
-        </DialogHeader>
-        <div className="pb-4">
-          {/* Your existing profile fields */}
-          <p className="w-full text-light-2 text-ellipsis line-clamp-3 text-subtle-medium">
-            <span className="text-subtle-semibold text-light-3">content :</span>{" "}
-            {HTMLReactParser(threadText)}
-          </p>
-        </div>
-        <DialogFooter>
-          <Button
-            className="text-dark-1 bg-light-1 hover:bg-gray-400 mt-2"
-            onClick={handleCancelRepost}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleRepost}
-            className="text-light-1 bg-primary-500 hover:bg-secondary-500 hover:text-dark-1 mt-2"
-          >
-            Repost
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-    // </ThemeProvider>
+          <DialogTrigger asChild>
+            <Button
+              className="outline-none bg-transparent w-fit py-1 px-0 hover:bg-transparent"
+              onClick={() => handleRepostClick(true)}
+            >
+              {repostIcon}
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px] bg-dark-2 outline-none border-light-3 shadow-lg">
+            <DialogHeader>
+              <DialogTitle className="text-light-1 flex items-center justify-start gap-2">
+                {repostIcon}
+                <p className="text-[18px]"> Repost Thread</p>
+              </DialogTitle>
+              <DialogDescription className="text-light-2 mt-2 text-[15px]">
+                Are you sure you want to repost this thread by{" "}
+                <span className="text-primary-500">@{authorUsername}</span> ?
+              </DialogDescription>
+            </DialogHeader>
+            <div className="pb-4">
+              {/* Your existing profile fields */}
+              <p className="w-full text-light-2 text-ellipsis line-clamp-3 text-subtle-medium">
+                <span className="text-subtle-semibold text-light-3">
+                  content :
+                </span>{" "}
+                {HTMLReactParser(threadText)}
+              </p>
+            </div>
+            <DialogFooter>
+              <Button
+                className="text-dark-1 bg-light-1 hover:bg-gray-400 mt-2"
+                onClick={handleCancelRepost}
+                disabled={loading}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleRepost}
+                className={`text-light-1 bg-primary-500 hover:bg-secondary-500 hover:text-dark-1 mt-2 ${
+                  loading && "bg-secondary-500 text-dark-1"
+                }`}
+                disabled={loading}
+              >
+                {loading ? <Spinner /> : "Repost"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        //</> </ThemeProvider>}
+      )}
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
@@ -37,10 +37,10 @@ import { IoLogoLinkedin } from "react-icons/io5";
 import CopyToClipboard from "react-copy-to-clipboard";
 
 interface ShareProps {
-  url: string;
+  threadId: string;
 }
 
-const ShareModal = ({ url }: ShareProps) => {
+const ShareModal = ({ threadId }: ShareProps) => {
   const [showShareConfirmation, setShowShareConfirmation] = useState(false);
   const [copy, setcopy] = useState(false);
   const handleShareClick = (state: boolean) => {
@@ -48,6 +48,20 @@ const ShareModal = ({ url }: ShareProps) => {
     setcopy(false);
   };
 
+  const [url, setUrl] = useState("");
+  const [shareText, setShareText] = useState("");
+  useEffect(() => {
+    setUrl(
+      (_) =>
+        `${window.location.protocol}://${window.location.host}/thread/${threadId}`
+    );
+    setShareText(
+      (_) =>
+        `Check this out \n ${window.location.protocol}://${window.location.host}/thread/${threadId}`
+    );
+  }, []);
+
+  // const shareText = useMemo(() => `Check this out \n ${url}`, [url]);
   const handleCancel = () => {
     handleShareClick(false);
   };
@@ -86,14 +100,17 @@ const ShareModal = ({ url }: ShareProps) => {
           </DialogTitle>
         </DialogHeader>
         <div className="pb-1 flex flex-wrap gap-4 mt-3">
-          <FacebookShareButton className="w-5 h-5 object-contain" url={url}>
+          <FacebookShareButton
+            className="w-5 h-5 object-contain"
+            url={shareText}
+          >
             <FacebookIcon
               size={28}
               className="rounded-full"
               style={{ color: "#1197F5" }}
             />
           </FacebookShareButton>
-          <TwitterShareButton url={url}>
+          <TwitterShareButton url={shareText}>
             <div className="bg-dark-1 rounded-full w-[28px] h-[28px]">
               <Image
                 src="/assets/twitterX.svg"
@@ -103,29 +120,29 @@ const ShareModal = ({ url }: ShareProps) => {
               />
             </div>
           </TwitterShareButton>
-          <TelegramShareButton url={url}>
+          <TelegramShareButton url={shareText}>
             <TelegramIcon size={28} className="text-primary-500 rounded-full" />
           </TelegramShareButton>
-          <WhatsappShareButton url={url}>
+          <WhatsappShareButton url={shareText}>
             <WhatsappIcon size={28} className="text-primary-500 rounded-full" />
           </WhatsappShareButton>
-          <EmailShareButton url={url}>
+          <EmailShareButton url={shareText}>
             <EmailIcon size={28} className="text-primary-500 rounded-full" />
           </EmailShareButton>
-          <LineShareButton url={url}>
+          <LineShareButton url={shareText}>
             <LineIcon size={28} className="text-primary-500 rounded-full" />
           </LineShareButton>
-          <RedditShareButton url={url}>
+          <RedditShareButton url={shareText}>
             <RedditIcon size={28} className="text-primary-500 rounded-full" />
           </RedditShareButton>
-          <LinkedinShareButton url={url}>
+          <LinkedinShareButton url={shareText}>
             <IoLogoLinkedin
               size={28}
               className="rounded-full"
               style={{ color: "#0A66C2" }}
             />
           </LinkedinShareButton>
-          <WorkplaceShareButton url={url}>
+          <WorkplaceShareButton url={shareText}>
             <WorkplaceIcon
               size={28}
               className="text-primary-500 rounded-full"
@@ -133,7 +150,7 @@ const ShareModal = ({ url }: ShareProps) => {
           </WorkplaceShareButton>
 
           <div className="w-full py-2 bg-transparent">
-            <p className="w-full bg-dark-2 text-light-2 outline-1 border-0 focus:border-0 text-[13px] md:text-[15px]">
+            <p className="w-full bg-dark-2 text-light-2 outline-1 border-0 focus:border-0 text-[11px] sm:text-[12px] md:text-[14px]">
               {url}
             </p>
             <span

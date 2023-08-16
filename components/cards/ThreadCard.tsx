@@ -135,13 +135,11 @@ const ThreadCard = ({
                 <RepostModal
                   threadId={id}
                   threadText={content}
-                  authorId={author.id}
                   authorUsername={author.username}
                 />
                 {/* Share */}
-                <ShareModal
-                  url={"https://threads.shit/profile/asdhy872yh1nbed"}
-                />
+                <ShareModal threadId={id} />
+                {/* Delete Thread */}
                 <DeleteThread
                   threadId={JSON.stringify(id)}
                   currentUserId={currentUserId}

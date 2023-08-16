@@ -2,7 +2,8 @@ interface PropsType {
     text: string,
     author: string,
     communityId: string | null,
-    path: string
+    path: string,
+    repost: string | null
 }
 interface CommentType {
     authorId: string,

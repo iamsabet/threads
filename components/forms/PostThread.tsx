@@ -44,6 +44,7 @@ export const PostThread = ({
       author: userId,
       communityId: null,
       path: pathname,
+      repost: null,
     });
     setLoading((_) => true);
     router.push("/profile/" + user_id);

@@ -9,22 +9,16 @@ import Vote from "../models/vote.model";
 import { handleVotesCount, replaceMentions } from "./_helper.actions";
 
 
-const createThread = async ({ text, author, communityId, path }: PropsType) => {
+const createThread = async ({ text, author, communityId, path, repost }: PropsType) => {
     try {
         await connectToDb();
         // create thread model
-        // replace @usernames with <Link href={`/profile/${user.id}`}>@username</Link> if the equivalent user
-        // can be found with the exact same username
-
         text = await replaceMentions(text)
         const newThread = await Thread.create({
             text,
             author,
             community: null,
-            // community : {
-            //     communityId
-            // }
-
+            repost: repost
         })
         // update user model
         await User.findByIdAndUpdate(author, {
@@ -32,8 +26,30 @@ const createThread = async ({ text, author, communityId, path }: PropsType) => {
         })
 
         revalidatePath(path)
+        return true
     } catch (e: any) {
         throw new Error("Create Thread Failed " + e.message)
+    }
+}
+
+const repostThread = async ({ threadId, userId, pathname }: { threadId: string, userId: string, pathname: string }) => {
+    try {
+        const targetThread = await Thread.findOne({ _id: threadId })
+        if (targetThread) {
+
+            return await createThread({
+                text: targetThread.text,
+                author: userId,
+                communityId: null,
+                path: pathname,
+                repost: threadId,
+            });
+        }
+        else {
+            throw new Error(`Thread ${threadId} not found`)
+        }
+    } catch (e: any) {
+        throw new Error("Repsot failed " + e.message)
     }
 }
 
@@ -333,6 +349,7 @@ const voteToThread = async (userId: string, type: VoteType, threadId: string) =>
 }
 export {
     createThread,
+    repostThread,
     fetchThreads,
     fetchThreadById,
     addCommentToThread,

@@ -16,6 +16,9 @@ const ThreadCardsClient = ({
   label?: string;
   isComment: boolean;
 }) => {
+  try {
+    currentUserId = JSON.parse(currentUserId);
+  } catch (e) {}
   const { getToken } = useAuth();
   const [loading, docs] = usePagination({
     options: {

@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import { voteToThread } from "@/lib/actions/thread.actions";
 import { redirect } from "next/navigation";
+import SignInModal from "../modals/SignInModal";
 type VoteType = "down" | "up" | "";
 interface VoteProps {
   threadId: string;
@@ -62,20 +63,43 @@ const VoteBlock = ({ threadId, voterId, myVote, votes }: VoteProps) => {
       redirect("/sign-in");
     }
   };
+
+  const upVoteIcon = useMemo(
+    () => (
+      <Image
+        src={`/assets/arrow_up${voteState === "up" ? "_filled" : ""}.svg`}
+        alt={`up_vote${voteState === "up" ? "_filled" : ""}`}
+        width="17"
+        height="17"
+        className="cursor-pointer w-full h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
+      />
+    ),
+    [voteState]
+  );
+
+  const downVoteIcon = useMemo(
+    () => (
+      <Image
+        src={`/assets/arrow_down${voteState === "down" ? "_filled" : ""}.svg`}
+        alt={`down_vote${voteState === "down" ? "_filled" : ""}`}
+        width="17"
+        height="17"
+        className="cursor-pointer w-full h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
+      />
+    ),
+    [voteState]
+  );
+
   return (
     <>
       <div
-        onClick={() => voteHanlder("up")}
+        onClick={() => {
+          voteHanlder("up");
+        }}
         className="w-4"
         // className="w-[18px] p-0 my-0 mx-auto"
       >
-        <Image
-          src={`/assets/arrow_up${voteState === "up" ? "_filled" : ""}.svg`}
-          alt={`up_vote${voteState === "up" ? "_filled" : ""}`}
-          width="17"
-          height="17"
-          className="cursor-pointer w-full h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
-        />
+        {voterId ? upVoteIcon : <SignInModal icon={upVoteIcon} />}
       </div>
       <p
         className={`w-10 text-center mt-2 mb-2.5 ${
@@ -93,13 +117,7 @@ const VoteBlock = ({ threadId, voterId, myVote, votes }: VoteProps) => {
         className="w-4"
         // className="w-[18px] p-0 my-0 mx-auto"
       >
-        <Image
-          src={`/assets/arrow_down${voteState === "down" ? "_filled" : ""}.svg`}
-          alt={`down_vote${voteState === "down" ? "_filled" : ""}`}
-          width="17"
-          height="17"
-          className="cursor-pointer w-full h-auto object-contain transition-all duration-150 ease-in-out hover:scale-110"
-        />
+        {voterId ? downVoteIcon : <SignInModal icon={downVoteIcon} />}
       </div>
     </>
   );

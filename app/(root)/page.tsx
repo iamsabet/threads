@@ -45,7 +45,7 @@ const Home = async () => {
             })}
             {result.hasNext && (
               <ThreadCardsClient
-                currentUserId={userInfo?._id}
+                currentUserId={JSON.stringify(userInfo?._id)}
                 baseUrl="/api/thread"
                 isComment={false}
               />
