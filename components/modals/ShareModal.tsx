@@ -34,7 +34,6 @@ import {
 } from "react-share";
 
 import { IoLogoLinkedin } from "react-icons/io5";
-import { Input } from "../ui/input";
 import CopyToClipboard from "react-copy-to-clipboard";
 
 interface ShareProps {
@@ -134,7 +133,7 @@ const ShareModal = ({ url }: ShareProps) => {
           </WorkplaceShareButton>
 
           <div className="w-full py-2 bg-transparent">
-            <p className="w-full bg-dark-2 text-light-1 outline-1 border-0 focus:border-0 text-[13px] md:text-[15px]">
+            <p className="w-full bg-dark-2 text-light-2 outline-1 border-0 focus:border-0 text-[13px] md:text-[15px]">
               {url}
             </p>
             <span
