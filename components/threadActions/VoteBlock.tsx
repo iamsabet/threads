@@ -80,9 +80,9 @@ const VoteBlock = ({ threadId, voterId, myVote, votes }: VoteProps) => {
       <p
         className={`w-10 text-center mt-2 mb-2.5 ${
           voteState === "up"
-            ? "text-green-400"
+            ? "text-green-500"
             : voteState === "down"
-            ? "text-red-400"
+            ? "text-red-500"
             : "text-light-3"
         }`}
       >

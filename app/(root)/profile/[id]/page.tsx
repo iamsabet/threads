@@ -96,7 +96,6 @@ const Page = async ({ params }: { params: { id: string } }) => {
           })}
         </Tabs>
       </div>
-      <JumpTopButton />
     </section>
   );
 };

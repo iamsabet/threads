@@ -66,8 +66,8 @@ const ShareModal = ({ url }: ShareProps) => {
           <Image
             src="/assets/share.svg"
             alt="Share"
-            width="28"
-            height="28"
+            width="25"
+            height="25"
             className="cursor-pointer object-contain transition-all duration-150 ease-in-out hover:scale-110"
           />
         </Button>

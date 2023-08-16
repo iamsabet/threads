@@ -7,6 +7,7 @@ import LeftSidebar from "@/components/shared/LeftSidebar";
 import RightSidebar from "@/components/shared/RightSidebar";
 import BottomBar from "@/components/shared/BottomBar";
 import { ThemeProvider } from "@/components/theme/theme.-provider";
+import JumpTopButton from "@/components/shared/JumpTopButton";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -36,6 +37,7 @@ export default function RootLayout({
             <RightSidebar />
           </main>
           <BottomBar />
+          <JumpTopButton />
         </body>
       </html>
     </ClerkProvider>

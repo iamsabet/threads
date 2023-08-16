@@ -125,8 +125,8 @@ const ThreadCard = ({
                   <Image
                     src="/assets/reply.svg"
                     alt="reply"
-                    width="24"
-                    height="24"
+                    width="28"
+                    height="28"
                     className="cursor-pointer object-contain my-auto transition-all duration-150 ease-in-out hover:scale-110"
                   />
                 </Link>

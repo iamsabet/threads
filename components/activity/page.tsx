@@ -90,7 +90,6 @@ const ActivitiesComponent = () => {
           <Spinner />
         </div>
       )}
-      <JumpTopButton />
     </>
   );
 };

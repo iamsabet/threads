@@ -68,7 +68,6 @@ const Page = async ({ params }: { params: { id: string } }) => {
           );
         })}
       </div>
-      <JumpTopButton />
     </section>
   );
 };

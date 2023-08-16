@@ -53,7 +53,6 @@ const Home = async () => {
           </>
         )}
       </section>
-      <JumpTopButton />
     </>
   );
 };
