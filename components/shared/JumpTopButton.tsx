@@ -53,8 +53,10 @@ const JumpTopButton = () => {
     <Button
       type="button"
       onClick={jumpToTop}
-      className={`fixed px-2 py-1 rounded-full shadow-lg flex justify-center items-center right-8 xl:right-[298px] ${
-        show ? "bottom-20 lg:bottom-10 opacity-100" : "bottom-[-50px] opacity-0"
+      className={`fixed px-2 py-1 rounded-full shadow-lg flex justify-center items-center right-7 md:right-8 xl:right-[298px] ${
+        show
+          ? "bottom-20 md:bottom-10 lg:bottom-10 sm:bottom-28  opacity-100"
+          : "bottom-[-50px] opacity-0"
       }z-50 bg-primary-500 transition-all duration-300 ease-in-out hover:bg-secondary-500 hover:text-dark-2`}
     >
       <div className="rotate-90 mb-0.5">
