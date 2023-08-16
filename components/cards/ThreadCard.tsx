@@ -6,6 +6,7 @@ import { formattedDateString } from "../shared/helpers";
 import DeleteThread from "../forms/DeleteThread";
 import { comment } from "postcss";
 import RepostModal from "../modals/RepostModal";
+import ShareModal from "../modals/ShareModal";
 interface ThreadProps {
   id: string;
   currentUserId: string;
@@ -138,12 +139,8 @@ const ThreadCard = ({
                   authorUsername={author.username}
                 />
                 {/* Share */}
-                <Image
-                  src="/assets/share.svg"
-                  alt="share"
-                  width="24"
-                  height="24"
-                  className="cursor-pointer object-contain transition-all duration-150 ease-in-out hover:scale-110"
+                <ShareModal
+                  url={"https://threads.shit/profile/asdhy872yh1nbed"}
                 />
                 <DeleteThread
                   threadId={JSON.stringify(id)}

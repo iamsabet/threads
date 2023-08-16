@@ -50,7 +50,10 @@ const RepostModal = ({
 
   return (
     // <ThemeProvider attribute="class" defaultTheme="dark">
-    <Dialog open={showRepostConfirmation} key={"repost-modal"}>
+    <Dialog
+      open={showRepostConfirmation}
+      onOpenChange={setShowRepostConfirmation}
+    >
       <DialogTrigger asChild>
         <Button
           className="outline-none bg-transparent w-fit py-1 px-0 hover:bg-transparent"
@@ -71,11 +74,11 @@ const RepostModal = ({
             <Image
               src="/assets/repost_2.svg"
               alt="repost"
-              width="24"
-              height="24"
-              className="cursor-pointer object-contain"
+              width="30"
+              height="30"
+              className="object-contain"
             />
-            <p className="text-[17px]"> Repost Thread</p>
+            <p className="text-[18px]"> Repost Thread</p>
           </DialogTitle>
           <DialogDescription className="text-light-2 mt-2 text-[15px]">
             Are you sure you want to repost this thread by{" "}
@@ -90,10 +93,16 @@ const RepostModal = ({
           </p>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={handleCancelRepost}>
+          <Button
+            className="text-dark-1 bg-light-1 hover:bg-gray-400 mt-2"
+            onClick={handleCancelRepost}
+          >
             Cancel
           </Button>
-          <Button onClick={handleRepost} className="bg-primary-500">
+          <Button
+            onClick={handleRepost}
+            className="text-light-1 bg-primary-500 hover:bg-secondary-500 hover:text-dark-1 mt-2"
+          >
             Repost
           </Button>
         </DialogFooter>
