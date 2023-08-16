@@ -63,22 +63,31 @@ const ThreadCard = ({
   const repostSubtitle = useMemo(
     () =>
       repost ? (
-        <Link
-          href={`/thread/${
-            // @ts-ignore
-            repost?._id
-          }
-      `}
-          className="w-fit"
-        >
-          <h5 className="text-subtle-medium text-light-3">
-            Reposted from @
-            {
+        <div className="flex gap-1 justify-start items-center">
+          <Image
+            src="/assets/repost_2.svg"
+            alt="repost"
+            width="18"
+            height="18"
+            className="cursor-pointer object-contain transition-all duration-150 ease-in-out hover:scale-110"
+          />
+          <Link
+            href={`/thread/${
               // @ts-ignore
-              repost.author.username
+              repost?._id
             }
-          </h5>
-        </Link>
+      `}
+            className="w-fit"
+          >
+            <h5 className="text-subtle-medium text-light-3">
+              Reposted from @
+              {
+                // @ts-ignore
+                repost.author.username
+              }
+            </h5>
+          </Link>
+        </div>
       ) : (
         <></>
       ),
@@ -88,22 +97,31 @@ const ThreadCard = ({
   const replySubtitle = useMemo(
     () =>
       parentThread ? (
-        <Link
-          href={`/thread/${
-            // @ts-ignore
-            parentThread?._id
-          }
-      `}
-          className="w-fit"
-        >
-          <h5 className="text-subtle-medium text-light-3">
-            Replying to @
-            {
+        <div className="flex gap-1 justify-start items-center">
+          <Image
+            src="/assets/reply.svg"
+            alt="reply"
+            width="18"
+            height="18"
+            className="object-contain"
+          />
+          <Link
+            href={`/thread/${
               // @ts-ignore
-              parentThread.author.username
+              parentThread?._id
             }
-          </h5>
-        </Link>
+      `}
+            className="w-fit"
+          >
+            <h5 className="text-subtle-medium text-light-3">
+              Replying to @
+              {
+                // @ts-ignore
+                parentThread.author.username
+              }
+            </h5>
+          </Link>
+        </div>
       ) : (
         <></>
       ),
