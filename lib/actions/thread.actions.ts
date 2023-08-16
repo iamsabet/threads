@@ -13,7 +13,8 @@ const createThread = async ({ text, author, communityId, path, repost }: PropsTy
     try {
         await connectToDb();
         // create thread model
-        text = await replaceMentions(text)
+        if (!repost)
+            text = await replaceMentions(text)
         const newThread = await Thread.create({
             text,
             author,
@@ -76,6 +77,14 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
     const threadsQuery = Thread.find(baseQuery).sort({ createdAt: "desc" })
         .skip(skipAmount)
         .limit(pageSize)
+        .populate({
+            path: "repost",
+            model: Thread,
+            populate: {
+                path: "author",
+                model: User
+            }
+        })
         .populate({
             path: "author",
             model: User
@@ -167,7 +176,16 @@ const deleteThread = async (id: string, path: string): Promise<void> => {
         await connectToDb();
 
         // Find the thread to be deleted (the main thread)
-        const mainThread = await Thread.findById(id).populate("author");
+        const mainThread = await Thread.findById(id)
+            .populate("author")
+            .populate({
+                path: "repost",
+                model: Thread,
+                populate: {
+                    path: "author",
+                    model: User
+                }
+            });
 
         if (!mainThread) {
             throw new Error("Thread not found");
@@ -212,6 +230,14 @@ const fetchThreadById = async (id: string, currentUserId: string) => {
         // TODO : populate communities
         const thread = await Thread.findById(id)
             .populate({
+                path: "repost",
+                model: Thread,
+                populate: {
+                    path: "author",
+                    model: User
+                }
+            })
+            .populate({
                 path: "author",
                 model: User,
                 select: "_id id name username image createdAt"
@@ -249,6 +275,14 @@ const fetchThreadById = async (id: string, currentUserId: string) => {
 
             }).exec()
         const threadWithMyVote = await Thread.findById(id)
+            .populate({
+                path: "repost",
+                model: Thread,
+                populate: {
+                    path: "author",
+                    model: User
+                }
+            })
             .populate({
                 path: "author",
                 model: User,

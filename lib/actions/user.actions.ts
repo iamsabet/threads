@@ -240,6 +240,14 @@ const getMentions = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pag
 
     const mentions = await Thread.find(baseQuery)
         .populate({
+            path: "repost",
+            model: Thread,
+            populate: {
+                path: "author",
+                model: User
+            }
+        })
+        .populate({
             path: "author",
             model: User,
             select: "_id id name username image"

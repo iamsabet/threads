@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 const threadSchema = new mongoose.Schema({
     text: { type: String, required: true },
-    from: { // for repost
+    repost: { // source thread._id 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Tread'
     },
@@ -16,7 +16,7 @@ const threadSchema = new mongoose.Schema({
     },
     parentId: {
         type: mongoose.Schema.Types.ObjectId,
-        // ref
+        ref: 'Thread'
     },
     children: [
         {
