@@ -288,10 +288,14 @@ const getReplies = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pagi
 
     return { hasNext, replies, totalRepliesCount, pageSize, pageNumber }
 }
-const checkUsernameExists = async (username: string) => {
+const checkUsernameExists = async ({ username, userId }: { username: string, userId?: string }) => {
     try {
         await connectToDb();
-        return !(await User.exists({ username: username }));
+        let result = await User.exists({ username: username })
+        if (result && userId && result?._id === userId)
+            return false
+
+        return !result;
     } catch (e: any) {
         throw new Error("Check user exists error : " + e.message)
     }

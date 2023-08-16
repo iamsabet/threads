@@ -100,7 +100,9 @@ export const PostThread = ({
           </Button>
         </form>
       </Form>
-      <div className="text-center my-0 py-0 h-8">{loading && <Spinner />}</div>
+      <div className="text-center my-0 py-0 h-8 mt-5">
+        {loading && <Spinner />}
+      </div>
     </>
   );
 };

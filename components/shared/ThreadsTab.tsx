@@ -29,6 +29,7 @@ const ThreadsTab = ({
             key={thread._id}
             id={thread._id}
             currentUserId={currentUserId}
+            repost={JSON.stringify(thread.repost)}
             parentId={thread.parentId}
             content={thread.text}
             author={{

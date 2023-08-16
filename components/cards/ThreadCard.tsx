@@ -7,9 +7,11 @@ import DeleteThread from "../forms/DeleteThread";
 import { comment } from "postcss";
 import RepostModal from "../modals/RepostModal";
 import ShareModal from "../modals/ShareModal";
+import { useMemo } from "react";
 interface ThreadProps {
   id: string;
   currentUserId: string;
+  repost: string | null;
   parentId: string;
   content: string;
   author: {
@@ -36,6 +38,7 @@ interface ThreadProps {
 const ThreadCard = ({
   id,
   currentUserId,
+  repost,
   parentId,
   content,
   author,
@@ -46,11 +49,67 @@ const ThreadCard = ({
   votes,
   myVote,
 }: ThreadProps) => {
+  if (repost)
+    try {
+      repost = JSON.parse(repost);
+    } catch (e) {}
+
   const parentThread: {
     _id: string;
     text: string;
     author: { _id: string; name: string; username: string; image: string };
   } | null = typeof parentId === "object" ? parentId : null;
+
+  const repostSubtitle = useMemo(
+    () =>
+      repost ? (
+        <Link
+          href={`/thread/${
+            // @ts-ignore
+            repost?._id
+          }
+      `}
+          className="w-fit"
+        >
+          <h5 className="text-subtle-medium text-light-3">
+            Reposted from @
+            {
+              // @ts-ignore
+              repost.author.username
+            }
+          </h5>
+        </Link>
+      ) : (
+        <></>
+      ),
+    []
+  );
+
+  const replySubtitle = useMemo(
+    () =>
+      parentThread ? (
+        <Link
+          href={`/thread/${
+            // @ts-ignore
+            parentThread?._id
+          }
+      `}
+          className="w-fit"
+        >
+          <h5 className="text-subtle-medium text-light-3">
+            Replying to @
+            {
+              // @ts-ignore
+              parentThread.author.username
+            }
+          </h5>
+        </Link>
+      ) : (
+        <></>
+      ),
+    []
+  );
+
   return (
     <article
       className={`flex w-full flex-col rounded-xl
@@ -81,24 +140,8 @@ const ThreadCard = ({
                 {author.name}
               </h4>
             </Link>
-            {parentThread && (
-              <Link
-                href={`/thread/${
-                  // @ts-ignore
-                  parentThread?._id
-                }
-                `}
-                className="w-fit"
-              >
-                <h5 className="text-subtle-medium text-light-3">
-                  Replying to @
-                  {
-                    // @ts-ignore
-                    parentThread.author.username
-                  }
-                </h5>
-              </Link>
-            )}
+            {repostSubtitle}
+            {replySubtitle}
             <p className="mt-2 text-small-regular text-light-2">
               {HTMLReactParser(content)}
             </p>
@@ -131,7 +174,6 @@ const ThreadCard = ({
                   />
                 </Link>
                 {/* Repost */}
-
                 <RepostModal
                   threadId={id}
                   threadText={content}
@@ -147,21 +189,7 @@ const ThreadCard = ({
                   parentId={parentId}
                   isComment={isComment}
                 />
-                {/* <Image
-                  src="/assets/edit.svg"
-                  alt="share"
-                  width="24"
-                  height="24"
-                  className="cursor-pointer object-contain transition-all duration-150 ease-in-out hover:scale-110"
-                /> */}
               </div>
-              {/* {isComment && comments.length > 0 && (
-                <Link href={`/thread/${id}`}>
-                  <p className="mt-1 text-subtle-medium text-gray-1">
-                    {comments.length} repl{comments.length > 1 ? "ies" : "y"}
-                  </p>
-                </Link>
-              )} */}
             </div>
           </div>
         </div>

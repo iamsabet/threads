@@ -15,7 +15,7 @@ const Page = async () => {
 
   const userData = {
     id: user.id,
-    objectId: userInfo?._id,
+    objectId: JSON.stringify(userInfo?._id),
     username: userInfo ? userInfo?.username : user.username,
     name: userInfo ? userInfo?.name : user.firstName ?? "",
     bio: userInfo ? userInfo?.bio : "",
@@ -28,7 +28,7 @@ const Page = async () => {
       <p className="mt-3 text-base-regular text-light-2">Make any changes</p>
 
       <section className="mt-12">
-        <AccountProfile user={userData} btnTitle="Continue" />
+        <AccountProfile user={userData} btnTitle="Save Changes" />
       </section>
     </>
   );

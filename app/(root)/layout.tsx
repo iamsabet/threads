@@ -1,4 +1,4 @@
-import { ClerkProvider } from "@clerk/nextjs/app-beta";
+import { ClerkProvider, currentUser } from "@clerk/nextjs/app-beta";
 import "../globals.css";
 import type { Metadata } from "next";
 // import { Inter } from "next/font/google";
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description: "A Next.js 13 Meta Threads Clone Application",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;

@@ -1,14 +1,14 @@
 import ThreadCardsClient from "@/components/ThreadCardsClient";
 import ThreadCard from "@/components/cards/ThreadCard";
-import JumpTopButton from "@/components/shared/JumpTopButton";
 import { fetchThreads } from "@/lib/actions/thread.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser, useAuth } from "@clerk/nextjs";
-
+import { redirect } from "next/navigation";
 const Home = async () => {
   const user = await currentUser();
   if (user) {
     var userInfo = await fetchUser(user.id);
+    if (!userInfo?.onboarded) return redirect("/onboarding");
   }
   const result = await fetchThreads({
     pageNumber: 1,
@@ -19,7 +19,6 @@ const Home = async () => {
   return (
     <>
       <h1 className="head-text text-left">Home</h1>
-
       <section className="mt-8 flex flex-col gap-10">
         {result.docs.length === 0 ? (
           <p className="no-result">No Threads found</p>
@@ -31,6 +30,7 @@ const Home = async () => {
                   key={thread._id}
                   id={thread._id}
                   currentUserId={JSON.stringify(userInfo?._id)}
+                  repost={JSON.stringify(thread.repost)}
                   parentId={thread.parentId}
                   content={thread.text}
                   author={thread.author}

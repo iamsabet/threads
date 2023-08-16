@@ -62,7 +62,7 @@ const RepostModal = ({ threadId, threadText, authorUsername }: RepostProps) => {
     });
     // console.log(response);
     window.location.replace("/profile/" + userId);
-    setLoading((_) => false);
+    // setLoading((_) => false);
   };
 
   const repostIcon = (
@@ -126,7 +126,7 @@ const RepostModal = ({ threadId, threadText, authorUsername }: RepostProps) => {
                 }`}
                 disabled={loading}
               >
-                {loading ? <Spinner /> : "Repost"}
+                {loading ? <Spinner color="#111111" /> : "Repost"}
               </Button>
             </DialogFooter>
           </DialogContent>
