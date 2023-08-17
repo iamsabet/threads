@@ -13,11 +13,11 @@ const ActivityIcon = ({
     switch (type) {
       case "vote":
         if (message.startsWith("up")) return "bg-green-700";
-        else return "bg-red-600";
+        else return "bg-red-700";
       case "reply":
         return "bg-primary-500";
       case "repost":
-        return "bg-yellow-500";
+        return "bg-orange-600";
       case "mention":
         return "bg-sky-700";
       default:
@@ -29,7 +29,7 @@ const ActivityIcon = ({
 
   return (
     <span
-      className={`${styles} flex justify-center items-center w-5 h-5 overflow-hidden rounded-full p-1 ${iconColor} bg-ye`}
+      className={`${styles} flex justify-center items-center w-5 h-5 overflow-hidden rounded-full p-1 ${iconColor}`}
     >
       {type === "vote" && (
         <Image
@@ -48,7 +48,7 @@ const ActivityIcon = ({
           alt="reply"
           width="22"
           height="22"
-          className="cursor-pointer object-contain scale-90"
+          className="cursor-pointer object-contain scale-100"
         />
       )}
       {type === "mention" && (
@@ -57,16 +57,16 @@ const ActivityIcon = ({
           alt="mention"
           width="22"
           height="22"
-          className="cursor-pointer object-contain scale-90"
+          className="cursor-pointer object-contain scale-100"
         />
       )}
       {type === "repost" && (
         <Image
           src="/assets/repost_2_white.svg"
           alt="repost"
-          width="22"
-          height="22"
-          className="cursor-pointer object-contain scale-90"
+          width="26"
+          height="26"
+          className="cursor-pointer object-contain scale-125"
         />
       )}
     </span>

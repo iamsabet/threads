@@ -105,9 +105,9 @@ const RepostModal = ({ threadId, threadText, authorUsername }: RepostProps) => {
             <div className="pb-4">
               {/* Your existing profile fields */}
               <p className="w-full text-light-2 text-ellipsis line-clamp-3 text-subtle-medium">
-                <span className="text-subtle-semibold text-light-3">
+                {/* <span className="text-subtle-semibold text-light-3">
                   content :
-                </span>{" "}
+                </span> */}
                 {HTMLReactParser(threadText)}
               </p>
             </div>

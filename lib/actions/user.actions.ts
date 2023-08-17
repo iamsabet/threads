@@ -152,13 +152,23 @@ const getActivity = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pag
                 const repliesDoc = await getReplies({ pageNumber, pageSize, currentUserId: user._id })
                 const votesDoc = await getVotes({ pageNumber, pageSize, currentUserId: user._id })
                 const mentionsDoc = await getMentions({ pageNumber, pageSize, currentUserId: user._id })
+                const repostsDoc = await getReposts({ pageNumber, pageSize, currentUserId: user._id })
 
-                const hasNext = repliesDoc.hasNext || votesDoc.hasNext || mentionsDoc.hasNext
+                const hasNext = repliesDoc.hasNext || votesDoc.hasNext || mentionsDoc.hasNext || repostsDoc.hasNext
                 let docs: any = []
                 const mentions = mentionsDoc.mentions.reduce((acc, item) => {
                     return acc.concat({
                         type: "mention",
                         message: "mentioned you here",
+                        subject: item.author,
+                        link: "/thread/" + item._id,
+                        createdAt: item.createdAt
+                    })
+                }, [])
+                const reposts = repostsDoc.reposts.reduce((acc, item) => {
+                    return acc.concat({
+                        type: "repost",
+                        message: "reposted you thread",
                         subject: item.author,
                         link: "/thread/" + item._id,
                         createdAt: item.createdAt
@@ -186,6 +196,7 @@ const getActivity = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pag
                 docs = docs.concat(mentions)
                 docs = docs.concat(replies)
                 docs = docs.concat(votes)
+                docs = docs.concat(reposts)
                 const sortedDocs = docs.sort(function (a: any, b: any) {
                     return b.createdAt - a.createdAt;
                 });
@@ -260,7 +271,31 @@ const getMentions = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pag
     const hasNext = totalMentions > skipAmount + mentions.length
     return { hasNext, mentions, totalMentions, pageSize, pageNumber }
 }
+const getReposts = async ({ pageNumber = 1, pageSize = 10, currentUserId }: PaginatePropsType) => {
+    const skipAmount = (pageNumber - 1) * pageSize
+    const userThreads = await Thread.find({ author: currentUserId })
+    const userThreadIds: any = userThreads.reduce((acc, userThread) => {
+        return acc.concat(userThread._id);
+    }, []);
 
+    const query = {
+        repost: { $in: userThreadIds }
+    }
+    const reposts = await Thread.find(query).populate({
+        path: "author",
+        model: User,
+        select: "_id id name username image"
+    })
+        .sort({ createdAt: "desc" })
+        .skip(skipAmount)
+        .limit(pageSize)
+
+    const totalRepostsCount = await Thread.countDocuments(query)
+
+    const hasNext = totalRepostsCount > skipAmount + reposts.length
+
+    return { hasNext, reposts, totalRepostsCount, pageSize, pageNumber }
+}
 const getReplies = async ({ pageNumber = 1, pageSize = 10, currentUserId }: PaginatePropsType) => {
     const skipAmount = (pageNumber - 1) * pageSize
     const userThreads = await Thread.find({ author: currentUserId })
