@@ -36,7 +36,7 @@ const usePagination = ({ options, initialValues, getToken }: UsePaginationProps)
             }
             const acts = await fetch(
                 `${baseUrl}?pageNumber=${page}&pageSize=${pageSize}${postFixQs}`,
-
+                { ...params as RequestInit }
             ).then((res) => res.json());
 
             setHasHext((_) => acts.hasNext);

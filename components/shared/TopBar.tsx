@@ -1,7 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import LogoutComponent from "./LogoutComponent";
-const TopBar = () => {
+import { currentUser } from "@clerk/nextjs";
+import { fetchUser } from "@/lib/actions/user.actions";
+const TopBar = async () => {
+  const user = await currentUser();
+  let userInfo;
+  if (user) userInfo = await fetchUser(user.id);
+
   return (
     <nav className="topbar">
       <Link href="/" className="flex flex-row items-center gap-4">
