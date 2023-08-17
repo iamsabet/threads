@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs';
-import { autoCompleteUsernames, fetchUser, searchUsers } from '@/lib/actions/user.actions';
-import { SortOrder } from 'mongoose';
+import { autoCompleteUsernames, fetchUser } from '@/lib/actions/user.actions';
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url)
     let input = searchParams.get('search') || ""

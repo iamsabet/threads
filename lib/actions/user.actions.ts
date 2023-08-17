@@ -5,7 +5,6 @@ import { connectToDb } from "../db/mongoose"
 import User from "../models/user.model"
 import Thread from "../models/thread.model"
 import { FilterQuery, SortOrder } from "mongoose"
-import { ErrorMessage } from "uploadthing/server"
 import clerkClient from "@clerk/clerk-sdk-node"
 import { fetchThreadsByQuery } from "./thread.actions"
 import Vote from "../models/vote.model"
@@ -73,7 +72,19 @@ const fetchUser = async (userId: string): Promise<any> => {
         throw new Error("Failed to fetch user " + e.message)
     }
 }
-
+const fetchUserById = async (user_Id: string): Promise<any> => {
+    try {
+        await connectToDb()
+        return await User
+            .findOne({ _id: user_Id })
+        // .populate({
+        //     path: "communities",
+        //     model: "Community"
+        // })
+    } catch (e: any) {
+        throw new Error("Failed to fetch user " + e.message)
+    }
+}
 const fetchUserThreads = async ({ pageNumber = 1, pageSize = 30, currentUserId, accountId, label }: PaginatePropsTypeByQuery) => {
     try {
         await connectToDb()
@@ -368,5 +379,5 @@ const autoCompleteUsernames = async ({ input }: { input: string }) => {
     }
 }
 
-export { updateUser, fetchUser, fetchUserThreads, searchUsers, getActivity, checkUsernameExists, autoCompleteUsernames }
+export { updateUser, fetchUser, fetchUserById, fetchUserThreads, searchUsers, getActivity, checkUsernameExists, autoCompleteUsernames }
 

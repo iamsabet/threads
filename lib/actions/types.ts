@@ -20,3 +20,9 @@ interface PaginatePropsTypeByQuery extends PaginatePropsType {
     accountId?: string | null,
     label?: string
 }
+
+interface FollowType {
+    follower: string
+    following: string
+
+}

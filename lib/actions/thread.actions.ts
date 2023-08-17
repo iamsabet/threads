@@ -340,9 +340,7 @@ const voteToThread = async (userId: string, type: VoteType, threadId: string) =>
         if (userId) {
             const model = await Vote.findOneAndUpdate(
                 { voter: userId, thread: threadId },
-                {
-                    type: type
-                }, { upsert: true, new: true }
+                { type: type }, { upsert: true, new: true }
             )
             // calculate votePoints
             const upVotes = await Vote.countDocuments({ thread: threadId, type: "up" })
