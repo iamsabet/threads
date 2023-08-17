@@ -18,7 +18,10 @@ const SearchResults = () => {
 
   return (
     <>
-      <Searchbar setSearchString={setSearchString} />
+      <Searchbar
+        searchString={searchString}
+        setSearchString={setSearchString}
+      />
       <h3
         className={`text-light-2 px-2 pt-3 ${
           searchString.length ? "opacity-100" : "opacity-0"

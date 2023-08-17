@@ -2,7 +2,7 @@
 import { SignOutButton, SignedIn } from "@clerk/nextjs";
 import React from "react";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 const LogoutComponent = ({
   children,
   styles,
@@ -11,7 +11,6 @@ const LogoutComponent = ({
   children?: React.ReactNode;
 }) => {
   const router = useRouter();
-  // const pathname = usePathname()
   return (
     <SignedIn>
       <SignOutButton signOutCallback={() => router.push("/sign-in")}>

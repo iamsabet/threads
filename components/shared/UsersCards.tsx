@@ -40,9 +40,9 @@ const UsersCards = ({ searchString }: { searchString: string }) => {
                 <>
                   {
                     // @ts-ignore
-                    users.map((person) => (
+                    users.map((person, index) => (
                       <UserCard
-                        key={person.id}
+                        key={person.id + "/" + index}
                         user={person}
                         type="search"
                         searchString={searchString}

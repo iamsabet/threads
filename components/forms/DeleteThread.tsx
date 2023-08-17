@@ -32,7 +32,7 @@ function DeleteThread({
     <>
       {!loading ? (
         <Image
-          src="/assets/delete.svg"
+          src="/assets/delete_primary.svg"
           alt="delte"
           width={18}
           height={18}

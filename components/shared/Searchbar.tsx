@@ -5,14 +5,11 @@ import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 
 interface Props {
-  //   searchString: string;
+  searchString: string;
   setSearchString: Function;
 }
 
-function Searchbar({
-  // searchString,
-  setSearchString,
-}: Props) {
+function Searchbar({ searchString, setSearchString }: Props) {
   const [search, setSearch] = useState("");
 
   // query after 0.3s of no input
@@ -24,7 +21,10 @@ function Searchbar({
 
     return () => clearTimeout(delayDebounceFn);
   }, [search]);
-
+  const handleClearSearch = () => {
+    setSearchString("");
+    setSearch("");
+  };
   return (
     <div className="searchbar">
       <Image
@@ -41,6 +41,17 @@ function Searchbar({
         placeholder={`${"Search users"}`}
         className="no-focus searchbar_input"
       />
+      {searchString.length && (
+        <button onClick={handleClearSearch}>
+          <Image
+            src="/assets/delete_primary.svg"
+            alt="clear"
+            width={22}
+            height={22}
+            className="object-contain"
+          />
+        </button>
+      )}
     </div>
   );
 }
