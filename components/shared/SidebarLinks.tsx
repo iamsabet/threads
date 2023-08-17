@@ -46,14 +46,19 @@ const SidebarLinks = ({
   useEffect(() => {
     const abortController = new AbortController();
     replaceProfilePicture(abortController);
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   return (
     <>
       {sidebarLinks.map((item, id) => {
-        const isActive =
+        let isActive =
           (pathname.includes(item.route) && item.route.length > 1) ||
           pathname === item.route;
+        if (item.route === "/profile")
+          isActive = pathname === `/profile/${userId}`;
         return (
           <Link
             href={item.route === "/profile" ? `/profile/${userId}` : item.route}

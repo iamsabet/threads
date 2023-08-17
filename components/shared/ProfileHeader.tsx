@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import FollowButton from "./FollowButton";
 interface PropsType {
   accountId: string;
   authUserId: string;
@@ -54,6 +55,7 @@ const ProfileHeader = ({
             </div>
           </Link>
         )}
+        {accountId !== authUserId && <FollowButton />}
       </div>
       <div className="w-full">
         <p className="mt-6 w-full text-justify text-base-regular text-light-2">
