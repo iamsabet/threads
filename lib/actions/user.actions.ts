@@ -90,13 +90,13 @@ interface SearchUsersType {
     searchString: string
     pageNumber: number
     pageSize: number
-    userId: string
+    userId: string | undefined
     sortBy: SortOrder
 }
 const searchUsers = async ({
     searchString = "",
     pageNumber = 1,
-    pageSize = 30,
+    pageSize = 20,
     userId,
     sortBy = "desc" }: SearchUsersType) => {
     try {
@@ -109,9 +109,13 @@ const searchUsers = async ({
 
         const regex = new RegExp(searchString, 'i')
 
-        const query: FilterQuery<typeof User> = {
-            id: { $ne: userId },
-        }
+        const query: FilterQuery<typeof User> =
+            // later
+            // userId ? 
+            // {
+            //     id: { $ne: userId },
+            // } : 
+            {}
         if (searchString.trim().length > 0) {
 
             query.$or = [
@@ -134,13 +138,24 @@ const searchUsers = async ({
 
         const hasNext = totalUsersCount > skipAmount + users.length
 
-        return { hasNext, users, totalUsersCount, pageSize, pageNumber }
+
+        const x = await Delay(2000)
+
+        return { hasNext, docs: users, totalUsersCount, pageSize, pageNumber }
 
     } catch (e: any) {
         throw new Error("Failed fetch search users " + e.message)
     }
 }
+const Delay = async (ms: number) => {
+    return new Promise((resolve) => {
 
+
+        setTimeout(() => {
+            return resolve(true)
+        }, (Math.random() + 0.3) * ms)
+    })
+}
 const getActivity = async ({ pageNumber = 1, pageSize = 10, currentUserId }: PaginatePropsType) => {
     try {
         await connectToDb()

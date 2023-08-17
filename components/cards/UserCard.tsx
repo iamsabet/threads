@@ -13,7 +13,7 @@ interface UserCardProps {
 const UserCard = ({ user, personType }: UserCardProps) => {
   const { id, name, username, image } = user;
   return (
-    <article className="user-card">
+    <article className="user-card w-full">
       <Image
         src={image}
         alt="Profile Picture"
