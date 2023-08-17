@@ -14,7 +14,7 @@ const SearchResults = () => {
     setFlash(false);
     setTimeout(() => {
       setFlash((_) => true);
-    }, 10);
+    }, 2);
     return () => {};
   }, [searchString]);
 
