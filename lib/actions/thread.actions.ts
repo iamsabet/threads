@@ -109,13 +109,7 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
             }
         })
     }
-    threadsQuery.populate({
-        path: "votes",
-        model: Vote,
-        // match: { voter: currentUserId },
-        select: "_id type voter thread",
 
-    });
     const threads = await threadsQuery.exec()
     let threadsMyVotesQuery;
     let threads_my_votes_only
@@ -259,20 +253,7 @@ const fetchThreadById = async (id: string, currentUserId: string) => {
                             select: "_id id name parentId username image createdAt"
                         }]
                     },
-                    {
-                        path: "votes",
-                        model: Vote,
-                        // match: { voter: currentUserId },
-                        select: "_id type voter thread",
-
-                    }
                 ]
-            }).populate({
-                path: "votes",
-                model: Vote,
-                // match: { voter: currentUserId },
-                select: "_id type voter thread",
-
             }).exec()
         const threadWithMyVote = await Thread.findById(id)
             .populate({
@@ -363,16 +344,19 @@ const voteToThread = async (userId: string, type: VoteType, threadId: string) =>
                     type: type
                 }, { upsert: true, new: true }
             )
-
+            // calculate votePoints
+            const upVotes = await Vote.countDocuments({ thread: threadId, type: "up" })
+            const downVotes = await Vote.countDocuments({ thread: threadId, type: "down" })
+            const votePoints = upVotes - downVotes
             // console.log(model)
             if (type === "") {
                 await Thread.findOneAndUpdate({ _id: model.thread }, {
-                    $pull: { votes: model._id }
+                    $pull: { votes: model._id }, $set: { votePoints: votePoints }
                 });
             }
             else {
                 await Thread.findOneAndUpdate({ _id: model.thread }, {
-                    $addToSet: { votes: model._id }
+                    $addToSet: { votes: model._id }, $set: { votePoints: votePoints }
                 });
             }
         }

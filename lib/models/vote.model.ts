@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
-const voteSchema = new mongoose.Schema({
+import { Schema, models, model } from 'mongoose'
+const voteSchema = new Schema({
     type: {
         type: String,
         validate: {
@@ -10,11 +10,11 @@ const voteSchema = new mongoose.Schema({
         }
     },
     voter: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User'
     },
     thread: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Thread'
     },
 }, { timestamps: true })
@@ -23,6 +23,6 @@ voteSchema.pre('save', async (doc) => {
     // console.log("saved " + this._id + " doc ")
 })
 
-const Vote = mongoose.models.Vote || mongoose.model('Vote', voteSchema)
+const Vote = models.Vote || model('Vote', voteSchema)
 
 export default Vote

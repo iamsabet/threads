@@ -37,7 +37,7 @@ const Home = async () => {
                   community={thread.community}
                   createdAt={thread.createdAt}
                   comments={thread.children}
-                  votes={thread.votes}
+                  votes={thread.votePoints}
                   myVote={thread.myVote}
                   isComment={false}
                 />

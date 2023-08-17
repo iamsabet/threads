@@ -170,7 +170,7 @@ const ThreadCard = ({
             >
               <div className="flex flex-row gap-3.5">
                 {/* Vote Block */}
-                <div className="flex items-center justify-cente gap-1">
+                <div className="flex items-center justify-cente gap-0">
                   <VoteBlock
                     threadId={JSON.stringify(id)}
                     voterId={currentUserId}

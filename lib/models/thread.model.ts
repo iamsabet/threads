@@ -1,42 +1,43 @@
-import mongoose from 'mongoose'
-const threadSchema = new mongoose.Schema({
+import { Schema, models, model } from 'mongoose'
+const threadSchema = new Schema({
     text: { type: String, required: true },
     repost: { // source thread._id 
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Tread'
     },
     author: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
     community: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Community',
     },
     parentId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Thread'
     },
     children: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'Thread'
         }
     ],
     votes: [
         {
-            type: mongoose.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'Vote'
         }
     ],
+    votePoints: { type: Number, default: 0 }
 }, { timestamps: true })
 
 threadSchema.pre('save', async (doc) => {
     // console.log("saved " + this._id + " doc ")
 })
 
-const Thread = mongoose.models.Thread || mongoose.model('Thread', threadSchema)
+const Thread = models.Thread || model('Thread', threadSchema)
 
 export default Thread
 

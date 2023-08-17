@@ -37,7 +37,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
           createdAt={thread.createdAt}
           comments={thread.children}
           isComment={false}
-          votes={thread.votes}
+          votes={thread.votePoints}
           myVote={thread.myVote}
         />
       </div>
@@ -64,7 +64,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
               createdAt={comment.createdAt}
               comments={comment.children}
               isComment
-              votes={comment.votes}
+              votes={comment.votePoints}
               myVote={comment.myVote}
             />
           );

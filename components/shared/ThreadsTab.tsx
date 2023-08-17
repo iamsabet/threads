@@ -36,13 +36,13 @@ const ThreadsTab = ({
               name: thread.author.name,
               image: thread.author.image,
               username: thread.author.username,
-              id: thread.author._id,
+              id: thread.author.id,
             }} // TODO: check owner or not
             community={thread.community} // TODO: check owner or not
             createdAt={thread.createdAt}
             comments={thread.children}
             isComment
-            votes={thread.votes}
+            votes={thread.votePoints}
             myVote={thread.myVote}
           />
         );

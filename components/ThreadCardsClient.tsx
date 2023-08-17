@@ -49,12 +49,12 @@ const ThreadCardsClient = ({
               name: thread.author.name,
               image: thread.author.image,
               username: thread.author.username,
-              id: thread.author._id,
+              id: thread.author.id,
             }} // TODO: check owner or not
             community={thread.community}
             createdAt={thread.createdAt}
             comments={thread.children}
-            votes={thread.votes}
+            votes={thread.votePoints}
             myVote={thread.myVote}
             isComment={isComment}
           />
