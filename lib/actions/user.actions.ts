@@ -147,13 +147,13 @@ const searchUsers = async ({
         throw new Error("Failed fetch search users " + e.message)
     }
 }
-const RandomDelay = async (ms: number) => {
+const RandomDelay = async (second: number) => {
     return new Promise((resolve) => {
 
 
         setTimeout(() => {
             return resolve(true)
-        }, (Math.random() + 0.3) * ms)
+        }, (Math.random() + 0.3) * second * 1000)
     })
 }
 const getActivity = async ({ pageNumber = 1, pageSize = 10, currentUserId }: PaginatePropsType) => {
@@ -357,7 +357,8 @@ const autoCompleteUsernames = async ({ input }: { input: string }) => {
             return JSON.stringify([])
         }
         await connectToDb()
-        const regex = RegExp(input, 'i')
+        const regex = RegExp("^" + input, 'i')
+        // await RandomDelay(0.2)
         return JSON.stringify(await User.find({ username: { $regex: regex } }, { _id: 1, id: 1, username: 1, image: 1, name: 1 }))
     } catch (e: any) {
         console.error("Check user exists error : " + e.message)

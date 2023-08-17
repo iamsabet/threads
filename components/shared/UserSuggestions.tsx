@@ -190,7 +190,7 @@ const UsersSuggestions = ({
         y: rect.top - textArea.scrollTop,
       };
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
   const parseFoundText = (name: string) => {
