@@ -18,7 +18,8 @@ function Searchbar({
   // query after 0.3s of no input
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      setSearchString(search);
+      const str = search.replace(/[^a-zA-Z0-9]/g, "");
+      setSearchString(str);
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);

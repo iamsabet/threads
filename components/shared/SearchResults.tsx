@@ -9,8 +9,6 @@ const SearchResults = () => {
   const [flash, setFlash] = useState(false);
 
   useEffect(() => {
-    console.log(searchString);
-    // unmount and mount searchResults
     setFlash(false);
     setTimeout(() => {
       setFlash((_) => true);
@@ -21,7 +19,16 @@ const SearchResults = () => {
   return (
     <>
       <Searchbar setSearchString={setSearchString} />
-      {flash ? <UsersCards searchString={searchString} /> : <></>}
+      <h3
+        className={`text-light-2 px-2 pt-3 ${
+          searchString.length ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        Results for : <span className="text-light-3">{searchString}</span>
+      </h3>
+      <div className="">
+        {flash ? <UsersCards searchString={searchString} /> : <></>}
+      </div>
     </>
   );
 };

@@ -29,11 +29,11 @@ const UsersCards = ({ searchString }: { searchString: string }) => {
 
   return (
     <>
-      <div className="mt-12 flex flex-col gap-9 justify-center items-center">
+      <div className="flex flex-col gap-9 justify-center items-center pt-7 px-0 rounded-lg">
         {
           // @ts-ignore
           users && users.length === 0 ? (
-            <p className="no-result">No Users</p>
+            <p className="no-result">No user found</p>
           ) : (
             <>
               {users && (
@@ -44,7 +44,8 @@ const UsersCards = ({ searchString }: { searchString: string }) => {
                       <UserCard
                         key={person.id}
                         user={person}
-                        personType="User"
+                        type="search"
+                        searchString={searchString}
                       />
                     ))
                   }

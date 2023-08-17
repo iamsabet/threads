@@ -2,6 +2,7 @@ import { autoCompleteUsernames } from "@/lib/actions/user.actions";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
+import { parseFoundText } from "../utils";
 interface UsersSuggestionsProps {
   textAreaId: string;
   type: "thread" | "comment";
@@ -190,38 +191,10 @@ const UsersSuggestions = ({
         y: rect.top - textArea.scrollTop,
       };
     } catch (e) {
-      // console.log(e);
+      console.log(e);
     }
   };
-  const parseFoundText = (name: string) => {
-    const usernameSplited = name.split(searchText);
 
-    if (usernameSplited[0] === "") {
-      return (
-        <>
-          <span className="text-primary-500">{searchText}</span>
-          {usernameSplited[1]}
-        </>
-      );
-    } else if (usernameSplited[1] === "") {
-      return (
-        <>
-          {usernameSplited[0]}
-          <span className="text-primary-500">{searchText}</span>
-        </>
-      );
-    } else {
-      return usernameSplited[1] ? (
-        <>
-          {usernameSplited[0]}
-          <span className="text-primary-500">{searchText}</span>
-          {usernameSplited[1]}
-        </>
-      ) : (
-        usernameSplited[0]
-      );
-    }
-  };
   const selectUsername = (username: string) => {
     const textArea: HTMLInputElement | null = document.getElementById(
       textAreaId
@@ -267,7 +240,7 @@ const UsersSuggestions = ({
           {usersList.map((user, index) => {
             // split with searchText
 
-            const user_username = parseFoundText(user.username);
+            const user_username = parseFoundText(user.username, searchText);
             return (
               <li
                 onMouseEnter={(e) => hoverOnItem(index)}
