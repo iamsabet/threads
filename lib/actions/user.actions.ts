@@ -260,8 +260,8 @@ const getVotes = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pagina
 const getMentions = async ({ pageNumber = 1, pageSize = 10, currentUserId }: PaginatePropsType) => {
 
     const skipAmount = (pageNumber - 1) * pageSize
-    const accountUsername = (await User.findOne({ _id: currentUserId }, { username: 1 })).username
-    const regex = RegExp(`>@${accountUsername}</`, 'i') // only username matches having a tag around
+    const accountId = (await User.findOne({ _id: currentUserId }, { username: 1 })).id
+    const regex = RegExp(`"${accountId}">`, 'i') // only username matches having a tag around
     const baseQuery = { text: { $regex: regex }, author: { $ne: currentUserId } }
 
     const mentions = await Thread.find(baseQuery)
@@ -294,7 +294,8 @@ const getReposts = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pagi
     }, []);
 
     const query = {
-        repost: { $in: userThreadIds }
+        repost: { $in: userThreadIds },
+        author: { $ne: currentUserId }
     }
     const reposts = await Thread.find(query).populate({
         path: "author",

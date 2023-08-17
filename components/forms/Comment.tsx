@@ -60,7 +60,7 @@ const Comment = ({
       articles[articles.length - 1]?.scrollIntoView({
         behavior: "smooth",
       });
-    }, 700);
+    }, 1000);
   };
   const setFormValue = (value: string): void => {
     form.setValue("comment", value);

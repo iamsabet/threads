@@ -114,7 +114,7 @@ const ThreadCard = ({
             className="w-fit"
           >
             <h5 className="text-subtle-medium text-light-3">
-              Replying to @
+              Replied to @
               {
                 // @ts-ignore
                 parentThread.author.username
