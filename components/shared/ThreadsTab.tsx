@@ -37,6 +37,7 @@ const ThreadsTab = ({
               image: thread.author.image,
               username: thread.author.username,
               id: thread.author.id,
+              _id: thread.author._id,
             }} // TODO: check owner or not
             community={thread.community} // TODO: check owner or not
             createdAt={thread.createdAt}

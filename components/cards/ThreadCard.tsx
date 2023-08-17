@@ -15,6 +15,7 @@ interface ThreadProps {
   parentId: string;
   content: string;
   author: {
+    _id: string;
     id: string;
     username: string;
     name: string;
@@ -57,7 +58,13 @@ const ThreadCard = ({
   const parentThread: {
     _id: string;
     text: string;
-    author: { _id: string; name: string; username: string; image: string };
+    author: {
+      _id: string;
+      id: string;
+      name: string;
+      username: string;
+      image: string;
+    };
   } | null = typeof parentId === "object" ? parentId : null;
 
   const repostSubtitle = useMemo(
@@ -203,7 +210,8 @@ const ThreadCard = ({
                 <DeleteThread
                   threadId={JSON.stringify(id)}
                   currentUserId={currentUserId}
-                  authorId={JSON.stringify(author.id)}
+                  authorId={JSON.stringify(author._id)}
+                  author_id={author.id}
                   parentId={parentId}
                   isComment={isComment}
                 />

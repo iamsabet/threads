@@ -165,12 +165,12 @@ const fetchAllChildThreads = async (threadId: string): Promise<any[]> => {
     }
     return descendantThreads;
 }
-const deleteThread = async (id: string, path: string): Promise<void> => {
+const deleteThread = async (id: string, userId: string, path: string): Promise<void> => {
     try {
         await connectToDb();
 
         // Find the thread to be deleted (the main thread)
-        const mainThread = await Thread.findById(id)
+        const mainThread = await Thread.findOne({ _id: id, author: userId })
             .populate("author")
             .populate({
                 path: "repost",
