@@ -139,15 +139,15 @@ const searchUsers = async ({
         const hasNext = totalUsersCount > skipAmount + users.length
 
 
-        const x = await Delay(2000)
-
-        return { hasNext, docs: users, totalUsersCount, pageSize, pageNumber }
+        // const x = await RandomDelay(1)
+        const url = `/api/user/search?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${searchString}&sort=${sortBy.toString()}`
+        return { hasNext, docs: users, totalUsersCount, pageSize, pageNumber, url }
 
     } catch (e: any) {
         throw new Error("Failed fetch search users " + e.message)
     }
 }
-const Delay = async (ms: number) => {
+const RandomDelay = async (ms: number) => {
     return new Promise((resolve) => {
 
 
