@@ -10,6 +10,7 @@ const usePagination = ({ options, initialValues, getToken }: UsePaginationProps)
     const [pageQueue, setPageQueue] = useState<Number[]>([])
 
     const fetchActivities = async (page: number, next: boolean, abortController?: AbortController) => {
+        // for debug purposes only
         setPageQueue((queue) => {
             if (queue.indexOf(page) === -1) {
                 return queue.concat(page)
@@ -18,7 +19,7 @@ const usePagination = ({ options, initialValues, getToken }: UsePaginationProps)
                 return queue
             }
         })
-        console.log(pageQueue)
+        // console.log(pageQueue)
         if (!loading && next) {
             setLoading((_) => true);
 
@@ -97,7 +98,7 @@ const usePagination = ({ options, initialValues, getToken }: UsePaginationProps)
     useEffect(() => {
         const abortController = needsAbortion ? new AbortController() : undefined
         if (pageNumber > initialPageNumber) fetchActivities(pageNumber, hasNext, abortController);
-        console.log(pageNumber)
+        // console.log(pageNumber)
         return () => {
             abortController?.abort()
         }
