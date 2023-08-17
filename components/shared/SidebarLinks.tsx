@@ -89,6 +89,7 @@ const SidebarLinks = ({
                 height="24"
               />
             )}
+
             <p className={`${text_class} flex items-center`}>
               {type === "leftsidebar_link"
                 ? item.label
