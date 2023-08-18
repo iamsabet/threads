@@ -73,8 +73,8 @@ const SidebarLinks = ({
                   <Image
                     src={profileImage}
                     alt={item.label}
-                    width="35"
-                    height="35"
+                    width={type === "bottombar_link" ? "36" : "24"}
+                    height={type === "bottombar_link" ? "36" : "24"}
                     className="rounded-full"
                   />
                 ) : (
