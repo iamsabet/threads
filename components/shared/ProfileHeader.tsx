@@ -8,6 +8,9 @@ interface PropsType {
   authUserId: string;
   name: string;
   username: string;
+  followersCount: number;
+  followingsCount: number;
+  follow: boolean;
   img: string;
   bio: string;
 }
@@ -17,6 +20,9 @@ const ProfileHeader = ({
   authUserId,
   name,
   username,
+  followersCount,
+  followingsCount,
+  follow,
   img,
   bio,
 }: PropsType) => {
@@ -58,7 +64,10 @@ const ProfileHeader = ({
           </Link>
         )}
         {accountId !== authUserId && (
-          <FollowButton account_id={JSON.stringify(account_id)} />
+          <FollowButton
+            account_id={JSON.stringify(account_id)}
+            init_follow={follow}
+          />
         )}
       </div>
       <div className="w-full">

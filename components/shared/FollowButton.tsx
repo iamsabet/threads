@@ -3,8 +3,14 @@ import { RiUserFollowFill, RiUserUnfollowFill } from "react-icons/ri";
 import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import Spinner from "../Spinner";
-const FollowButton = ({ account_id }: { account_id: string }) => {
-  const [follow, setFollow] = useState<boolean>(false);
+const FollowButton = ({
+  account_id,
+  init_follow,
+}: {
+  account_id: string;
+  init_follow: boolean;
+}) => {
+  const [follow, setFollow] = useState<boolean>(init_follow);
   const [loading, setLoading] = useState<boolean>(false);
   try {
     account_id = JSON.parse(account_id);

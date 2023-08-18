@@ -17,16 +17,15 @@ const followAction = async ({ follower, following }: FollowType) => {
             return { result: false, message: "Follower user now found : " + follower.toString() }
 
         const followDoc = await Follow
-            .findOneAndUpdate(
-                { follower, following },
-                { upsert: true, new: true }
+            .create(
+                { follower: follower, following: following },
             )
 
         await updateFollowsCountForUsers({ followingUser, followerUser })
-        await RandomDelay(1)
         return followDoc
     } catch (e: any) {
-        throw new Error("Follow Failed with error : " + e.message)
+        console.error("Follow Failed with error : " + e.message)
+        return { result: false }
     }
 
 }
@@ -127,6 +126,17 @@ const fetchFollowers = async ({ accountId, pageNumber = 1, pageSize = 20 }: { ac
     }
 }
 
+const findFollowRecord = async ({ followingId, followerId }: { followingId: string, followerId: string }) => {
+    try {
+        await connectToDb()
+        console.log(followerId, "?", followingId)
+        const doc = await Follow.findOne({ follower: followerId, following: followingId })
+        return (!!doc)
+    } catch (e: any) {
+        throw new Error("Fetch Follow Record with error : " + e.message)
+    }
+}
+
 const updateFollowsCountForUsers = async ({ followerUser, followingUser }:
     {
         followerUser: FilterQuery<typeof User>,
@@ -144,4 +154,5 @@ const updateFollowsCountForUsers = async ({ followerUser, followingUser }:
     return
 }
 
-export { followAction, unfollowAction, fetchFollowers, fetchFollowings }
+
+export { followAction, unfollowAction, fetchFollowers, fetchFollowings, findFollowRecord }

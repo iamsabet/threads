@@ -2,7 +2,11 @@
 import ProfileHeader from "@/components/shared/ProfileHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
-import { fetchUser, fetchUserThreads } from "@/lib/actions/user.actions";
+import {
+  fetchUser,
+  fetchUserAccount,
+  fetchUserThreads,
+} from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import Image from "next/image";
@@ -17,8 +21,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
   const current_user = await fetchUser(user.id);
   if (!current_user) return redirect("/sign-in");
-  const userInfo = await fetchUser(params.id);
-  if (!userInfo?.onboarded) return redirect("/onboarding");
+  if (!current_user?.onboarded) return redirect("/onboarding");
+  const userInfo = await fetchUserAccount(params.id, current_user._id);
 
   let results: {
     threads: any;
@@ -49,6 +53,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
         authUserId={user.id}
         name={userInfo.name}
         username={userInfo.username}
+        followersCount={userInfo?.followersCount}
+        followingsCount={userInfo?.followingsCount}
+        follow={userInfo?.follow} // do i follow or not
         img={userInfo.image}
         bio={userInfo.bio}
       />

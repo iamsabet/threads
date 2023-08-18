@@ -8,6 +8,7 @@ import { FilterQuery, SortOrder } from "mongoose"
 import clerkClient from "@clerk/clerk-sdk-node"
 import { fetchThreadsByQuery } from "./thread.actions"
 import Vote from "../models/vote.model"
+import { findFollowRecord } from "./follow.action"
 
 interface ParamsType {
 
@@ -72,6 +73,16 @@ const fetchUser = async (userId: string): Promise<any> => {
         throw new Error("Failed to fetch user " + e.message)
     }
 }
+
+const fetchUserAccount = async (accountId: string, userId: string): Promise<any> => {
+    let userAccount = await fetchUser(accountId)
+    userAccount = JSON.parse(JSON.stringify(userAccount))
+
+    const res = await findFollowRecord({ followerId: userId, followingId: userAccount._id })
+    userAccount.follow = res
+    return userAccount
+}
+
 const fetchUserById = async (user_Id: string): Promise<any> => {
     try {
         await connectToDb()
@@ -379,5 +390,5 @@ const autoCompleteUsernames = async ({ input }: { input: string }) => {
     }
 }
 
-export { updateUser, fetchUser, fetchUserById, fetchUserThreads, searchUsers, getActivity, checkUsernameExists, autoCompleteUsernames, RandomDelay }
+export { updateUser, fetchUser, fetchUserById, fetchUserThreads, searchUsers, getActivity, checkUsernameExists, autoCompleteUsernames, RandomDelay, fetchUserAccount }
 
