@@ -4,7 +4,7 @@ import { FilterQuery } from "mongoose"
 import { connectToDb } from "../db/mongoose"
 import Follow from "../models/follow.model"
 import User from "../models/user.model"
-import { fetchUserById } from "./user.actions"
+import { RandomDelay, fetchUserById } from "./user.actions"
 
 const followAction = async ({ follower, following }: FollowType) => {
     try {
@@ -23,7 +23,7 @@ const followAction = async ({ follower, following }: FollowType) => {
             )
 
         await updateFollowsCountForUsers({ followingUser, followerUser })
-
+        await RandomDelay(1)
         return followDoc
     } catch (e: any) {
         throw new Error("Follow Failed with error : " + e.message)
@@ -47,7 +47,7 @@ const unfollowAction = async ({ follower, following }: FollowType) => {
             )
 
         await updateFollowsCountForUsers({ followingUser, followerUser })
-
+        await RandomDelay(1)
         return { result: true, message: "Unfollow done" }
     } catch (e: any) {
         throw new Error("Follow Failed with error : " + e.message)

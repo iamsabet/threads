@@ -4,6 +4,7 @@ import Link from "next/link";
 import FollowButton from "./FollowButton";
 interface PropsType {
   accountId: string;
+  account_id: string;
   authUserId: string;
   name: string;
   username: string;
@@ -12,6 +13,7 @@ interface PropsType {
 }
 const ProfileHeader = ({
   accountId,
+  account_id,
   authUserId,
   name,
   username,
@@ -55,7 +57,9 @@ const ProfileHeader = ({
             </div>
           </Link>
         )}
-        {accountId !== authUserId && <FollowButton />}
+        {accountId !== authUserId && (
+          <FollowButton account_id={JSON.stringify(account_id)} />
+        )}
       </div>
       <div className="w-full">
         <p className="mt-6 w-full text-justify text-base-regular text-light-2">

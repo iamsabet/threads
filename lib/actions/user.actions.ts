@@ -379,5 +379,5 @@ const autoCompleteUsernames = async ({ input }: { input: string }) => {
     }
 }
 
-export { updateUser, fetchUser, fetchUserById, fetchUserThreads, searchUsers, getActivity, checkUsernameExists, autoCompleteUsernames }
+export { updateUser, fetchUser, fetchUserById, fetchUserThreads, searchUsers, getActivity, checkUsernameExists, autoCompleteUsernames, RandomDelay }
 
