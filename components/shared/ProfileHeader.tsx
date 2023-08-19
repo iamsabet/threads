@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import FollowButton from "./FollowButton";
+import { Button } from "../ui/button";
 interface PropsType {
   accountId: string;
   account_id: string;
@@ -71,6 +72,12 @@ const ProfileHeader = ({
         )}
       </div>
       <div className="w-full">
+        <div className="w-full flex justify-start flex-wrap items-center gap-2 mt-3">
+          <Button className="bg-transparent">{followersCount} Followers</Button>
+          <Button className="bg-transparent">
+            {followingsCount} Followings
+          </Button>
+        </div>
         <p className="mt-6 w-full text-justify text-base-regular text-light-2">
           {bio}
         </p>
