@@ -1,6 +1,9 @@
+import { digitalRainbowColors } from "@/constants";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
-import { Suspense } from "react";
+import { Suspense, useMemo } from "react";
+import CharAvatar from "./CharAvatar";
+import { getContrastingColor } from "./helpers";
 const Avatar = ({
   src,
   loadingSize,
@@ -18,28 +21,35 @@ const Avatar = ({
   height?: number;
   className?: string;
 }) => {
+  const randomColorKey = (min: number, max: number) => {
+    return Math.floor(Math.random() * max) + min;
+  };
+
+  const bg_color = useMemo(
+    () => digitalRainbowColors[randomColorKey(1, 20)],
+    []
+  );
+  const textColor = useMemo(() => getContrastingColor(bg_color), [bg_color]);
   const loadingFrame = (
-    <div
-      role="status"
-      className={`animate-pulse rounded-full w-full h-full flex justify-center items-center text-light-2 bg-primary-500 font-bold ${
-        loadingSize ? `text-[40px]` : "text-2xl"
-      } ${className}`}
-    >
-      {loadingText.toUpperCase()}
-    </div>
+    <CharAvatar
+      text={loadingText.toUpperCase()}
+      bg_color={bg_color}
+      textColor={textColor}
+      pulse={true}
+      size={loadingSize}
+      customClassNames={className}
+    />
   );
-
   const replaceFrame = (
-    <div
-      role="status"
-      className={`rounded-full w-full h-full flex justify-center items-center text-light-2 bg-primary-500 font-bold ${
-        loadingSize ? `text-[40px]` : "text-2xl"
-      } ${className}`}
-    >
-      {loadingText.toUpperCase()}
-    </div>
+    <CharAvatar
+      text={loadingText.toUpperCase()}
+      bg_color={bg_color}
+      textColor={textColor}
+      pulse={false}
+      size={loadingSize}
+      customClassNames={className}
+    />
   );
-
   // return loadingFrame;
   return (
     <>

@@ -19,7 +19,7 @@ const FollowItemsPaginate = ({
     options: {
       baseUrl: "/api/follow",
       postFixQs: `&id=${account_id}&type=${type.toLowerCase()}`,
-      pageSize: 10,
+      pageSize: 20,
     },
     initialValues: {
       initialHasNext: true,

@@ -1,5 +1,5 @@
 import { dark } from "@clerk/themes";
-
+import rainbowColors from './rainbow.json'
 export const sidebarLinks = [
     {
         imgURL: "/assets/home.svg",
@@ -61,3 +61,7 @@ export const clerckComponentsOptions: any = {
         footerActionLink: "text-primary-500",
     },
 }
+
+export const digitalRainbowColors: {
+    [index: string]: string
+} = rainbowColors

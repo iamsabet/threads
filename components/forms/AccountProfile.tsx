@@ -199,7 +199,8 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
                 </FormLabel>
                 <FormControl className="">
                   <Textarea
-                    rows={10}
+                    rows={6}
+                    maxLength={500}
                     className="account-form_input no-focus"
                     {...field}
                   />
