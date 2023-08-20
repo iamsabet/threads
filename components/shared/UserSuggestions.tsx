@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { parseFoundText } from "../utils";
+import Avatar from "./Avatar";
 interface UsersSuggestionsProps {
   textAreaId: string;
   type: "thread" | "comment";
@@ -252,12 +253,12 @@ const UsersSuggestions = ({
                 items-center gap-3 h-fit shadow-xl rounded-lg  py-2 px-2
               border-b-gray-50 cursor-pointer`}
               >
-                <Image
-                  className="rounded-full shadow-lg object-contain"
+                <Avatar
                   src={user.image}
                   alt="Profile Image"
-                  width="40"
-                  height="40"
+                  width={40}
+                  height={40}
+                  loadingText={user.username.charAt(0)}
                 />
 
                 <div className="flex flex-col flex-1 items-start justify-start line-clamp-1 text-ellipsis">

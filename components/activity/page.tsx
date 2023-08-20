@@ -8,6 +8,7 @@ import { formattedDateString } from "../shared/helpers";
 import ActivityIcon from "./ActivityIcon";
 import JumpTopButton from "../shared/JumpTopButton";
 import usePagination from "@/hooks/usePagination";
+import Avatar from "../shared/Avatar";
 
 const ActivitiesComponent = () => {
   const { getToken } = useAuth();
@@ -37,12 +38,12 @@ const ActivitiesComponent = () => {
                   <div className="flex flex-col justify-start sm:flex-row sm:justify-between w-full">
                     <div className="flex justify-between overflow-hidden">
                       <div className="relative h-full">
-                        <Image
+                        <Avatar
                           src={act.subject.image}
                           alt="Profile Picture"
-                          width="50"
-                          height="50"
-                          className="rounded-full object-fill mr-2 mt-2 w-[60px] sm:mt-0 sm:w-[40px] sm:h-[40px] "
+                          width={50}
+                          height={50}
+                          loadingText={act.subject.username.charAt(0)}
                         />
                         <ActivityIcon
                           type={act.type}

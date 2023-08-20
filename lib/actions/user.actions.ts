@@ -149,7 +149,7 @@ const searchUsers = async ({
             createdAt: sortBy
         }
 
-        const usersQuery = User.find(query)
+        const usersQuery = User.find(query, { _id: 1, id: 1, name: 1, username: 1, image: 1 })
             .sort(sortOptions)
             .skip(skipAmount)
             .limit(pageSize)
@@ -183,7 +183,7 @@ const getActivity = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pag
         await connectToDb()
         if (currentUserId) {
             // currentUserId = JSON.parse(currentUserId)
-            const user = (await User.findOne({ id: currentUserId }))
+            const user = (await User.findOne({ id: currentUserId }, { _id: 1, name: 1, id: 1, username: 1 }))
             if (user && user._id) {
 
                 const repliesDoc = await getReplies({ pageNumber, pageSize, currentUserId: user._id })

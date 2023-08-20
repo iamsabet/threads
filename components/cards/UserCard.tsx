@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import HTMLReactParser from "html-react-parser";
 import { parseFoundText } from "../utils";
+import Avatar from "../shared/Avatar";
 interface UserCardProps {
   user: {
     id: string;
@@ -29,12 +30,12 @@ const UserCard = ({ user, type, searchString }: UserCardProps) => {
 
   return (
     <article className="user-card w-full">
-      <Image
+      <Avatar
         src={image}
         alt="Profile Picture"
-        width="48"
-        height="48"
-        className="rounded-full object-contain"
+        width={48}
+        height={48}
+        loadingText={parsedUserName.toString().charAt(0)}
       />
       <div className="flex-1 text-ellipsis">
         <h4 className="text-base-semibold text-light-1">{parsedName}</h4>

@@ -20,6 +20,7 @@ import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
 import { autoCompleteUsernames } from "@/lib/actions/user.actions";
 import UsersSuggestions from "../shared/UserSuggestions";
+import Avatar from "../shared/Avatar";
 // import { addComment } from "@/lib/actions/thread.actions";
 interface PropsType {
   threadId: string;
@@ -80,12 +81,12 @@ const Comment = ({
             render={({ field }) => (
               <FormItem className="flex flex-row gap-3 items-center w-full">
                 <FormLabel>
-                  <Image
+                  <Avatar
                     src={currentUserImage}
                     alt="profile picture"
-                    width="48"
-                    height="48"
-                    className="rounded-full object-cover"
+                    loadingText={currentUserName.charAt(0)}
+                    width={48}
+                    height={48}
                   />
                 </FormLabel>
                 <FormControl className="border-none bg-dark-3 text-light-1">

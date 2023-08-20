@@ -38,7 +38,7 @@ const replaceMentions = async (text: string): Promise<string> => {
         let item = splitted[i]
         if (item.startsWith("@")) {
             const selectedUserName = item.split("@")[1]
-            const user = (await User.findOne({ username: selectedUserName })) as UserType
+            const user = (await User.findOne({ username: selectedUserName }, { id: 1 })) as UserType
             if (user && user.id) {
                 let newTextSlice = `<a class="global-mention" href="/profile/${user.id}">${item}</a>`
                 textList.push(newTextSlice)

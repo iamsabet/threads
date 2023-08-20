@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@clerk/nextjs";
+import Avatar from "./Avatar";
 
 const SidebarLinks = ({
   type,
@@ -70,12 +71,12 @@ const SidebarLinks = ({
             {item.route === "/profile" ? (
               <>
                 {profileImage ? (
-                  <Image
+                  <Avatar
                     src={profileImage}
                     alt={item.label}
-                    width={type === "bottombar_link" ? "36" : "24"}
-                    height={type === "bottombar_link" ? "36" : "24"}
-                    className="rounded-full"
+                    width={type === "bottombar_link" ? 36 : 24}
+                    height={type === "bottombar_link" ? 36 : 24}
+                    loadingText="..."
                   />
                 ) : (
                   <Image

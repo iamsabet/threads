@@ -8,6 +8,7 @@ import { comment } from "postcss";
 import RepostModal from "../modals/RepostModal";
 import ShareModal from "../modals/ShareModal";
 import { useMemo } from "react";
+import Avatar from "../shared/Avatar";
 interface ThreadProps {
   id: string;
   currentUserId: string;
@@ -30,6 +31,8 @@ interface ThreadProps {
   comments: {
     author: {
       image: string;
+      username: string;
+      name: string;
     };
   }[];
   isComment?: boolean;
@@ -144,12 +147,10 @@ const ThreadCard = ({
         <div className="flex w-full flex-1 flex-row gap-2">
           <div className="flex flex-col items-center">
             <Link href={`/profile/${author.id}`} className="relative w-11 h-11">
-              <Image
+              <Avatar
                 src={author.image}
                 alt="profile image"
-                fill
-                // sizes=""
-                className="cursor-pointer rounded-full"
+                loadingText={author.username.charAt(0)}
               />
             </Link>
 
@@ -232,10 +233,11 @@ const ThreadCard = ({
             className={`${comments.length >= 3 ? "w-[22px]" : "w-[33px]"}`}
           ></div> */}
           {comments.slice(0, 3).map((comment, index) => (
-            <Image
+            <Avatar
               key={index}
               src={comment.author.image}
-              alt={`user_${index}`}
+              alt={`user_${index} Profile Image`}
+              loadingText={comment.author.username.charAt(0)}
               width={26}
               height={26}
               className={`${

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import FollowButton from "./FollowButton";
 import { Button } from "../ui/button";
+import Avatar from "./Avatar";
 interface PropsType {
   accountId: string;
   account_id: string;
@@ -32,12 +33,11 @@ const ProfileHeader = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="relative h-20 w-20 object-cover">
-            <Image
+            <Avatar
               src={img}
               alt="Profile Image"
-              fill
-              // sizes=""
-              className="rounded-full object-cover shadow-2xl"
+              loadingSize="6xl"
+              loadingText={username.charAt(0)}
             />
           </div>
           <div className="flex-1">
@@ -53,12 +53,7 @@ const ProfileHeader = ({
               className="flex cursor-pointer gap-3 rounded-lg shadow-lg transition-colors duration-200 ease-in-out 
               bg-dark-3 px-4 py-2 hover:bg-primary-500 hover:bg-opacity-20"
             >
-              <Image
-                src="/assets/edit.svg"
-                alt="logout"
-                width={16}
-                height={16}
-              />
+              <Image src="/assets/edit.svg" alt="edit" width={16} height={16} />
 
               <p className="text-light-2 max-sm:hidden">Edit</p>
             </div>
