@@ -22,20 +22,9 @@ const Avatar = ({
   height?: number;
   className?: string;
 }) => {
-  const randomColorKey = (min: number, max: number) => {
-    return Math.floor(Math.random() * max) + min;
-  };
-
-  const bg_color = useMemo(
-    () => digitalRainbowColors[randomColorKey(1, 20)],
-    []
-  );
-  const textColor = useMemo(() => getContrastingColor(bg_color), [bg_color]);
   const loadingFrame = (
     <CharAvatar
       text={loadingText.toUpperCase()}
-      bg_color={bg_color}
-      textColor={textColor}
       pulse={true}
       size={loadingSize}
       customClassNames={className}
@@ -44,8 +33,6 @@ const Avatar = ({
   const replaceFrame = (
     <CharAvatar
       text={loadingText.toUpperCase()}
-      bg_color={bg_color}
-      textColor={textColor}
       pulse={false}
       size={loadingSize}
       customClassNames={className}

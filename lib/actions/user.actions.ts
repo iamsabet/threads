@@ -8,7 +8,7 @@ import { FilterQuery, SortOrder } from "mongoose"
 import clerkClient from "@clerk/clerk-sdk-node"
 import { fetchThreadsByQuery } from "./thread.actions"
 import Vote from "../models/vote.model"
-import { findFollowRecord } from "./follow.action"
+import { fetchFollowers, findFollowRecord } from "./follow.action"
 
 interface ParamsType {
 
@@ -183,8 +183,9 @@ const getActivity = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pag
                 const votesDoc = await getVotes({ pageNumber, pageSize, currentUserId: user._id })
                 const mentionsDoc = await getMentions({ pageNumber, pageSize, currentUserId: user._id })
                 const repostsDoc = await getReposts({ pageNumber, pageSize, currentUserId: user._id })
+                const followsDoc = await fetchFollowers({ pageNumber, pageSize, accountId: user._id })
 
-                const hasNext = repliesDoc.hasNext || votesDoc.hasNext || mentionsDoc.hasNext || repostsDoc.hasNext
+                const hasNext = repliesDoc.hasNext || votesDoc.hasNext || mentionsDoc.hasNext || repostsDoc.hasNext || followsDoc.hasNext
                 let docs: any = []
                 const mentions = mentionsDoc.mentions.reduce((acc, item) => {
                     return acc.concat({
@@ -192,6 +193,15 @@ const getActivity = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pag
                         message: "mentioned you here",
                         subject: item.author,
                         link: "/thread/" + item._id,
+                        createdAt: item.createdAt
+                    })
+                }, [])
+                const follows = followsDoc.docs?.reduce((acc, item) => {
+                    return acc.concat({
+                        type: "follow",
+                        message: "followed you",
+                        subject: item.follower,
+                        link: "/profile/" + item.follower.id,
                         createdAt: item.createdAt
                     })
                 }, [])
@@ -224,6 +234,7 @@ const getActivity = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pag
                     })
                 }, [])
                 docs = docs.concat(mentions)
+                docs = docs.concat(follows)
                 docs = docs.concat(replies)
                 docs = docs.concat(votes)
                 docs = docs.concat(reposts)

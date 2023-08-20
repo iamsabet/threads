@@ -1,11 +1,11 @@
 "use client";
-import React from "react";
+import { digitalRainbowColors } from "@/constants";
+import React, { useMemo } from "react";
+import { getContrastingColor } from "./helpers";
 
 const CharAvatar = ({
   text,
   customClassNames,
-  bg_color,
-  textColor,
   pulse,
   size,
 }: {
@@ -13,9 +13,16 @@ const CharAvatar = ({
   customClassNames?: string;
   size?: string;
   pulse: boolean;
-  bg_color: string;
-  textColor: string;
 }) => {
+  const randomColorKey = (min: number, max: number) => {
+    return Math.floor(Math.random() * max) + min;
+  };
+
+  const bg_color = useMemo(
+    () => digitalRainbowColors[randomColorKey(1, 20)],
+    []
+  );
+  const textColor = useMemo(() => getContrastingColor(bg_color), []);
   return (
     <div
       role="status"

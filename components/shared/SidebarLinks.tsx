@@ -74,8 +74,8 @@ const SidebarLinks = ({
                   <Avatar
                     src={profileImage}
                     alt={item.label}
-                    width={type === "bottombar_link" ? 36 : 24}
-                    height={type === "bottombar_link" ? 36 : 24}
+                    width={type === "bottombar_link" ? 36 : 26}
+                    height={type === "bottombar_link" ? 36 : 26}
                     loadingText="..."
                   />
                 ) : (

@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { RiUserFollowFill } from "react-icons/ri";
 const ActivityIcon = ({
   type,
   message,
@@ -69,6 +70,7 @@ const ActivityIcon = ({
           className="cursor-pointer object-contain scale-125"
         />
       )}
+      {type === "follow" && <RiUserFollowFill size={24} />}
     </span>
   );
 };

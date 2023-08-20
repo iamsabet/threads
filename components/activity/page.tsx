@@ -13,7 +13,7 @@ const ActivitiesComponent = () => {
     options: {
       baseUrl: "/api/activity",
       postFixQs: "",
-      pageSize: 20,
+      pageSize: 10,
     },
     initialValues: {
       initialHasNext: true,
@@ -35,18 +35,20 @@ const ActivitiesComponent = () => {
                   <div className="flex flex-col justify-start sm:flex-row sm:justify-between w-full">
                     <div className="flex justify-between overflow-hidden">
                       <div className="relative h-full">
-                        <Avatar
-                          src={act.subject.image}
-                          alt="Profile Picture"
-                          width={45}
-                          height={45}
-                          loadingText={act.subject.username.charAt(0)}
-                        />
-                        <ActivityIcon
-                          type={act.type}
-                          message={act.message}
-                          styles="flex absolute z-[10] top-10 sm:top-5 left-10 sm:left-7"
-                        />
+                        <div className="w-12 h-12 mr-2">
+                          <Avatar
+                            src={act.subject.image}
+                            alt="Profile Picture"
+                            width={50}
+                            height={50}
+                            loadingText={act.subject.username.charAt(0)}
+                          />
+                          <ActivityIcon
+                            type={act.type}
+                            message={act.message}
+                            styles="flex absolute z-[10] top-7 sm:top-7 left-8 sm:left-8"
+                          />
+                        </div>
                       </div>
                       <p className="flex flex-col sm:flex-row flex-1 !text-base-regular text-light-1 mt-2 ml-2 leading-[10rem]">
                         <span className="mr-1 text-primary-500 text-ellipsis line-clamp-1 w-max-[132px]  h-full">
