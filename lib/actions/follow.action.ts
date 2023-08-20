@@ -129,7 +129,7 @@ const fetchFollowers = async ({ accountId, pageNumber = 1, pageSize = 20 }: { ac
 const findFollowRecord = async ({ followingId, followerId }: { followingId: string, followerId: string }) => {
     try {
         await connectToDb()
-        console.log(followerId, "?", followingId)
+        // console.log(followerId, "?", followingId)
         const doc = await Follow.findOne({ follower: followerId, following: followingId })
         return (!!doc)
     } catch (e: any) {

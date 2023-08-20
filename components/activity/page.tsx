@@ -1,12 +1,9 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
-// import HTMLReactParser from "html-react-parser";
 import { useAuth } from "@clerk/nextjs";
 import Spinner from "../Spinner";
 import { formattedDateString } from "../shared/helpers";
 import ActivityIcon from "./ActivityIcon";
-import JumpTopButton from "../shared/JumpTopButton";
 import usePagination from "@/hooks/usePagination";
 import Avatar from "../shared/Avatar";
 

@@ -336,7 +336,7 @@ const voteToThread = async (userId: string, type: VoteType, threadId: string) =>
     try {
         await connectToDb()
         // const user = await User.findOne({ id: userId })
-        console.log(userId, "?", threadId)
+        // console.log(userId, "?", threadId)
         if (userId) {
             const model = await Vote.findOneAndUpdate(
                 { voter: userId, thread: threadId },

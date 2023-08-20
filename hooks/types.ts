@@ -11,4 +11,5 @@ interface UsePaginationProps {
         initialPageNumber: number;
     };
     getToken: () => Promise<string | null>;
+    targetClass?: string
 }

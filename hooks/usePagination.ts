@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-const usePagination = ({ options, initialValues, getToken }: UsePaginationProps): [boolean, any[] | null] => {
+const usePagination = ({ options, initialValues, getToken, targetClass }: UsePaginationProps): [boolean, any[] | null] => {
     const { initailDocs, initialLoading, initialHasNext, initialPageNumber } = initialValues
     const [activities, setActivities] = useState<any[] | null>(initailDocs);
     const [loading, setLoading] = useState<boolean>(initialLoading);
@@ -53,10 +53,15 @@ const usePagination = ({ options, initialValues, getToken }: UsePaginationProps)
     };
     const scrollHandler = () => {
         setReaching((prev) => {
-            if (
-                Math.round(window.scrollY) + window.outerHeight >=
-                document.body.offsetHeight
-            ) {
+            var element;
+            if (targetClass) {
+                element = document.querySelector(targetClass)
+            }
+
+            const condition = element ? Math.round(element.scrollTop) + element.clientHeight + 50 >= element.scrollHeight
+                : Math.round(window.scrollY) + window.outerHeight + 50 >= document.body.offsetHeight
+
+            if (condition) {
                 if (!prev) {
                     setLoading((loading) => {
                         setHasHext((hasNext) => {
@@ -76,10 +81,20 @@ const usePagination = ({ options, initialValues, getToken }: UsePaginationProps)
     };
 
     const attachScrollHandler = () => {
-        window.addEventListener("scroll", scrollHandler);
+        var element;
+        if (targetClass) {
+            element = document.querySelector(targetClass)
+        }
+        if (element) element.addEventListener("scroll", scrollHandler);
+        else window.addEventListener("scroll", scrollHandler);
     };
     const clearScrollHandler = () => {
-        window.removeEventListener("scroll", scrollHandler);
+        var element;
+        if (targetClass) {
+            element = document.querySelector(targetClass)
+        }
+        if (element) element.removeEventListener("scroll", scrollHandler);
+        else window.removeEventListener("scroll", scrollHandler);
     };
 
     const needsAbortion = (baseUrl === "/api/user/search");

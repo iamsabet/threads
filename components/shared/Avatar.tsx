@@ -29,28 +29,45 @@ const Avatar = ({
     </div>
   );
 
+  const replaceFrame = (
+    <div
+      role="status"
+      className={`rounded-full w-full h-full flex justify-center items-center text-light-2 bg-primary-500 font-bold ${
+        loadingSize ? `text-[40px]` : "text-2xl"
+      } ${className}`}
+    >
+      {loadingText.toUpperCase()}
+    </div>
+  );
+
   // return loadingFrame;
   return (
-    <Suspense fallback={loadingFrame}>
-      {width && height ? (
-        <Image
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          // sizes=""
-          className="rounded-full object-cover shadow-2xl"
-        />
+    <>
+      {src === "" ? (
+        replaceFrame
       ) : (
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          // sizes=""
-          className="rounded-full object-cover shadow-2xl"
-        />
+        <Suspense fallback={loadingFrame}>
+          {width && height ? (
+            <Image
+              src={src}
+              alt={alt}
+              width={width}
+              height={height}
+              // sizes=""
+              className="rounded-full object-cover shadow-2xl"
+            />
+          ) : (
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              // sizes=""
+              className="rounded-full object-cover shadow-2xl"
+            />
+          )}
+        </Suspense>
       )}
-    </Suspense>
+    </>
   );
 };
 

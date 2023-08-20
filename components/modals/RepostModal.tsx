@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/dialog";
 import HTMLReactParser from "html-react-parser";
 import { useAuth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
 import SignInModal from "./SignInModal";
 import Spinner from "../Spinner";
 interface RepostProps {

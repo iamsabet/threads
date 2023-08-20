@@ -3,7 +3,7 @@ const userSchema = new Schema({
     id: { type: String, required: true },
     username: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    image: String,
+    image: { type: String, default: "" },
     bio: String,
     followersCount: { type: Number, default: 0 },
     followingsCount: { type: Number, default: 0 },
