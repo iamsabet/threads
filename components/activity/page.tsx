@@ -38,8 +38,8 @@ const ActivitiesComponent = () => {
                         <Avatar
                           src={act.subject.image}
                           alt="Profile Picture"
-                          width={50}
-                          height={50}
+                          width={45}
+                          height={45}
                           loadingText={act.subject.username.charAt(0)}
                         />
                         <ActivityIcon

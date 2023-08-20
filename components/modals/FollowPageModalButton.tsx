@@ -56,7 +56,7 @@ const FollowPageModalButton = ({
           {count} {correctedType}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[430px] bg-dark-2 outline-none border-light-3 shadow-lg px-3">
+      <DialogContent className="sm:max-w-[430px] bg-dark-2 outline-none border-light-3 shadow-lg pl-0 pr-1 xs:px-3">
         <DialogHeader>
           <DialogTitle className="text-light-1 flex items-center justify-start gap-2 px-2">
             {followIcon}
@@ -65,7 +65,6 @@ const FollowPageModalButton = ({
               <span>{type.toLowerCase()} </span>
             </p>
           </DialogTitle>
-          <DialogDescription className="text-light-2 mt-2 text-[15px]"></DialogDescription>
         </DialogHeader>
         {showModalConfirmation ? (
           <FollowItemsPaginate account_id={account_id} type={type} />

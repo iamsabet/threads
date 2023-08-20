@@ -30,23 +30,26 @@ const UserCard = ({ user, type, searchString }: UserCardProps) => {
 
   return (
     <article className="user-card w-full">
-      <div className="w-12 h-12">
-        <Avatar
-          src={image}
-          alt="Profile Picture"
-          width={48}
-          height={48}
-          loadingText={parsedUserName.toString().charAt(0)}
-        />
+      <div className="flex flex-row gap-2">
+        <div className="w-10 h-10">
+          <Avatar
+            src={image}
+            alt="Profile Picture"
+            width={42}
+            height={42}
+            loadingText={parsedUserName.toString().charAt(0)}
+          />
+        </div>
+        <div className="flex-1 text-ellipsis">
+          <h4 className="text-base-semibold text-light-1 text-ellipsis line-clamp-1 max-w-[150px] xs:max-w-[230px]">
+            {parsedName}
+          </h4>
+          <p className="text-small-medium text-gray-1 text-ellipsis line-clamp-1 max-w-[150px] xs:max-w-[230px]">
+            @{parsedUserName}
+          </p>
+        </div>
       </div>
-      <div className="flex-1 text-ellipsis">
-        <h4 className="text-base-semibold text-light-1 text-ellipsis line-clamp-1">
-          {parsedName}
-        </h4>
-        <p className="text-small-medium text-gray-1 text-ellipsis line-clamp-1">
-          @{parsedUserName}
-        </p>
-      </div>
+
       <Link
         className="user-card_btn px-4 py-2 text-center text-body-bold"
         href={`/profile/${id}`}

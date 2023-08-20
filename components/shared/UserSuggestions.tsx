@@ -108,9 +108,16 @@ const UsersSuggestions = ({
     if (test && position) {
       test.style.left = position.x + 26 + "px";
       test.style.top = position.y + 26 + "px";
-      const targetY = type === "thread" ? position.y + 30 : position.y + 150;
-      const targetX = type === "thread" ? position.x - 26 : position.x + 10;
+      let targetY = type === "thread" ? position.y + 20 : position.y + 130;
+      let targetX = type === "thread" ? position.x - 26 : position.x + 10;
       setBoxPosition((_) => {
+        // check if its going to go out of the page
+        // size is fixed 250px
+        const boxW = 250;
+        const windowW = window.innerWidth;
+        if (position && windowW < boxW + targetX) {
+          targetX = windowW - boxW - 20;
+        }
         if (position) return { x: targetX, y: targetY };
         else return { x: 0, y: 0 };
       });
@@ -235,7 +242,7 @@ const UsersSuggestions = ({
       {usersList.length > 0 ? (
         <ul
           id="usersList"
-          className="fixed z-10 w-[230px] h-auto p-0 m-0 list-none bg-dark-1 rounded-lg"
+          className="fixed z-10 w-[250px] h-auto p-0 m-0 list-none bg-dark-1 rounded-lg"
           style={{ left: boxPosition.x + "px", top: boxPosition.y + "px" }}
         >
           {usersList.map((user, index) => {
@@ -253,17 +260,23 @@ const UsersSuggestions = ({
                 items-center gap-3 h-fit shadow-xl rounded-lg  py-2 px-2
               border-b-gray-50 cursor-pointer`}
               >
-                <Avatar
-                  src={user.image}
-                  alt="Profile Image"
-                  width={40}
-                  height={40}
-                  loadingText={user.username.charAt(0)}
-                />
+                <div className="h-10 w-10">
+                  <Avatar
+                    src={user.image}
+                    alt="Profile Image"
+                    width={40}
+                    height={40}
+                    loadingText={user.username.charAt(0)}
+                  />
+                </div>
 
-                <div className="flex flex-col flex-1 items-start justify-start line-clamp-1 text-ellipsis">
-                  <h4 className="text-light-2">@{user_username}</h4>
-                  <h5 className="text-light-3">{user.name}</h5>
+                <div className="flex flex-col flex-1 items-start justify-start">
+                  <h4 className="text-light-2 line-clamp-1 text-ellipsis">
+                    @{user_username}
+                  </h4>
+                  <h5 className="text-light-3 line-clamp-1 text-ellipsis">
+                    {user.name}
+                  </h5>
                 </div>
               </li>
             );

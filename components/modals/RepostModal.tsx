@@ -96,8 +96,8 @@ const RepostModal = ({ threadId, threadText, authorUsername }: RepostProps) => {
                 {repostIcon}
                 <p className="text-[18px]"> Repost Thread</p>
               </DialogTitle>
-              <DialogDescription className="text-light-2 mt-2 text-[15px]">
-                Are you sure you want to repost this thread by{" "}
+              <DialogDescription className="text-light-2 mt-2 text-[15px] text-left">
+                Are you sure you want to repost this thread by
                 <span className="text-primary-500">@{authorUsername}</span> ?
               </DialogDescription>
             </DialogHeader>
@@ -110,7 +110,7 @@ const RepostModal = ({ threadId, threadText, authorUsername }: RepostProps) => {
                 {HTMLReactParser(threadText)}
               </p>
             </div>
-            <DialogFooter>
+            <DialogFooter className="!flex-row justify-end space-x-2">
               <Button
                 className="text-dark-1 bg-light-1 hover:bg-gray-400 mt-2"
                 onClick={handleCancelRepost}

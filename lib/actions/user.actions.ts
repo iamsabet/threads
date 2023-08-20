@@ -65,10 +65,6 @@ const fetchUser = async (userId: string): Promise<any> => {
         await connectToDb()
         return await User
             .findOne({ id: userId })
-        // .populate({
-        //     path: "communities",
-        //     model: "Community"
-        // })
     } catch (e: any) {
         throw new Error("Failed to fetch user " + e.message)
     }
@@ -88,10 +84,6 @@ const fetchUserById = async (user_Id: string): Promise<any> => {
         await connectToDb()
         return await User
             .findOne({ _id: user_Id })
-        // .populate({
-        //     path: "communities",
-        //     model: "Community"
-        // })
     } catch (e: any) {
         throw new Error("Failed to fetch user " + e.message)
     }

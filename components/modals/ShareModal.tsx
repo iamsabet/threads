@@ -100,7 +100,7 @@ const ShareModal = ({ id, path }: ShareProps) => {
             <p className="text-[18px]">Share on social platforms</p>
           </DialogTitle>
         </DialogHeader>
-        <div className="pb-1 flex flex-wrap gap-4 mt-3">
+        <div className="pb-1 flex flex-wrap gap-4 mt-3 justify-evenly">
           <FacebookShareButton
             className="w-5 h-5 object-contain"
             url={shareText}
@@ -130,9 +130,9 @@ const ShareModal = ({ id, path }: ShareProps) => {
           <EmailShareButton url={shareText}>
             <EmailIcon size={28} className="text-primary-500 rounded-full" />
           </EmailShareButton>
-          <LineShareButton url={shareText}>
+          {/* <LineShareButton url={shareText}>
             <LineIcon size={28} className="text-primary-500 rounded-full" />
-          </LineShareButton>
+          </LineShareButton> */}
           <RedditShareButton url={shareText}>
             <RedditIcon size={28} className="text-primary-500 rounded-full" />
           </RedditShareButton>
@@ -143,12 +143,12 @@ const ShareModal = ({ id, path }: ShareProps) => {
               style={{ color: "#0A66C2" }}
             />
           </LinkedinShareButton>
-          <WorkplaceShareButton url={shareText}>
+          {/* <WorkplaceShareButton url={shareText}>
             <WorkplaceIcon
               size={28}
               className="text-primary-500 rounded-full"
             />
-          </WorkplaceShareButton>
+          </WorkplaceShareButton> */}
 
           <div className="w-full py-2 bg-transparent text-ellipsis flex flex-col items-start justify-start line-clamp-2">
             <p className="bg-dark-2 text-light-2 outline-1 border-0 focus:border-0 text-[11px] sm:text-[12px] md:text-[14px] !max-w-[380px]">
@@ -163,7 +163,7 @@ const ShareModal = ({ id, path }: ShareProps) => {
             </span>
           </div>
         </div>
-        <DialogFooter>
+        <DialogFooter className="!flex-row justify-end space-x-2">
           <Button
             onClick={handleCancel}
             className="text-dark-1 bg-light-1 hover:bg-gray-400 mt-2"

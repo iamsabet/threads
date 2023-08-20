@@ -17,6 +17,8 @@ import { addCommentToThread } from "@/lib/actions/thread.actions";
 import { Textarea } from "../ui/textarea";
 import UsersSuggestions from "../shared/UserSuggestions";
 import Avatar from "../shared/Avatar";
+import { useState } from "react";
+import Spinner from "../Spinner";
 interface PropsType {
   threadId: string;
   currentUserImage: string;
@@ -30,6 +32,7 @@ const Comment = ({
   currentUserName,
 }: PropsType) => {
   const pathname = usePathname();
+  const [loading, setLoading] = useState<boolean>(false);
   const form = useForm({
     resolver: zodResolver(CommentValidation),
     defaultValues: {
@@ -38,6 +41,7 @@ const Comment = ({
   });
 
   const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
+    setLoading((_) => true);
     await addCommentToThread({
       threadId: threadId,
       text: values.comment,
@@ -48,6 +52,7 @@ const Comment = ({
     form.reset();
     setTimeout(() => {
       const articles = document.querySelectorAll("article h5");
+      setLoading((_) => false);
       articles[articles.length - 1]?.scrollIntoView({
         behavior: "smooth",
       });
@@ -104,8 +109,12 @@ const Comment = ({
               </FormItem>
             )}
           />
-          <Button type="submit" className="comment-form_btn bg-primary-500">
-            Reply
+          <Button
+            type="submit"
+            disabled={loading}
+            className="comment-form_btn bg-primary-500 flex justify-center items-center"
+          >
+            {loading ? <Spinner color="#FFFFFF" /> : "Reply"}
           </Button>
         </form>
       </Form>

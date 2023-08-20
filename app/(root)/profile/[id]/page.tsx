@@ -60,7 +60,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         img={userInfo.image}
         bio={userInfo.bio}
       />
-      <div className="mt-9">
+      <div className="mt-2 sm:mt-8">
         <Tabs defaultValue="threads" className="w-full">
           <TabsList className="tab">
             {profileTabs.map((tab) => {

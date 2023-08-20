@@ -10,7 +10,7 @@ const JumpTopButton = ({
   targetClass?: string;
 }) => {
   const [show, setShow] = useState<boolean>(false);
-  const threshold = type === "fixed" ? 140 : 80;
+  const threshold = type === "fixed" ? 140 : 30;
   useEffect(() => {
     attachScrollHandler();
 
@@ -90,7 +90,7 @@ const JumpTopButton = ({
         show
           ? `${
               type === "fixed"
-                ? "bottom-20 md:bottom-10 lg:bottom-10 sm:bottom-28"
+                ? "bottom-24 md:bottom-10 lg:bottom-10 sm:bottom-28"
                 : ""
             } opacity-100`
           : `${type === "fixed" ? "bottom-[-50px]" : ""} opacity-0`

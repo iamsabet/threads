@@ -5,7 +5,7 @@
 @layer components {
   /* main */
   .main-container {
-    @apply flex min-h-screen flex-1 flex-col items-center bg-dark-1 px-2 pb-10 pt-28 max-md:pb-32 sm:px-10;
+    @apply flex min-h-screen flex-1 flex-col items-center bg-dark-1 px-2 pb-10 pt-16 mt-2 sm:pt-24 max-md:pb-32 sm:px-10;
   }
 
   /* Head Text */
@@ -23,15 +23,7 @@
     @apply text-center !text-base-regular text-light-3;
   }
 
-  /* Community Card */
-  .community-card {
-    @apply w-full rounded-lg bg-dark-3 px-4 py-5 sm:w-96;
-  }
-
-  .community-card_btn {
-    @apply rounded-lg bg-primary-500 px-5 py-1.5 text-small-regular !text-light-1 !important;
-  }
-
+ 
   /* thread card  */
   .thread-card_bar {
     @apply relative mt-2 w-0.5 grow rounded-full bg-neutral-800;
@@ -39,7 +31,7 @@
 
   /* User card */
   .user-card {
-    @apply flex flex-col justify-between gap-4 max-xs:rounded-xl max-xs:bg-dark-3 max-xs:p-4 xs:flex-row xs:items-center;
+    @apply flex flex-row justify-between gap-3 max-xs:rounded-xl max-xs:bg-dark-3 p-0 items-center;
   }
 
   .user-card_avatar {
@@ -47,7 +39,7 @@
   }
 
   .user-card_btn {
-    @apply h-auto min-w-[74px] rounded-lg bg-primary-500 text-[12px] text-light-1 !important;
+    @apply h-auto min-w-[74px] max-w-[120px] rounded-lg bg-primary-500 text-[12px] text-light-1 !important;
   }
 
   .searchbar {
@@ -179,11 +171,11 @@ a.global-mention{
 
 /* Comment Form */
 .comment-form {
-  @apply mt-8 flex items-center gap-4 border-y border-y-dark-4 py-5 max-xs:flex-col !important;
+  @apply mt-8 flex items-center gap-4 border-y border-y-dark-4 py-5 max-sm:flex-col !important;
 }
 
 .comment-form_btn {
-  @apply rounded-3xl bg-primary-500 px-8 py-2 !text-small-regular text-light-1 max-xs:w-full !important;
+  @apply rounded-3xl bg-primary-500 px-8 py-2 !text-small-regular text-light-1 max-sm:w-full !important;
 }
 
 /* Force modal background */

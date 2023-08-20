@@ -141,12 +141,12 @@ const ThreadCard = ({
   return (
     <article
       className={`flex w-full flex-col rounded-xl
-    ${isComment ? "px-0 xs:px-7 mt-5" : "bg-dark-2 p-7"} `}
+    ${isComment ? "px-1 sm:px-7 mt-5" : "bg-dark-2 p-7"} `}
     >
       <div className="flex justify-between items-start">
         <div className="flex w-full flex-1 flex-row gap-2">
           <div className="flex flex-col items-center">
-            <Link href={`/profile/${author.id}`} className="relative w-11 h-11">
+            <Link href={`/profile/${author.id}`} className="relative w-10 h-10">
               <Avatar
                 src={author.image}
                 alt="profile image"
