@@ -15,8 +15,8 @@ import { IoIosPeople } from "react-icons/io";
 import Spinner from "../Spinner";
 import usePagination from "@/hooks/usePagination";
 import UserCard from "../cards/UserCard";
-import JumpTopButton from "./JumpTopButton";
-import FollowItemsPaginate from "./FollowItemsPaginate";
+import JumpTopButton from "../shared/JumpTopButton";
+import FollowItemsPaginate from "../shared/FollowItemsPaginate";
 
 interface FollowPageButtonType {
   count: number;

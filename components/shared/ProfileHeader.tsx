@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import FollowButton from "./FollowButton";
 import Avatar from "./Avatar";
-import FollowPageModalButton from "./FollowPageModalButton";
+import FollowPageModalButton from "../modals/FollowPageModalButton";
+import ProfileAvatarModal from "../modals/ProfileAvatarModal";
 interface PropsType {
   accountId: string;
   account_id: string;
@@ -32,13 +33,8 @@ const ProfileHeader = ({
     <div className="flex w-full flex-col justify-start">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="relative h-20 w-20 object-cover">
-            <Avatar
-              src={img}
-              alt="Profile Image"
-              loadingSize="big"
-              loadingText={username.charAt(0)}
-            />
+          <div className="relative h-24 w-24 object-cover">
+            <ProfileAvatarModal accountUsername={username} src={img} />
           </div>
           <div className="flex-1">
             <h2 className="text-left text-heading3-bold text-light-1">
