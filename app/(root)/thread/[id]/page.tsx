@@ -1,10 +1,10 @@
 import ThreadCard from "@/components/cards/ThreadCard";
 import Comment from "@/components/forms/Comment";
-import JumpTopButton from "@/components/shared/JumpTopButton";
 import { fetchThreadById } from "@/lib/actions/thread.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   if (!params.id) return null;
@@ -17,7 +17,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
   const thread = await fetchThreadById(params.id, userInfo?._id);
 
-  if (!thread) return null;
+  if (!thread) return notFound();
 
   //   console.log(thread.author);
   //   console.log(thread.children);

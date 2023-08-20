@@ -76,8 +76,8 @@ const fetchUser = async (userId: string): Promise<any> => {
 
 const fetchUserAccount = async (accountId: string, userId: string): Promise<any> => {
     let userAccount = await fetchUser(accountId)
+    if (!userAccount) return null
     userAccount = JSON.parse(JSON.stringify(userAccount))
-
     const res = await findFollowRecord({ followerId: userId, followingId: userAccount._id })
     userAccount.follow = res
     return userAccount
@@ -105,7 +105,8 @@ const fetchUserThreads = async ({ pageNumber = 1, pageSize = 30, currentUserId, 
         const result = await fetchThreadsByQuery({ pageNumber, pageSize, currentUserId, accountId, label })
         return result
     } catch (e: any) {
-        throw new Error("Failed to fetch user threads " + e.message)
+        console.log("Failed to fetch user threads " + e.message)
+        return { result: false, message: "Account not found", status: 404 }
     }
 }
 interface SearchUsersType {

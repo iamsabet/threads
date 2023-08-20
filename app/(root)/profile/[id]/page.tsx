@@ -8,7 +8,7 @@ import {
   fetchUserThreads,
 } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 import React from "react";
 import ThreadsTab from "@/components/shared/ThreadsTab";
@@ -23,6 +23,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   if (!current_user) return redirect("/sign-in");
   if (!current_user?.onboarded) return redirect("/onboarding");
   const userInfo = await fetchUserAccount(params.id, current_user._id);
+  if (!userInfo) return notFound();
 
   let results: {
     threads: any;

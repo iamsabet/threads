@@ -7,6 +7,7 @@ import User from "../models/user.model";
 import { Types } from "mongoose";
 import Vote from "../models/vote.model";
 import { handleVotesCount, replaceMentions } from "./_helper.actions";
+import { notFound } from "next/navigation";
 
 
 const createThread = async ({ text, author, communityId, path, repost }: PropsType) => {
@@ -67,8 +68,10 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
             baseQuery = { author: { $in: [accountId] }, parentId: { $nin: [null, undefined] } }
         }
         else if (label === "mentioned") {
-            const accountUsername = (await User.findOne({ _id: accountId }, { username: 1 })).username
-            const regex = RegExp(`>@${accountUsername}</`, 'i') // only username matches having a tag around
+            const account = (await User.findOne({ _id: accountId }, { username: 1 }))
+            if (!account) return { result: false, message: "Account not found", status: 404 }
+            const account_id = account.id
+            const regex = RegExp(`"${account_id}">`, 'i')  // only username matches having a tag around
             baseQuery = { text: { $regex: regex } }
         }
     } else {
@@ -290,7 +293,8 @@ const fetchThreadById = async (id: string, currentUserId: string) => {
         let threads_final = handleVotesCount([thread], [threadWithMyVote], true)
         return threads_final[0]
     } catch (e: any) {
-        throw new Error("Fetch Thread failed " + e.message)
+        console.log("Fetch Thread failed " + e.message)
+        return null
     }
 }
 
