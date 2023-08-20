@@ -1,4 +1,5 @@
 "use client";
+
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -8,20 +9,14 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
-import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { CommentValidation } from "@/lib/validations/thread";
-import Image from "next/image";
 import { addCommentToThread } from "@/lib/actions/thread.actions";
 import { Textarea } from "../ui/textarea";
-import { useEffect, useState } from "react";
-import { autoCompleteUsernames } from "@/lib/actions/user.actions";
 import UsersSuggestions from "../shared/UserSuggestions";
 import Avatar from "../shared/Avatar";
-// import { addComment } from "@/lib/actions/thread.actions";
 interface PropsType {
   threadId: string;
   currentUserImage: string;
@@ -35,11 +30,6 @@ const Comment = ({
   currentUserName,
 }: PropsType) => {
   const pathname = usePathname();
-  const router = useRouter();
-  const [usersList, setUsersList] = useState<UserType[]>([]);
-  const [boxPosition, setBoxPosition] = useState<PositionType>({ x: 0, y: 0 });
-  const [searchText, setSearchText] = useState<string>("");
-  const [autoCompleteNavigator, setAutoCompleteNavigator] = useState<number>(0);
   const form = useForm({
     resolver: zodResolver(CommentValidation),
     defaultValues: {
@@ -81,13 +71,15 @@ const Comment = ({
             render={({ field }) => (
               <FormItem className="flex flex-row gap-3 items-center w-full">
                 <FormLabel>
-                  <Avatar
-                    src={currentUserImage}
-                    alt="profile picture"
-                    loadingText={currentUserName.charAt(0)}
-                    width={48}
-                    height={48}
-                  />
+                  <div className="w-12 h-12">
+                    <Avatar
+                      src={currentUserImage}
+                      alt="profile picture"
+                      loadingText={currentUserName.charAt(0)}
+                      width={48}
+                      height={48}
+                    />
+                  </div>
                 </FormLabel>
                 <FormControl className="border-none bg-dark-3 text-light-1">
                   <Textarea

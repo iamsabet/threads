@@ -21,7 +21,7 @@ const CharAvatar = ({
       className={`${
         pulse ? "animate-pulse" : ""
       } rounded-full w-full h-full flex justify-center items-center font-semibold ${
-        size ? `text-[40px]` : "text-2xl"
+        size ? `text-[43px]` : `text-[24px]`
       } ${customClassNames}`}
       style={{
         backgroundColor: bg_color,

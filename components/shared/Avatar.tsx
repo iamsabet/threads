@@ -7,14 +7,14 @@ import { getContrastingColor } from "./helpers";
 const Avatar = ({
   src,
   loadingSize,
-  loadingText,
+  loadingText = "small",
   alt,
   width,
   height,
   className,
 }: {
   src: string | StaticImport;
-  loadingSize?: "6xl" | "5xl" | "4xl" | "3xl" | "2xl" | "xl" | "lg";
+  loadingSize?: "big" | "small";
   loadingText: string;
   alt: string;
   width?: number;

@@ -36,7 +36,7 @@ const ProfileHeader = ({
             <Avatar
               src={img}
               alt="Profile Image"
-              loadingSize="6xl"
+              loadingSize="big"
               loadingText={username.charAt(0)}
             />
           </div>
