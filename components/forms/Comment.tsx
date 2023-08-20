@@ -89,6 +89,7 @@ const Comment = ({
                 <FormControl className="border-none bg-dark-3 text-light-1">
                   <Textarea
                     rows={1}
+                    maxLength={3000}
                     className="no-focus resize-none text-light-1 outline-none"
                     // type="text"
                     placeholder="Comment..."

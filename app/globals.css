@@ -81,6 +81,10 @@
   .rightsidebar {
     @apply sticky right-0 top-0 z-20 flex h-screen w-fit flex-col justify-between gap-12 overflow-auto border-l border-l-dark-4 bg-dark-2 px-10 pb-6 pt-28 max-xl:hidden;
   }
+  .show-more_btn {
+    @apply !bg-transparent hover:bg-primary-500 hover:bg-opacity-30 text-light-3 hover:text-secondary-500 text-subtle-medium
+      absolute -bottom-[22px] right-0 transition-all duration-200 ease-in-out
+  }
 
 }
 

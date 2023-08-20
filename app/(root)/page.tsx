@@ -20,11 +20,11 @@ const Home = async () => {
     <>
       <h1 className="head-text text-left">Home</h1>
       <section className="mt-8 flex flex-col gap-10">
-        {result.docs.length === 0 ? (
+        {result.docs?.length === 0 ? (
           <p className="no-result">No Threads found</p>
         ) : (
           <>
-            {result.docs.map((thread: any) => {
+            {result.docs?.map((thread: any) => {
               return (
                 <ThreadCard
                   key={thread._id}
@@ -34,7 +34,6 @@ const Home = async () => {
                   parentId={thread.parentId}
                   content={thread.text}
                   author={thread.author}
-                  community={thread.community}
                   createdAt={thread.createdAt}
                   comments={thread.children}
                   votes={thread.votePoints}

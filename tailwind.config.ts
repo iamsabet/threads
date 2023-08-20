@@ -172,6 +172,11 @@ const config: Config = {
       ],
     },
     extend: {
+      lineClamp: {
+        10: "10",
+        12: "12",
+        30: "30"
+      },
       colors: {
         "primary-500": "#877EFF",
         "secondary-500": "#FFB620",

@@ -33,10 +33,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
           parentId={thread.parentId}
           content={thread.text}
           author={thread.author}
-          community={thread.community}
           createdAt={thread.createdAt}
           comments={thread.children}
           isComment={false}
+          isMainThread={true}
           votes={thread.votePoints}
           myVote={thread.myVote}
         />
@@ -60,10 +60,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
               parentId={comment.parentId}
               content={comment.text}
               author={comment.author}
-              community={comment.community}
               createdAt={comment.createdAt}
               comments={comment.children}
-              isComment
+              isComment={true}
+              isMainThread={false}
               votes={comment.votePoints}
               myVote={comment.myVote}
             />

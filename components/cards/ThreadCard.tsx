@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import VoteBlock from "../threadActions/VoteBlock";
@@ -7,7 +9,7 @@ import DeleteThread from "../forms/DeleteThread";
 import { comment } from "postcss";
 import RepostModal from "../modals/RepostModal";
 import ShareModal from "../modals/ShareModal";
-import { useMemo } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import Avatar from "../shared/Avatar";
 interface ThreadProps {
   id: string;
@@ -22,11 +24,6 @@ interface ThreadProps {
     name: string;
     image: string;
   };
-  community: {
-    id: string;
-    name: string;
-    image: string;
-  } | null;
   createdAt: string;
   comments: {
     author: {
@@ -36,6 +33,7 @@ interface ThreadProps {
     };
   }[];
   isComment?: boolean;
+  isMainThread?: boolean;
   votes: number;
   myVote?: VoteType;
 }
@@ -46,10 +44,10 @@ const ThreadCard = ({
   parentId,
   content,
   author,
-  community,
   createdAt,
   comments,
   isComment,
+  isMainThread = false,
   votes,
   myVote,
 }: ThreadProps) => {
@@ -70,6 +68,19 @@ const ThreadCard = ({
     };
   } | null = typeof parentId === "object" ? parentId : null;
 
+  const contentRef = useRef(null);
+  const [showMore, setShowMore] = useState(isMainThread);
+  const [showLink, setShowLink] = useState(false);
+  useLayoutEffect(() => {
+    // debugger;
+    // @ts-ignore
+    if (contentRef.current?.clientWidth <= contentRef.current?.scrollWidth) {
+      // @ts-ignore
+      if (contentRef.current?.clientHeight > 19.6 * 6) {
+        setShowLink(true);
+      }
+    }
+  }, [contentRef]);
   const repostSubtitle = useMemo(
     () =>
       repost ? (
@@ -141,7 +152,7 @@ const ThreadCard = ({
   return (
     <article
       className={`flex w-full flex-col rounded-xl
-    ${isComment ? "px-1 sm:px-7 mt-5" : "bg-dark-2 p-7"} `}
+    ${isComment ? "px-1 sm:px-7 mt-5" : "bg-dark-2 py-3 pl-1 pr-3 sm:p-7"} `}
     >
       <div className="flex justify-between items-start">
         <div className="flex w-full flex-1 flex-row gap-2">
@@ -168,9 +179,21 @@ const ThreadCard = ({
             </Link>
             {repostSubtitle}
             {replySubtitle}
-            <p className="mt-2 text-small-regular text-light-2">
-              {HTMLReactParser(content)}
-            </p>
+            <div className="relative">
+              <p
+                ref={contentRef}
+                className={`mt-2 text-small-regular text-light-2 transition-all duration-200 ease-in-out w-fit text-justify ${
+                  !showMore ? "line-clamp-6 text-ellipsis" : ""
+                }`}
+              >
+                {HTMLReactParser(content)}
+              </p>
+              {showLink && !isMainThread && (
+                <a href={`/thread/${id}`} className={`show-more_btn`}>
+                  {showMore ? "Collapse" : "Read more ..."}
+                </a>
+              )}
+            </div>
             <div
               className={`${
                 isComment && "gap-3 mb-2"
@@ -224,7 +247,7 @@ const ThreadCard = ({
 
       {comments.length > 0 && (
         <div
-          className={`${comments.length === 1 && "ml-2.5"}
+          className={`${comments.length === 1 && "ml-2"}
             ${comments.length === 2 && "ml-1"}
             ${comment.length >= 3 && "-ml-3"}
           } mt-2 flex items-center gap-3`}

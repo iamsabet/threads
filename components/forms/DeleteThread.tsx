@@ -58,7 +58,7 @@ function DeleteThread({
           }}
         />
       ) : (
-        <Spinner />
+        <Spinner size="18px" />
       )}
     </>
   );

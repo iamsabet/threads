@@ -78,7 +78,12 @@ export const PostThread = ({
                   className="no-focus border border-dark-4
               resize-none bg-dark-3 text-light-1"
                 >
-                  <Textarea rows={15} {...field} id="thread-text-area" />
+                  <Textarea
+                    rows={15}
+                    maxLength={6000}
+                    {...field}
+                    id="thread-text-area"
+                  />
                 </FormControl>
                 <div
                   id="test"
