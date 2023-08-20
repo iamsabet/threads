@@ -5,6 +5,7 @@ import FollowButton from "./FollowButton";
 import Avatar from "./Avatar";
 import FollowPageModalButton from "../modals/FollowPageModalButton";
 import ProfileAvatarModal from "../modals/ProfileAvatarModal";
+import ShareModal from "../modals/ShareModal";
 interface PropsType {
   accountId: string;
   account_id: string;
@@ -64,6 +65,7 @@ const ProfileHeader = ({
       </div>
       <div className="w-full">
         <div className="w-full flex justify-start flex-wrap items-center gap-2 mt-3">
+          <ShareModal id={accountId} path="profile" />
           <FollowPageModalButton
             count={followersCount}
             type="Followers"
@@ -79,7 +81,7 @@ const ProfileHeader = ({
             accountUsername={username}
           />
         </div>
-        <p className="mt-6 w-full text-justify text-base-regular text-light-2">
+        <p className="pl-1 mt-6 w-full text-justify text-base-regular text-light-2">
           {bio}
         </p>
       </div>

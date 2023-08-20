@@ -37,10 +37,11 @@ import { IoLogoLinkedin } from "react-icons/io5";
 import CopyToClipboard from "react-copy-to-clipboard";
 
 interface ShareProps {
-  threadId: string;
+  id: string;
+  path: "profile" | "thread";
 }
 
-const ShareModal = ({ threadId }: ShareProps) => {
+const ShareModal = ({ id, path }: ShareProps) => {
   const [showShareConfirmation, setShowShareConfirmation] = useState(false);
   const [copy, setcopy] = useState(false);
   const handleShareClick = (state: boolean) => {
@@ -53,11 +54,11 @@ const ShareModal = ({ threadId }: ShareProps) => {
   useEffect(() => {
     setUrl(
       (_) =>
-        `${window.location.protocol}://${window.location.host}/thread/${threadId}`
+        `${window.location.protocol}://${window.location.host}/${path}/${id}`
     );
     setShareText(
       (_) =>
-        `Check this out \n ${window.location.protocol}://${window.location.host}/thread/${threadId}`
+        `Check this out \n ${window.location.protocol}://${window.location.host}/${path}/${id}`
     );
   }, []);
 
@@ -149,8 +150,8 @@ const ShareModal = ({ threadId }: ShareProps) => {
             />
           </WorkplaceShareButton>
 
-          <div className="w-full py-2 bg-transparent">
-            <p className="w-full bg-dark-2 text-light-2 outline-1 border-0 focus:border-0 text-[11px] sm:text-[12px] md:text-[14px]">
+          <div className="w-full py-2 bg-transparent text-ellipsis flex flex-col items-start justify-start line-clamp-2">
+            <p className="bg-dark-2 text-light-2 outline-1 border-0 focus:border-0 text-[11px] sm:text-[12px] md:text-[14px] !max-w-[380px]">
               {url}
             </p>
             <span

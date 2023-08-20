@@ -1,3 +1,4 @@
+"use client";
 import { digitalRainbowColors } from "@/constants";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
@@ -64,7 +65,7 @@ const Avatar = ({
               width={width}
               height={height}
               // sizes=""
-              className="rounded-full object-cover shadow-2xl"
+              className={`rounded-full object-cover shadow-2xl ${className}`}
             />
           ) : (
             <Image
@@ -72,7 +73,7 @@ const Avatar = ({
               alt={alt}
               fill
               // sizes=""
-              className="rounded-full object-cover shadow-2xl"
+              className={`rounded-full object-cover shadow-2xl ${className}`}
             />
           )}
         </Suspense>

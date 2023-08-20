@@ -206,7 +206,7 @@ const ThreadCard = ({
                   authorUsername={author.username}
                 />
                 {/* Share */}
-                <ShareModal threadId={id} />
+                <ShareModal id={id} path="thread" />
                 {/* Delete Thread */}
                 <DeleteThread
                   threadId={JSON.stringify(id)}
@@ -247,7 +247,20 @@ const ThreadCard = ({
               }`}
             />
           ))}
-
+          {/* {comments.slice(0, 3).map((comment, index) => (
+            <Image
+              key={index}
+              src={comment.author.image}
+              alt={`user_${index}`}
+              width={26}
+              height={26}
+              className={`${
+                index !== 0 && "-ml-7"
+              } rounded-full object-contain ${
+                comments.length >= 3 && index === 1 && "mb-7 z-[10]"
+              }`}
+            />
+          ))} */}
           <Link href={`/thread/${id}`}>
             <p className="mt-1 text-subtle-medium text-gray-1">
               {comments.length} repl{comments.length > 1 ? "ies" : "y"}
