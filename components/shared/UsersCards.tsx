@@ -10,7 +10,7 @@ const UsersCards = ({ searchString }: { searchString: string }) => {
     options: {
       baseUrl: "/api/user/search",
       postFixQs: `&search=${searchString}&sort=desc`,
-      pageSize: 20,
+      pageSize: 10,
     },
     initialValues: {
       initialHasNext: true,

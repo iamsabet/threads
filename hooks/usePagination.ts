@@ -11,14 +11,14 @@ const usePagination = ({ options, initialValues, getToken, targetClass }: UsePag
 
     const fetchActivities = async (page: number, next: boolean, abortController?: AbortController) => {
         // for debug purposes only
-        setPageQueue((queue) => {
-            if (queue.indexOf(page) === -1) {
-                return queue.concat(page)
-            }
-            else {
-                return queue
-            }
-        })
+        // setPageQueue((queue) => {
+        //     if (queue.indexOf(page) === -1) {
+        //         return queue.concat(page)
+        //     }
+        //     else {
+        //         return queue
+        //     }
+        // })
         // console.log(pageQueue)
         if (!loading && next) {
             setLoading((_) => true);
@@ -100,22 +100,28 @@ const usePagination = ({ options, initialValues, getToken, targetClass }: UsePag
     const needsAbortion = (baseUrl === "/api/user/search");
 
     useEffect(() => {
+
         const abortController = needsAbortion ? new AbortController() : undefined
         fetchActivities(pageNumber, true, abortController);
-        attachScrollHandler();
+        if (initialHasNext) {
+            attachScrollHandler();
+        }
         return () => {
             abortController?.abort()
             return clearScrollHandler();
         };
+
     }, []);
 
 
     useEffect(() => {
-        const abortController = needsAbortion ? new AbortController() : undefined
-        if (pageNumber > initialPageNumber) fetchActivities(pageNumber, hasNext, abortController);
-        // console.log(pageNumber)
-        return () => {
-            abortController?.abort()
+        if (initialHasNext) {
+            const abortController = needsAbortion ? new AbortController() : undefined
+            if (pageNumber > initialPageNumber) fetchActivities(pageNumber, hasNext, abortController);
+            // console.log(pageNumber)
+            return () => {
+                abortController?.abort()
+            }
         }
     }, [pageNumber]);
 

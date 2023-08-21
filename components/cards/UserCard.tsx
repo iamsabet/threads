@@ -29,33 +29,65 @@ const UserCard = ({ user, type, searchString }: UserCardProps) => {
   return (
     <article className="user-card w-full">
       <div className="flex flex-row gap-2">
-        <div className="w-10 h-10">
-          <Avatar
-            src={image}
-            alt="Profile Picture"
-            width={42}
-            height={42}
-            loadingText={username.toString().charAt(0).toUpperCase()}
-          />
-        </div>
-        <div className="flex-1 text-ellipsis">
-          <h4 className="text-base-semibold text-light-1 text-ellipsis line-clamp-1 max-w-[150px] xs:max-w-[230px]">
-            {parsedName}
-          </h4>
-          <p className="text-small-medium text-gray-1 text-ellipsis line-clamp-1 max-w-[150px] xs:max-w-[230px]">
-            @{parsedUserName}
-          </p>
-        </div>
+        <UserLink
+          type={type}
+          className="flex flex-row gap-2 w-fit h-fit group justify-start"
+          link={`/profile/${id}`}
+        >
+          <div className="w-10 h-10">
+            <Avatar
+              src={image}
+              alt="Profile Picture"
+              width={42}
+              height={42}
+              loadingText={username.toString().charAt(0).toUpperCase()}
+            />
+          </div>
+          <div className="flex-1 text-ellipsis">
+            <h4
+              className="text-base-semibold text-light-1 text-ellipsis line-clamp-1 max-w-[150px] xs:max-w-[230px] 
+              transition-all duration-200 ease-in-out group-hover:text-primary-500"
+            >
+              {parsedName}
+            </h4>
+            <p
+              className="text-small-medium text-gray-1 text-ellipsis line-clamp-1 max-w-[150px] xs:max-w-[230px]
+              transition-all duration-200 ease-in-out group-hover:text-secondary-500"
+            >
+              @{parsedUserName}
+            </p>
+          </div>
+        </UserLink>
       </div>
-
-      <Link
-        className="user-card_btn px-4 py-2 text-center text-body-bold"
-        href={`/profile/${id}`}
-      >
-        View
-      </Link>
-      {/* <Button className="user-card_btn">View</Button> */}
+      {type !== "suggested" && (
+        <Link
+          className="user-card_btn px-4 py-2 text-center text-body-bold"
+          href={`/profile/${id}`}
+        >
+          View
+        </Link>
+      )}
     </article>
+  );
+};
+
+const UserLink = ({
+  type,
+  children,
+  link,
+  className,
+}: {
+  type: string;
+  children: React.ReactNode | React.ReactNode[];
+  link: string;
+  className: string;
+}) => {
+  return type === "suggested" ? (
+    <Link className={className} href={link}>
+      {children}
+    </Link>
+  ) : (
+    <>{children}</>
   );
 };
 
