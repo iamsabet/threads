@@ -83,17 +83,12 @@ const UserLink = ({
   className: string;
 }) => {
   return type === "suggested" ? (
-    <Link
-      className={className}
-      href={link}
-      onClick={(e) => {
-        // e.preventDefault();
-        // window.location?.replace(link);
-      }}
-    >
+    // <Link
+    <a className={className} href={link}>
       {children}
-    </Link>
+    </a>
   ) : (
+    // </Link>
     <>{children}</>
   );
 };

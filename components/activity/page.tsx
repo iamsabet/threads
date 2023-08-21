@@ -32,15 +32,15 @@ const ActivitiesComponent = () => {
             return (
               <Link key={`${act.type}"-"${act.link}-${index}`} href={act.link}>
                 <article className="activity-card">
-                  <div className="flex flex-col justify-start sm:flex-row sm:justify-between w-full">
-                    <div className="flex justify-between overflow-hidden">
+                  <div className="flex flex-col justify-start sm:flex-row sm:justify-between w-full items-start sm:items-center ">
+                    <div className="flex justify-between overflow-hidden items-center">
                       <div className="relative h-full">
                         <div className="w-12 h-12 mr-2">
                           <Avatar
                             src={act.subject.image}
                             alt="Profile Picture"
-                            width={50}
-                            height={50}
+                            width={48}
+                            height={48}
                             loadingText={act.subject.username.charAt(0)}
                           />
                           <ActivityIcon
@@ -50,7 +50,7 @@ const ActivitiesComponent = () => {
                           />
                         </div>
                       </div>
-                      <p className="flex flex-col sm:flex-row flex-1 !text-base-regular text-light-1 mt-2 ml-2 leading-[10rem]">
+                      <p className="flex flex-col sm:flex-row flex-1 !text-base-regular text-light-1 ml-2 leading-[10rem]">
                         <span className="mr-1 text-primary-500 text-ellipsis line-clamp-1 w-max-[132px]  h-full">
                           {act.subject.name}
                         </span>
@@ -63,8 +63,8 @@ const ActivitiesComponent = () => {
                           </span> */}
                       </p>
                     </div>
-                    <div className="w-30">
-                      <h5 className="text-subtle-medium text-gray-1 mt-3 ml-1.5 sm:ml-0">
+                    <div className="w-full sm:w-36">
+                      <h5 className="text-subtle-medium text-gray-1 mt-2 sm:mt-0 ml-1.5 sm:ml-0 text-right">
                         {formattedDateString(act.createdAt)}
                       </h5>
                     </div>
