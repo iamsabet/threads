@@ -29,7 +29,7 @@ const UsersCards = ({ searchString }: { searchString: string }) => {
 
   return (
     <>
-      <div className="flex flex-col gap-9 justify-center items-center pt-4 sm:pt-7 px-0 rounded-lg">
+      <div className="flex flex-col gap-5 justify-center items-center pt-4 sm:pt-5 px-0 rounded-lg">
         {
           // @ts-ignore
           users && users.length === 0 ? (

@@ -3,6 +3,7 @@ import { RiUserFollowFill, RiUserUnfollowFill } from "react-icons/ri";
 import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import Spinner from "../Spinner";
+import { usePathname } from "next/navigation";
 const FollowButton = ({
   account_id,
   init_follow,
@@ -12,6 +13,7 @@ const FollowButton = ({
 }) => {
   const [follow, setFollow] = useState<boolean>(init_follow);
   const [loading, setLoading] = useState<boolean>(false);
+  const pathname = usePathname();
   try {
     account_id = JSON.parse(account_id);
   } catch (e) {}
@@ -35,14 +37,32 @@ const FollowButton = ({
     const token = await getToken();
 
     if (token) headers["Authorization"] = `Bearer ${token}`;
-    const response = await fetch(`/api/follow`, {
+    await fetch(`/api/follow`, {
       method: "POST",
       headers: headers,
       cache: "no-cache",
-      body: JSON.stringify({ following: account_id, type: type }),
+      body: JSON.stringify({
+        following: account_id,
+        type: type,
+        path: pathname,
+      }),
     });
-    // console.log(response);
+
+    updateFollowersCountNonReactMethod("followers-btn", type);
+
     setLoading((_) => false);
+  };
+
+  const updateFollowersCountNonReactMethod = (id: string, type: string) => {
+    const inc_val = type === "follow" ? 1 : -1;
+    const element = document.getElementById(id);
+    // @ts-ignore
+    const innerVal = parseInt(element?.innerText.split(" ")[0]);
+    const val = (innerVal + inc_val).toString() + " Followers";
+    if (element) {
+      // @ts-ignore
+      element.innerHTML = val;
+    }
   };
 
   return (

@@ -39,18 +39,18 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-    const { type, following } = await req.json()
+    const { type, following, path } = await req.json()
     if (type === "follow" || type === "unfollow") {
         const { userId } = auth();
         if (userId) {
             const follower = (await fetchUser(userId))._id
             if (follower) {
                 if (type === "follow") {
-                    const data = await followAction({ follower, following })
+                    const data = await followAction({ follower, following, path })
                     return NextResponse.json(data)
                 }
                 else {
-                    const data = await unfollowAction({ follower, following })
+                    const data = await unfollowAction({ follower, following, path })
                     return NextResponse.json(data)
                 }
 

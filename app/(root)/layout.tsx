@@ -37,7 +37,7 @@ export default async function RootLayout({
             <RightSidebar />
           </main>
           <BottomBar />
-          <JumpTopButton />
+          <JumpTopButton type="fixed" />
         </body>
       </html>
     </ClerkProvider>

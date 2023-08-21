@@ -26,6 +26,7 @@ interface PaginatePropsTypeByQuery extends PaginatePropsType {
 interface FollowType {
     follower: string
     following: string
+    path: string
 
 }
 

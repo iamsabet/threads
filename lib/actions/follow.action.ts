@@ -4,9 +4,10 @@ import { FilterQuery } from "mongoose"
 import { connectToDb } from "../db/mongoose"
 import Follow from "../models/follow.model"
 import User from "../models/user.model"
-import { RandomDelay, fetchUserById } from "./user.actions"
+import { fetchUserById } from "./user.actions"
+import { revalidatePath } from "next/cache"
 
-const followAction = async ({ follower, following }: FollowType) => {
+const followAction = async ({ follower, following, path }: FollowType) => {
     try {
         await connectToDb()
         const followerUser = await fetchUserById(follower)
@@ -16,13 +17,22 @@ const followAction = async ({ follower, following }: FollowType) => {
         if (!followerUser)
             return { result: false, message: "Follower user now found : " + follower.toString() }
 
-        const followDoc = await Follow
-            .create(
-                { follower: follower, following: following },
-            )
+        const flw = await Follow.findOne({ follower: follower, following: following })
+        if (!flw) {
+            const followDoc = await Follow
+                .create(
+                    { follower: follower, following: following },
+                )
 
-        await updateFollowsCountForUsers({ followingUser, followerUser })
-        return followDoc
+            await updateFollowsCountForUsers({ followingUser, followerUser })
+            revalidatePath(path)
+            // revalidatePath("/profile")
+            return followDoc
+        }
+        else {
+            return flw
+        }
+
     } catch (e: any) {
         console.error("Follow Failed with error : " + e.message)
         return { result: false }
@@ -30,7 +40,7 @@ const followAction = async ({ follower, following }: FollowType) => {
 
 }
 
-const unfollowAction = async ({ follower, following }: FollowType) => {
+const unfollowAction = async ({ follower, following, path }: FollowType) => {
     try {
         await connectToDb()
         const followerUser = await fetchUserById(follower)
@@ -46,7 +56,8 @@ const unfollowAction = async ({ follower, following }: FollowType) => {
             )
 
         await updateFollowsCountForUsers({ followingUser, followerUser })
-        await RandomDelay(1)
+        revalidatePath(path)
+        // revalidatePath("/profile")
         return { result: true, message: "Unfollow done" }
     } catch (e: any) {
         throw new Error("Follow Failed with error : " + e.message)

@@ -50,6 +50,7 @@ const FollowPageModalButton = ({
     >
       <DialogTrigger asChild>
         <Button
+          id={type.toLowerCase() + "-btn"}
           className="bg-transparent hover:bg-primary-500 hover:bg-opacity-30 rounded-lg"
           onClick={() => handleShowModal(true)}
         >

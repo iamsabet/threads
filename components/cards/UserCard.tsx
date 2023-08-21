@@ -34,12 +34,12 @@ const UserCard = ({ user, type, searchString }: UserCardProps) => {
           className="flex flex-row gap-2 w-fit h-fit group justify-start"
           link={`/profile/${id}`}
         >
-          <div className="w-10 h-10">
+          <div className="w-9 h-9">
             <Avatar
               src={image}
               alt="Profile Picture"
-              width={42}
-              height={42}
+              width={40}
+              height={40}
               loadingText={username.toString().charAt(0).toUpperCase()}
             />
           </div>
@@ -83,7 +83,14 @@ const UserLink = ({
   className: string;
 }) => {
   return type === "suggested" ? (
-    <Link className={className} href={link}>
+    <Link
+      className={className}
+      href={link}
+      onClick={(e) => {
+        // e.preventDefault();
+        // window.location?.replace(link);
+      }}
+    >
       {children}
     </Link>
   ) : (
