@@ -55,7 +55,7 @@
   }
 
   .bottombar {
-    @apply fixed bottom-0 z-10 w-full rounded-t-3xl bg-glassmorphism p-4 backdrop-blur-md xs:px-7 md:hidden;
+    @apply fixed bottom-0 z-10 w-full rounded-t-3xl bg-glassmorphism px-4 py-2 backdrop-blur-md xs:px-7 md:hidden;
   }
 
   .bottombar_container {
