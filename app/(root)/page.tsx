@@ -10,16 +10,19 @@ const Home = async () => {
     var userInfo = await fetchUser(user.id);
     if (!userInfo?.onboarded) return redirect("/onboarding");
   }
+  const sortBy: SortByType = "votePoints";
   const result = await fetchThreads({
     pageNumber: 1,
-    pageSize: 20,
+    pageSize: 10,
     currentUserId: userInfo ? userInfo?._id : null,
+    sortBy: sortBy,
   });
 
   return (
     <>
       <h1 className="head-text text-left">Home</h1>
-      <section className="mt-8 flex flex-col gap-10">
+
+      <section className="mt-5 flex flex-col gap-5">
         {result.docs?.length === 0 ? (
           <p className="no-result">No Threads found</p>
         ) : (
@@ -47,6 +50,7 @@ const Home = async () => {
                 currentUserId={JSON.stringify(userInfo?._id)}
                 baseUrl="/api/thread"
                 isComment={false}
+                sortBy={sortBy}
               />
             )}
           </>

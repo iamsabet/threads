@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { connectToDb } from "../db/mongoose"
 import Thread from "../models/thread.model";
 import User from "../models/user.model";
-import { Types } from "mongoose";
+import { SortOrder, Types } from "mongoose";
 import Vote from "../models/vote.model";
 import { handleVotesCount, replaceMentions } from "./_helper.actions";
 import { notFound } from "next/navigation";
@@ -56,7 +56,7 @@ const repostThread = async ({ threadId, userId, pathname }: { threadId: string, 
 }
 
 
-const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserId, accountId, label }: PaginatePropsTypeByQuery) => {
+const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserId, accountId, label, sortBy = "createdAt" }: PaginatePropsTypeByQuery) => {
     const skipAmount = (pageNumber - 1) * pageSize
     // fetch threads that have no parent
     // console.log(accountId)
@@ -77,7 +77,15 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
     } else {
         baseQuery = { parentId: { $in: [null, undefined] } }
     }
-    const threadsQuery = Thread.find(baseQuery).sort({ createdAt: "desc" })
+    const sort: string | { [key: string]: SortOrder | { $meta: any; }; } | [string, SortOrder][] | null | undefined = {}
+
+    sort[sortBy] = "desc"
+    if (sortBy === "createdAt")
+        sort["votePoints"] = "desc"
+    else
+        sort["createdAt"] = "desc"
+
+    const threadsQuery = Thread.find(baseQuery).sort(sort)
         .skip(skipAmount)
         .limit(pageSize)
         .populate({
@@ -117,7 +125,7 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
     let threadsMyVotesQuery;
     let threads_my_votes_only
     if (currentUserId) {
-        threadsMyVotesQuery = Thread.find(baseQuery).sort({ createdAt: "desc" })
+        threadsMyVotesQuery = Thread.find(baseQuery).sort(sort)
             .skip(skipAmount)
             .limit(pageSize).populate({
                 path: "votes",
@@ -148,11 +156,11 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
     }
 }
 
-const fetchThreads = async ({ pageNumber = 1, pageSize = 30, currentUserId }: PaginatePropsType) => {
+const fetchThreads = async ({ pageNumber = 1, pageSize = 30, currentUserId, sortBy = "createdAt" }: PaginatePropsType) => {
     try {
         await connectToDb()
         // Calculate the number of posts to skip(page we are on)
-        return await fetchThreadsByQuery({ pageNumber, pageSize, currentUserId, accountId: null, })
+        return await fetchThreadsByQuery({ pageNumber, pageSize, currentUserId, accountId: null, sortBy })
     }
     catch (e: any) {
         throw new Error("Fetch Threads Error " + e.message)

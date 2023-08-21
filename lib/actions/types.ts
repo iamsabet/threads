@@ -1,3 +1,4 @@
+
 interface PropsType {
     text: string,
     author: string,
@@ -15,6 +16,7 @@ interface PaginatePropsType {
     pageNumber: number;
     pageSize: number;
     currentUserId: any;
+    sortBy?: "votePoints" | "createdAt"
 }
 interface PaginatePropsTypeByQuery extends PaginatePropsType {
     accountId?: string | null,
@@ -26,3 +28,5 @@ interface FollowType {
     following: string
 
 }
+
+

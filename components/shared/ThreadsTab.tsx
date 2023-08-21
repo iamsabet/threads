@@ -12,7 +12,7 @@ const ThreadsTab = ({
   threadsResult,
 }: ThreadsTabsPropsType) => {
   // console.log("Label = " + label);
-
+  const sortBy: SortByType = "createdAt";
   if (!threadsResult) redirect("/");
 
   try {
@@ -53,6 +53,7 @@ const ThreadsTab = ({
           baseUrl={`/api/account-threads/${accountId}`}
           label={label}
           isComment={true}
+          sortBy={sortBy}
         />
       )}
     </section>

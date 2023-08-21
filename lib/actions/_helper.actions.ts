@@ -1,34 +1,42 @@
 import User from "../models/user.model";
 
 const handleVotesCount = (threads: Omit<Omit<any, never>, never>[], threads_my_votes_only: Omit<any, never>[] | undefined, childrenVotesCount: boolean = false) => {
-    let threads_final: any[] = []
-    threads.forEach((thread, index) => {
-        let newThread = JSON.parse(JSON.stringify(thread));
+
+    let new_threads = JSON.parse(JSON.stringify(threads))
+    new_threads.forEach((newThread: any, index: any) => {
         if (threads_my_votes_only) {
-            newThread.myVote = threads_my_votes_only[index].votes[0] ? threads_my_votes_only[index].votes[0].type : "";
+            let my_index = threads_my_votes_only.findIndex((item) => (item._id.toString() === newThread._id))
+            if (my_index > -1) {
+                newThread.myVote = threads_my_votes_only[my_index].votes[0] ? threads_my_votes_only[my_index].votes[0].type : "";
+            }
+            else {
+                newThread.myVote = ""
+            }
         }
         else {
             newThread.myVote = ""
         }
         if (childrenVotesCount) {
-            if (thread.children && thread.children.length > 0) {
-                let finalChildren: any[] = [];
-                thread.children.forEach((childThread: any, childIndex: any) => {
-                    let newChildThread = JSON.parse(JSON.stringify(childThread));
+            if (newThread.children && newThread.children.length > 0) {
+
+                newThread.children.forEach((newChildThread: any, childIndex: any) => {
                     if (threads_my_votes_only) {
-                        newChildThread.myVote = threads_my_votes_only[index].children[childIndex].votes[0] ? threads_my_votes_only[index].children[childIndex].votes[0].type : "";
+                        let my_index = threads_my_votes_only.findIndex((item) => (item._id.toString() === newChildThread._id))
+                        if (my_index > -1) {
+                            newChildThread.myVote = threads_my_votes_only[my_index].votes[0] ? threads_my_votes_only[my_index].votes[0].type : "";
+                        }
+                        else {
+                            newChildThread.myVote = ""
+                        }
                     }
                     else {
                         newChildThread.myVote = ""
                     }
-                    finalChildren.push(newChildThread)
                 })
-                newThread.children = finalChildren;
             }
         }
-        threads_final.push(newThread)
     });
-    return threads_final;
+    return new_threads;
 }
 
 const replaceMentions = async (text: string): Promise<string> => {

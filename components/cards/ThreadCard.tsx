@@ -152,7 +152,7 @@ const ThreadCard = ({
   return (
     <article
       className={`flex w-full flex-col rounded-xl
-    ${isComment ? "px-1 sm:px-7 mt-5" : "bg-dark-2 py-3 pl-1 pr-3 sm:p-7"} `}
+    ${isComment ? "px-1 sm:px-7 mt-5" : "bg-dark-2 py-3 pl-3 pr-3 sm:p-7"} `}
     >
       <div className="flex justify-between items-start">
         <div className="flex w-full flex-1 flex-row gap-2">

@@ -10,11 +10,13 @@ const ThreadCardsClient = ({
   baseUrl,
   label,
   isComment,
+  sortBy,
 }: {
   currentUserId: string;
   baseUrl: string;
   label?: string;
   isComment: boolean;
+  sortBy: SortByType;
 }) => {
   try {
     currentUserId = JSON.parse(currentUserId);
@@ -23,7 +25,9 @@ const ThreadCardsClient = ({
   const [loading, docs] = usePagination({
     options: {
       baseUrl: baseUrl,
-      postFixQs: label ? `&label=${label}` : "",
+      postFixQs: label
+        ? `&label=${label}&sortBy=${sortBy}`
+        : `&sortBy=${sortBy}`,
       pageSize: 10,
     },
     initialValues: {
