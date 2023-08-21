@@ -1,7 +1,5 @@
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
-import HTMLReactParser from "html-react-parser";
 import { parseFoundText } from "../utils";
 import Avatar from "../shared/Avatar";
 interface UserCardProps {
@@ -37,7 +35,7 @@ const UserCard = ({ user, type, searchString }: UserCardProps) => {
             alt="Profile Picture"
             width={42}
             height={42}
-            loadingText={parsedUserName.toString().charAt(0)}
+            loadingText={username.toString().charAt(0).toUpperCase()}
           />
         </div>
         <div className="flex-1 text-ellipsis">

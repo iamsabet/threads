@@ -31,7 +31,7 @@
 
   /* User card */
   .user-card {
-    @apply flex flex-row justify-between gap-3 max-xs:rounded-xl max-xs:bg-dark-3 p-0 items-center;
+    @apply flex flex-row justify-between gap-3 max-xs:rounded-xl p-0 items-center;
   }
 
   .user-card_avatar {

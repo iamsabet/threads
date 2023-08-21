@@ -11,13 +11,13 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { CommentValidation } from "@/lib/validations/thread";
 import { addCommentToThread } from "@/lib/actions/thread.actions";
 import { Textarea } from "../ui/textarea";
 import UsersSuggestions from "../shared/UserSuggestions";
 import Avatar from "../shared/Avatar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "../Spinner";
 interface PropsType {
   threadId: string;
@@ -31,8 +31,27 @@ const Comment = ({
   currentUserId,
   currentUserName,
 }: PropsType) => {
-  const pathname = usePathname();
   const [loading, setLoading] = useState<boolean>(false);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    scrollDownToCommentSection();
+  }, []);
+
+  const scrollDownToCommentSection = () => {
+    const cm = searchParams.get("cm");
+    if (cm) {
+      console.log(cm);
+      setTimeout(() => {
+        const element = document.getElementById("comment-text-area");
+        window.scrollTo({ top: element?.offsetTop, behavior: "smooth" });
+        setTimeout(() => {
+          element?.focus();
+        }, 500);
+      }, 100);
+    }
+  };
   const form = useForm({
     resolver: zodResolver(CommentValidation),
     defaultValues: {

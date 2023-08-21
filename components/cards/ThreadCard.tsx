@@ -211,7 +211,7 @@ const ThreadCard = ({
                 </div>
                 {/* Reply */}
                 <Link
-                  href={`/thread/${id}`}
+                  href={`/thread/${id}?cm=1`}
                   className="flex flex-col items-center"
                 >
                   <Image

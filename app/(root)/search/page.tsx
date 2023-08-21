@@ -14,7 +14,7 @@ const Page = async () => {
   // console.log(result);
   return (
     <section>
-      <h1 className="head-text mb-10">Search</h1>
+      <h1 className="head-text mb-2 sm:mb-8">Search</h1>
       <SearchResults />
     </section>
   );
