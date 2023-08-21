@@ -15,7 +15,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { CommentValidation } from "@/lib/validations/thread";
 import { addCommentToThread } from "@/lib/actions/thread.actions";
 import { Textarea } from "../ui/textarea";
-import UsersSuggestions from "../shared/UserSuggestions";
+import UsersSuggestions from "../shared/UsersSuggestions";
 import Avatar from "../shared/Avatar";
 import { useEffect, useState } from "react";
 import Spinner from "../Spinner";

@@ -77,8 +77,12 @@ const UsersSuggestions = ({
           const textValue = textArea.value + e.key;
 
           let splitedTextByAtSign = textValue
-            .split(" ")
-            [textValue.split(" ").length - 1].split("@");
+            .split(/(\s+)/)
+            .filter(function (e) {
+              return e.trim().length > 0;
+            });
+          splitedTextByAtSign =
+            splitedTextByAtSign[splitedTextByAtSign.length - 1].split("@");
           if (splitedTextByAtSign.length > 1) {
             const searchText =
               splitedTextByAtSign[splitedTextByAtSign.length - 1];
@@ -108,15 +112,23 @@ const UsersSuggestions = ({
     if (test && position) {
       test.style.left = position.x + 26 + "px";
       test.style.top = position.y + 26 + "px";
-      let targetY = type === "thread" ? position.y + 20 : position.y + 130;
-      let targetX = type === "thread" ? position.x - 26 : position.x + 10;
+
+      const offsetXComment =
+        window.innerWidth < 640 ? -16 : window.innerWidth < 1280 ? 105 : 230;
+
+      let targetY = type === "thread" ? position.y + 45 : position.y + 140;
+      let targetX =
+        type === "thread" ? position.x - 26 : position.x + offsetXComment;
       setBoxPosition((_) => {
         // check if its going to go out of the page
         // size is fixed 250px
         const boxW = 250;
         const windowW = window.innerWidth;
         if (position && windowW < boxW + targetX) {
+          // console.log("inner");
           targetX = windowW - boxW - 20;
+        } else {
+          // console.log("outer");
         }
         if (position) return { x: targetX, y: targetY };
         else return { x: 0, y: 0 };
@@ -242,7 +254,7 @@ const UsersSuggestions = ({
       {usersList.length > 0 ? (
         <ul
           id="usersList"
-          className="fixed z-10 w-[250px] h-auto p-0 m-0 list-none bg-dark-1 rounded-lg"
+          className="fixed w-[250px] h-auto p-0 m-0 list-none bg-dark-1 rounded-lg z-50"
           style={{ left: boxPosition.x + "px", top: boxPosition.y + "px" }}
         >
           {usersList.map((user, index) => {

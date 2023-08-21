@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
 import { ThreadValidation } from "@/lib/validations/thread";
 import { createThread } from "@/lib/actions/thread.actions";
-import UsersSuggestions from "../shared/UserSuggestions";
+import UsersSuggestions from "../shared/UsersSuggestions";
 import Spinner from "../Spinner";
 import { useState } from "react";
 import { currentUser } from "@clerk/nextjs";
