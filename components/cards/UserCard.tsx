@@ -83,12 +83,15 @@ const UserLink = ({
   className: string;
 }) => {
   return type === "suggested" ? (
-    // <Link
-    <a className={className} href={link}>
+    <Link
+      // <a
+      className={className}
+      href={link}
+    >
       {children}
-    </a>
+      {/* </a> */}
+    </Link>
   ) : (
-    // </Link>
     <>{children}</>
   );
 };

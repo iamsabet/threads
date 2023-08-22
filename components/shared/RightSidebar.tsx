@@ -5,6 +5,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useEffect, useMemo } from "react";
 import UserCard from "../cards/UserCard";
 import Spinner from "../Spinner";
+import Link from "next/link";
 
 const RightSidebar = () => {
   const { getToken } = useAuth();
@@ -70,9 +71,9 @@ const RightSidebar = () => {
         )}
         {!loading && users && (
           <div className="w-full flex justify-center items-center pt-7">
-            <a href="/search" className="explore_btn">
+            <Link href="/search" className="explore_btn">
               Explore users
-            </a>
+            </Link>
           </div>
         )}
       </div>

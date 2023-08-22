@@ -12,7 +12,6 @@ import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 import React from "react";
 import ThreadsTab from "@/components/shared/ThreadsTab";
-import JumpTopButton from "@/components/shared/JumpTopButton";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const user = await currentUser();
@@ -51,7 +50,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
       <ProfileHeader
         accountId={userInfo.id}
         account_id={userInfo._id}
-        authUserId={user.id}
+        authUserId={current_user.id}
+        authUser_id={current_user._id}
         name={userInfo.name}
         username={userInfo.username}
         followersCount={userInfo?.followersCount}

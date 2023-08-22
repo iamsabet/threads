@@ -1,13 +1,17 @@
 "use client";
+
 import { RiUserFollowFill, RiUserUnfollowFill } from "react-icons/ri";
 import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import Spinner from "../Spinner";
 import { usePathname } from "next/navigation";
+import { followAction, unfollowAction } from "@/lib/actions/follow.action";
 const FollowButton = ({
+  user_id,
   account_id,
   init_follow,
 }: {
+  user_id: string;
   account_id: string;
   init_follow: boolean;
 }) => {
@@ -15,9 +19,9 @@ const FollowButton = ({
   const [loading, setLoading] = useState<boolean>(false);
   const pathname = usePathname();
   try {
+    user_id = JSON.parse(user_id);
     account_id = JSON.parse(account_id);
   } catch (e) {}
-  const { getToken } = useAuth();
   const followButtonHandler = () => {
     setFollow((prev) => {
       if (prev) {
@@ -31,22 +35,19 @@ const FollowButton = ({
 
   const callFollowApi = async (type: string) => {
     setLoading((_) => true);
-    let headers: { Authorization?: string; "Content-Type": string } = {
-      "Content-Type": "application/json",
-    };
-    const token = await getToken();
-
-    if (token) headers["Authorization"] = `Bearer ${token}`;
-    await fetch(`/api/follow`, {
-      method: "POST",
-      headers: headers,
-      cache: "no-cache",
-      body: JSON.stringify({
+    if (type === "follow") {
+      await followAction({
+        follower: user_id,
         following: account_id,
-        type: type,
         path: pathname,
-      }),
-    });
+      });
+    } else {
+      await unfollowAction({
+        follower: user_id,
+        following: account_id,
+        path: pathname,
+      });
+    }
 
     updateFollowersCountNonReactMethod("followers-btn", type);
 

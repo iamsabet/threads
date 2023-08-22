@@ -27,15 +27,15 @@ const followAction = async ({ follower, following, path }: FollowType) => {
             await updateFollowsCountForUsers({ followingUser, followerUser })
             revalidatePath(path)
             // revalidatePath("/profile")
-            return followDoc
+            return JSON.stringify(followDoc)
         }
         else {
-            return flw
+            return JSON.stringify(flw)
         }
 
     } catch (e: any) {
         console.error("Follow Failed with error : " + e.message)
-        return { result: false }
+        return JSON.stringify({ result: false })
     }
 
 }
@@ -58,9 +58,10 @@ const unfollowAction = async ({ follower, following, path }: FollowType) => {
         await updateFollowsCountForUsers({ followingUser, followerUser })
         revalidatePath(path)
         // revalidatePath("/profile")
-        return { result: true, message: "Unfollow done" }
+        return JSON.stringify({ result: true, message: "Unfollow done" })
     } catch (e: any) {
-        throw new Error("Follow Failed with error : " + e.message)
+        console.error("Unfollow Failed with error : " + e.message)
+        return JSON.stringify({ result: false })
     }
 
 }
