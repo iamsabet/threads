@@ -11,7 +11,12 @@ const TopBar = async () => {
   return (
     <nav className="topbar">
       <Link href="/" className="flex flex-row items-center gap-4">
-        <Image src="/assets/logo.png" alt="logo" width="32" height="32" />
+        <Image
+          src="/assets/logo_gradient.svg"
+          alt="logo"
+          width="35"
+          height="35"
+        />
         <p className="text-heading3-bold text-light-1 max-xs:hidden">Threads</p>
       </Link>
       <div className="flex flex-row items-center gap-1">
