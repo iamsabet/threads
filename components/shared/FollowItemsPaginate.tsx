@@ -31,7 +31,7 @@ const FollowItemsPaginate = ({
     targetClass: ".follow-scroll",
   });
   return (
-    <div className="follow-scroll py-3 flex flex-col gap-4 justify-start items-center rounded-lg max-h-[70vh] overflow-y-auto custom-scrollbar px-2">
+    <div className="follow-scroll py-3 flex flex-col gap-4 justify-start items-center rounded-xl max-h-[70vh] overflow-y-auto custom-scrollbar px-2">
       {users &&
         users.length > 0 &&
         users.map((user, index) => (

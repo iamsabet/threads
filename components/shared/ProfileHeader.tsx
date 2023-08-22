@@ -49,7 +49,7 @@ const ProfileHeader = ({
         {accountId === authUserId && (
           <Link href="/profile/edit">
             <div
-              className="flex cursor-pointer gap-3 rounded-lg shadow-lg transition-colors duration-200 ease-in-out 
+              className="flex cursor-pointer gap-3 rounded-xl shadow-lg transition-colors duration-200 ease-in-out 
               bg-dark-3 px-4 py-2 hover:bg-primary-500 hover:bg-opacity-20"
             >
               <Image src="/assets/edit.svg" alt="edit" width={16} height={16} />

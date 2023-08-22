@@ -254,7 +254,7 @@ const UsersSuggestions = ({
       {usersList.length > 0 ? (
         <ul
           id="usersList"
-          className="fixed w-[250px] h-auto p-0 m-0 list-none bg-dark-1 rounded-lg z-50"
+          className="fixed w-[250px] h-auto p-0 m-0 list-none bg-dark-1 rounded-xl z-50"
           style={{ left: boxPosition.x + "px", top: boxPosition.y + "px" }}
         >
           {usersList.map((user, index) => {
@@ -269,7 +269,7 @@ const UsersSuggestions = ({
                 className={`${
                   autoCompleteNavigator === index ? "bg-gray-700" : ""
                 } ransition-all duration-150 ease-in-out flex flex-row justify-center 
-                items-center gap-3 h-fit shadow-xl rounded-lg  py-2 px-2
+                items-center gap-3 h-fit shadow-xl rounded-xl  py-2 px-2
               border-b-gray-50 cursor-pointer`}
               >
                 <div className="h-10 w-10">

@@ -37,7 +37,7 @@ const RightSidebar = () => {
         <h3 className="text-heading4-medium text-light-1 w-full text-center mb-8">
           Suggested Users
         </h3>
-        <div className="flex flex-col gap-4 justify-center items-center py-1 px-4 rounded-lg overflow-hidden">
+        <div className="flex flex-col gap-4 justify-center items-center py-1 px-4 rounded-xl overflow-hidden">
           {
             // @ts-ignore
             users && users.length === 0 ? (

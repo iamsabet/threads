@@ -69,7 +69,7 @@ const FollowButton = ({
   return (
     <button onClick={followButtonHandler} disabled={loading} className="w-18">
       <div
-        className={`flex w-[120px] max-sm:w-fit cursor-pointer gap-2 items-center justify-around rounded-lg shadow-lg transition-colors duration-200 ease-in-out 
+        className={`flex w-[120px] max-sm:w-fit cursor-pointer gap-2 items-center justify-around rounded-xl shadow-lg transition-colors duration-200 ease-in-out 
                px-2 py-2 ${
                  !follow
                    ? "bg-dark-3 hover:bg-primary-500 hover:bg-opacity-30"

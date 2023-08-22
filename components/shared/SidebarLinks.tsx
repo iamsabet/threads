@@ -65,30 +65,17 @@ const SidebarLinks = ({
             href={item.route === "/profile" ? `/profile/${userId}` : item.route}
             key={item.label}
             className={`${type} ${
-              isActive
-                ? "bg-gradient-to-t from-[#d77cff] via-[#876cff] to-[#876cff] hover:shadow-xl"
-                : "hover:bg-dark-1"
+              isActive ? "gradient-primary hover:shadow-xl" : "hover:bg-dark-1"
             }`}
           >
-            {item.route === "/profile" ? (
-              <>
-                {profileImage ? (
-                  <Avatar
-                    src={profileImage}
-                    alt={item.label}
-                    width={type === "bottombar_link" ? 36 : 26}
-                    height={type === "bottombar_link" ? 36 : 26}
-                    loadingText="..."
-                  />
-                ) : (
-                  <Image
-                    src={item.imgURL}
-                    alt={item.label}
-                    width="24"
-                    height="24"
-                  />
-                )}
-              </>
+            {item.route === "/profile" && profileImage ? (
+              <Avatar
+                src={profileImage}
+                alt={item.label}
+                width={26}
+                height={26}
+                loadingText="..."
+              />
             ) : (
               <Image
                 src={item.imgURL}
