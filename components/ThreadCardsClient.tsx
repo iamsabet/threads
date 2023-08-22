@@ -1,7 +1,7 @@
 "use client";
 import usePagination from "@/hooks/usePagination";
 import { useAuth } from "@clerk/nextjs";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ThreadCard from "./cards/ThreadCard";
 import Spinner from "./Spinner";
 
@@ -12,16 +12,19 @@ const ThreadCardsClient = ({
   label,
   isComment,
   sortBy,
+  initialPage = 2,
 }: {
-  result: string;
+  result?: string;
   currentUserId: string;
   baseUrl: string;
   label?: string;
   isComment: boolean;
   sortBy: SortByType;
+  initialPage?: number;
 }) => {
   try {
-    result = JSON.parse(result);
+    if (result) result = JSON.parse(result);
+    else result = "_";
     currentUserId = JSON.parse(currentUserId);
   } catch (e) {}
   const { getToken } = useAuth();
@@ -37,14 +40,18 @@ const ThreadCardsClient = ({
       initialHasNext: true,
       initailDocs: null,
       initialLoading: false,
-      initialPageNumber: 2,
+      initialPageNumber: initialPage,
     },
     getToken: getToken,
   });
+
   return (
     <>
       {result && (
         <>
+          {docs?.length === 0 && (
+            <h3 className="w-full mt-10 text-center">No {label} found</h3>
+          )}
           {docs?.map((thread: any) => {
             return (
               <ThreadCard
@@ -70,7 +77,11 @@ const ThreadCardsClient = ({
             );
           })}
           {loading && (
-            <div className="flex justify-center items-center">
+            <div
+              className={`flex justify-center items-center ${
+                initialPage === 1 ? "pb-30" : "pb-10"
+              }`}
+            >
               <Spinner />
             </div>
           )}

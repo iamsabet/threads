@@ -1,63 +1,62 @@
 "use client";
-import { redirect } from "next/navigation";
-import React from "react";
-import ThreadCard from "../cards/ThreadCard";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import ThreadCardsClient from "../ThreadCardsClient";
+import SortClient from "./SortClient";
+import { useRouter } from "next/navigation";
 
 const ThreadsTab = ({
   currentUserId,
   accountId,
-  accountType,
   label,
-  threadsResult,
 }: ThreadsTabsPropsType) => {
-  // console.log("Label = " + label);
-  const sortBy: SortByType = "createdAt";
+  let sortBy: SortByType = "createdAt";
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  let sortQuery = searchParams.get("sort") as string | undefined;
+  if (sortQuery && sortQuery === "latest") {
+    sortBy = "createdAt";
+  } else if (!sortQuery || sortQuery === "top") {
+    sortBy = "votePoints";
+  }
 
-  if (!threadsResult) redirect("/");
+  const [sortByState, setSortByState] = useState(sortBy);
+  const [flash, setFlash] = useState(true);
+  useEffect(() => {
+    setFlash((_) => false);
+    setTimeout(() => {
+      setFlash((_) => true);
+    }, 2);
+
+    return () => {};
+  }, [sortByState]);
+
+  useEffect(() => {
+    window.addEventListener("popstate", (e) => {
+      // location.pathname+location.search
+      router.replace(location.pathname + location.search, { scroll: true });
+      router.refresh();
+    });
+  }, []);
 
   try {
     accountId = JSON.parse(accountId);
   } catch (e) {}
   return (
-    <section className="mt-9 flex flex-col gap-10">
-      {threadsResult.docs.length === 0 && (
-        <h3 className="w-full mt-10 text-center">No {label} found</h3>
-      )}
-      {threadsResult.docs.map((thread: any) => {
-        return (
-          <ThreadCard
-            key={thread._id}
-            id={thread._id}
+    <section className="mt-1 flex flex-col gap-10">
+      <SortClient tab={label} sortBy={sortByState} setSortBy={setSortByState} />
+      <div className="min-h-[700px]">
+        {flash && (
+          <ThreadCardsClient
             currentUserId={currentUserId}
-            repost={JSON.stringify(thread.repost)}
-            parentId={thread.parentId}
-            content={thread.text}
-            author={{
-              name: thread.author.name,
-              image: thread.author.image,
-              username: thread.author.username,
-              id: thread.author.id,
-              _id: thread.author._id,
-            }} // TODO: check owner or not
-            createdAt={thread.createdAt}
-            comments={thread.children}
-            isComment
-            votes={thread.votePoints}
-            myVote={thread.myVote}
+            baseUrl={`/api/account-threads/${accountId}`}
+            label={label}
+            isComment={true}
+            sortBy={sortByState}
+            initialPage={1}
           />
-        );
-      })}
-      {threadsResult.hasNext && (
-        <ThreadCardsClient
-          result={JSON.stringify(threadsResult)}
-          currentUserId={currentUserId}
-          baseUrl={`/api/account-threads/${accountId}`}
-          label={label}
-          isComment={true}
-          sortBy={sortBy}
-        />
-      )}
+        )}
+      </div>
     </section>
   );
 };

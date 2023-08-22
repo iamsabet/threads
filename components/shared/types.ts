@@ -8,7 +8,5 @@ interface ThreadsResultType {
 interface ThreadsTabsPropsType {
     currentUserId: string;
     accountId: string;
-    accountType: string;
     label: string;
-    threadsResult: ThreadsResultType
 }

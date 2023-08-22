@@ -1,6 +1,6 @@
 "use server";
 import ProfileHeader from "@/components/profile/ProfileHeader";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
 import {
   fetchUser,
@@ -9,13 +9,9 @@ import {
 } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { notFound, redirect } from "next/navigation";
-import Image from "next/image";
-import React, { useMemo } from "react";
-import ThreadsTab from "@/components/shared/ThreadsTab";
-import TabsTriggerClient from "@/components/profile/TabTriggerClient";
+import ThreadsTab from "@/components/profile/ThreadsTab";
 import TabTriggerClient from "@/components/profile/TabTriggerClient";
-import FilterAndSort from "@/components/shared/FilterAndSort";
-
+import { fetchUserTotalThreadsCount } from "@/lib/actions/thread.actions";
 const Page = async (params: {
   params: { id: string };
   searchParams?: {
@@ -44,22 +40,10 @@ const Page = async (params: {
 
   const defaultTab = setDefaultTab();
 
-  let results: {
-    threads: any;
-    replies: any;
-    mentioned: any;
-  } = {
-    threads: {},
-    replies: {},
-    mentioned: {},
-  };
+  let results: any = {};
   for (let p in profileTabs) {
     let value = profileTabs[p].value;
-    // @ts-ignore
-    results[value] = await fetchUserThreads({
-      pageNumber: 1,
-      pageSize: 10,
-      currentUserId: current_user._id,
+    results[value] = await fetchUserTotalThreadsCount({
       accountId: userInfo._id,
       label: value,
     });
@@ -89,7 +73,7 @@ const Page = async (params: {
                     tab={tab}
                     total={
                       // @ts-ignore
-                      results[tab.value].totalThreadsCount
+                      results[tab.value]
                     }
                   />
                 );
@@ -103,17 +87,10 @@ const Page = async (params: {
                 value={tab.value}
                 className="w-full text-light-1"
               >
-                <FilterAndSort
-                  baseUrl={"/profile/" + current_user.id}
-                  sortBy=""
-                />
                 <ThreadsTab
                   currentUserId={JSON.stringify(current_user._id)}
                   accountId={JSON.stringify(userInfo?._id)}
                   label={tab.value}
-                  accountType="User"
-                  // @ts-ignore
-                  threadsResult={results[tab.value]}
                 />
               </TabsContent>
             );

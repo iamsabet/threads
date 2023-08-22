@@ -6,7 +6,7 @@ import User from "../models/user.model"
 import Thread from "../models/thread.model"
 import { FilterQuery, SortOrder } from "mongoose"
 import clerkClient from "@clerk/clerk-sdk-node"
-import { fetchThreadsByQuery } from "./thread.actions"
+import { fetchThreadsByQuery, fetchUserTotalThreadsCount } from "./thread.actions"
 import Vote from "../models/vote.model"
 import { fetchFollowers, findFollowRecord } from "./follow.action"
 
@@ -88,19 +88,34 @@ const fetchUserById = async (user_Id: string): Promise<any> => {
         throw new Error("Failed to fetch user " + e.message)
     }
 }
-const fetchUserThreads = async ({ pageNumber = 1, pageSize = 30, currentUserId, accountId, label }: PaginatePropsTypeByQuery) => {
+const fetchUserThreads = async ({ pageNumber = 1, pageSize = 30, currentUserId, accountId, label, sortBy }: PaginatePropsTypeByQuery) => {
     try {
         await connectToDb()
         // fetch all threads authored by the specific user
         // TODO: needs paginate like home threads
         // TODO: Populate Community
-        const result = await fetchThreadsByQuery({ pageNumber, pageSize, currentUserId, accountId, label })
+        const result = await fetchThreadsByQuery({ pageNumber, pageSize, currentUserId, accountId, label, sortBy })
         return result
     } catch (e: any) {
         console.log("Failed to fetch user threads " + e.message)
         return { result: false, message: "Account not found", status: 404 }
     }
 }
+
+const fetchUserThreadsTotal = async ({ accountId, label }: { accountId: string, label: string }) => {
+    try {
+        await connectToDb()
+        // fetch all threads authored by the specific user
+        // TODO: needs paginate like home threads
+        // TODO: Populate Community
+        const result = await fetchUserTotalThreadsCount({ accountId, label })
+        return result
+    } catch (e: any) {
+        console.log("Failed to fetch user threads " + e.message)
+        return { result: false, message: "Account not found", status: 404 }
+    }
+}
+
 interface SearchUsersType {
     searchString: string
     pageNumber: number
@@ -394,5 +409,17 @@ const autoCompleteUsernames = async ({ input }: { input: string }) => {
     }
 }
 
-export { updateUser, fetchUser, fetchUserById, fetchUserThreads, searchUsers, getActivity, checkUsernameExists, autoCompleteUsernames, RandomDelay, fetchUserAccount }
+export {
+    updateUser,
+    fetchUser,
+    fetchUserById,
+    fetchUserThreads,
+    searchUsers,
+    getActivity,
+    checkUsernameExists,
+    autoCompleteUsernames,
+    RandomDelay,
+    fetchUserAccount,
+    fetchUserThreadsTotal
+}
 

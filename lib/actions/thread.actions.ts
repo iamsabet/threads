@@ -160,6 +160,24 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
     }
 }
 
+const fetchUserTotalThreadsCount = async ({ accountId, label }: { accountId: string; label: string }) => {
+    let baseQuery = {}
+    if (label === "threads")
+        baseQuery = { author: { $in: [accountId] }, parentId: { $in: [null, undefined] } }
+    else if (label === "replies") {
+        baseQuery = { author: { $in: [accountId] }, parentId: { $nin: [null, undefined] } }
+    }
+    else if (label === "mentioned") {
+        const account = (await User.findOne({ _id: accountId }, { username: 1 }))
+        if (!account) return { result: false, message: "Account not found", status: 404 }
+        const account_id = account.id
+        const regex = RegExp(`"${account_id}">`, 'i')  // only username matches having a tag around
+        baseQuery = { text: { $regex: regex } }
+    }
+    const totalThreadsCount = await Thread.countDocuments(baseQuery)
+    return totalThreadsCount
+}
+
 const fetchThreads = async ({ pageNumber = 1, pageSize = 30, currentUserId, sortBy = "createdAt" }: PaginatePropsType) => {
     try {
         await connectToDb()
@@ -409,6 +427,7 @@ export {
     repostThread,
     fetchThreads,
     fetchFollowingsThreads,
+    fetchUserTotalThreadsCount,
     fetchThreadById,
     addCommentToThread,
     voteToThread,

@@ -9,14 +9,14 @@ const TabTriggerClient = ({ tab, total }: { tab: TabType; total: number }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const updateUrlQueryString = (tabValue: string) => {
-    let sortBy = searchParams.get("sortBy");
+    let sortBy = searchParams.get("sort");
     let tab = searchParams.get("tab");
     if (!tab) tab = "threads";
     if (!sortBy) sortBy = "latest";
 
-    if (tabValue !== tab) {
-      router.replace(`${pathname}?tab=${tabValue}&sort=${sortBy}`);
-    }
+    router.push(`${pathname}?tab=${tabValue}&sort=${sortBy}`, {
+      scroll: false,
+    });
   };
 
   return (

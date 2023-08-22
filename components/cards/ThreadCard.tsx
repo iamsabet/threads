@@ -253,17 +253,14 @@ const ThreadCard = ({
             comment.length >= 3 ? "" : ""
           }`}
         >
-          {/* <div
-            className={`${comments.length >= 3 ? "w-[22px]" : "w-[33px]"}`}
-          ></div> */}
           {comments.slice(0, 3).map((comment, index) => (
             <div
+              key={index}
               className={`w-[26px] h-[26px] ${index !== 0 && "-ml-7"} ${
                 comments.length >= 3 && index === 1 && "mb-7 z-[10]"
               }`}
             >
               <Avatar
-                key={index}
                 src={comment.author.image}
                 alt={`user_${index} Profile Image`}
                 loadingText={comment.author.username.charAt(0)}
