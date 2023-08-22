@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Searchbar from "./Searchbar";
-import UsersCards from "./UsersCards";
+import UsersCards from "../shared/UsersCards";
 
 const SearchResults = () => {
   const [searchString, setSearchString] = useState("");

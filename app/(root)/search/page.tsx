@@ -3,7 +3,7 @@ import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import React from "react";
-import SearchResults from "@/components/shared/SearchResults";
+import SearchResults from "@/components/search/SearchResults";
 const Page = async () => {
   const user = await currentUser();
 

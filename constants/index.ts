@@ -33,13 +33,13 @@ export const sidebarLinks = [
     },
 ];
 
-export const profileTabs = [
+export const profileTabs: TabTypes = [
     { value: "threads", label: "Threads", icon: "/assets/reply.svg" },
     { value: "replies", label: "Replies", icon: "/assets/members.svg" },
     { value: "mentioned", label: "Mentioned", icon: "/assets/atsign.svg" },
 ];
 
-export const communityTabs = [
+export const communityTabs: TabTypes = [
     { value: "threads", label: "Threads", icon: "/assets/reply.svg" },
     { value: "members", label: "Members", icon: "/assets/members.svg" },
     { value: "requests", label: "Requests", icon: "/assets/request.svg" },
