@@ -30,7 +30,7 @@ function DeleteThread({
 
   // console.log(currentUserId, "???", authorId);
 
-  if (currentUserId !== authorId || pathname === "/") return null;
+  if (currentUserId !== authorId) return null;
 
   return (
     <>

@@ -15,10 +15,10 @@
   }
 
   .sort-by-link{
-    @apply text-center py-1 rounded-lg bg-dark-2 text-light-1 w-20 font-semibold
+    @apply text-center py-1 rounded-lg bg-dark-2 text-light-1 w-24 font-semibold
   }
-  .sort-by-link_activate {
-    @apply text-center py-1 rounded-lg bg-primary-500 text-light-1 w-20 font-semibold
+  .link-activate{
+    @apply text-center py-1 rounded-lg bg-primary-500 text-light-1 w-24 font-semibold
   }
   /* /* Head Text * */
   .head-text {

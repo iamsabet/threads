@@ -16,10 +16,11 @@ interface PaginatePropsType {
     pageNumber: number;
     pageSize: number;
     currentUserId: any;
+    currentUser?: UserType;
     sortBy?: "votePoints" | "createdAt"
 }
 interface PaginatePropsTypeByQuery extends PaginatePropsType {
-    accountId?: string | null,
+    accountId?: string | string[] | null,
     label?: string
 }
 

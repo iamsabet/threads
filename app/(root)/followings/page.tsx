@@ -1,10 +1,12 @@
 import ThreadCardsClient from "@/components/ThreadCardsClient";
 import ThreadCard from "@/components/cards/ThreadCard";
 import FilterAndSort from "@/components/shared/FilterAndSort";
-import { fetchThreads } from "@/lib/actions/thread.actions";
+import {
+  fetchFollowingsThreads,
+  fetchThreads,
+} from "@/lib/actions/thread.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 const Home = async (params: {
   params: { [key: string]: string | string[] | undefined };
@@ -15,8 +17,11 @@ const Home = async (params: {
   const user = await currentUser();
   if (user) {
     var userInfo = await fetchUser(user.id);
-    // if (!userInfo?.onboarded) return redirect("/onboarding");
+    if (!userInfo?.onboarded) return redirect("/onboarding");
+  } else {
+    return null;
   }
+
   let sortBy: SortByType = "votePoints";
 
   let sortQuery = params?.searchParams?.sortBy as string | undefined;
@@ -25,7 +30,7 @@ const Home = async (params: {
   } else if (!sortQuery || sortQuery === "top") {
     sortBy = "votePoints";
   }
-  const result = await fetchThreads({
+  const result = await fetchFollowingsThreads({
     pageNumber: 1,
     pageSize: 10,
     currentUserId: userInfo ? userInfo?._id : null,
@@ -34,11 +39,15 @@ const Home = async (params: {
 
   return (
     <>
-      <div className="flex flex-row justify-between items-center">
+      <div className="w-full flex flex-row justify-between items-center">
         <h1 className="head-text text-left">Threads by</h1>
       </div>
 
-      <FilterAndSort baseUrl={"/"} sortQuery={sortQuery} sortBy={sortBy} />
+      <FilterAndSort
+        baseUrl={"/followings"}
+        sortQuery={sortQuery}
+        sortBy={sortBy}
+      />
 
       <section className="mt-5 flex flex-col gap-5">
         {result && result.docs?.length === 0 ? (
@@ -69,7 +78,7 @@ const Home = async (params: {
               <ThreadCardsClient
                 result={JSON.stringify(result)}
                 currentUserId={JSON.stringify(userInfo?._id)}
-                baseUrl="/api/thread"
+                baseUrl="/api/thread/followings"
                 isComment={false}
                 sortBy={"votePoints"}
               />
@@ -78,7 +87,7 @@ const Home = async (params: {
               <ThreadCardsClient
                 result={JSON.stringify(result)}
                 currentUserId={JSON.stringify(userInfo?._id)}
-                baseUrl="/api/thread"
+                baseUrl="/api/thread/followings"
                 isComment={false}
                 sortBy={"createdAt"}
               />

@@ -7,8 +7,7 @@ import User from "../models/user.model";
 import { SortOrder, Types } from "mongoose";
 import Vote from "../models/vote.model";
 import { handleVotesCount, replaceMentions } from "./_helper.actions";
-import { notFound } from "next/navigation";
-
+import { fetchFollowings } from "./follow.action";
 
 const createThread = async ({ text, author, communityId, path, repost }: PropsType) => {
     try {
@@ -62,17 +61,22 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
     // console.log(accountId)
     let baseQuery = {};
     if (accountId) {
-        if (label === "threads")
-            baseQuery = { author: { $in: [accountId] }, parentId: { $in: [null, undefined] } }
-        else if (label === "replies") {
-            baseQuery = { author: { $in: [accountId] }, parentId: { $nin: [null, undefined] } }
+        if (typeof accountId === "object") {
+            baseQuery = { author: { $in: accountId }, parentId: { $in: [null, undefined] } }
         }
-        else if (label === "mentioned") {
-            const account = (await User.findOne({ _id: accountId }, { username: 1 }))
-            if (!account) return { result: false, message: "Account not found", status: 404 }
-            const account_id = account.id
-            const regex = RegExp(`"${account_id}">`, 'i')  // only username matches having a tag around
-            baseQuery = { text: { $regex: regex } }
+        else {
+            if (label === "threads")
+                baseQuery = { author: { $in: [accountId] }, parentId: { $in: [null, undefined] } }
+            else if (label === "replies") {
+                baseQuery = { author: { $in: [accountId] }, parentId: { $nin: [null, undefined] } }
+            }
+            else if (label === "mentioned") {
+                const account = (await User.findOne({ _id: accountId }, { username: 1 }))
+                if (!account) return { result: false, message: "Account not found", status: 404 }
+                const account_id = account.id
+                const regex = RegExp(`"${account_id}">`, 'i')  // only username matches having a tag around
+                baseQuery = { text: { $regex: regex } }
+            }
         }
     } else {
         baseQuery = { parentId: { $in: [null, undefined] } }
@@ -163,9 +167,34 @@ const fetchThreads = async ({ pageNumber = 1, pageSize = 30, currentUserId, sort
         return await fetchThreadsByQuery({ pageNumber, pageSize, currentUserId, accountId: null, sortBy })
     }
     catch (e: any) {
-        throw new Error("Fetch Threads Error " + e.message)
+        console.error("Fetch Threads Error " + e.message)
+        return null;
     }
 }
+
+const fetchFollowingsThreads = async ({ pageNumber = 1, pageSize = 30, currentUserId, sortBy = "createdAt" }: PaginatePropsType) => {
+    try {
+        await connectToDb()
+        // Calculate the number of posts to skip(page we are on)
+        const followings = await fetchFollowings({ accountId: currentUserId, pageNumber: 1, pageSize: 1000 })
+        if (followings && followings.docs) {
+            const followingsIds = followings.docs.reduce((ids, item) => {
+                return ids.concat(item.following._id.toString())
+            }, []) as string[]
+            console.log(followingsIds)
+            return await fetchThreadsByQuery({ pageNumber, pageSize, currentUserId, accountId: followingsIds, sortBy })
+        }
+        else {
+            return null
+        }
+
+    }
+    catch (e: any) {
+        console.error("Fetch Followings Threads Error " + e.message)
+        return null;
+    }
+}
+
 const fetchAllChildThreads = async (threadId: string): Promise<any[]> => {
     const childThreads = await Thread.find({ parentId: threadId });
 
@@ -379,6 +408,7 @@ export {
     createThread,
     repostThread,
     fetchThreads,
+    fetchFollowingsThreads,
     fetchThreadById,
     addCommentToThread,
     voteToThread,
