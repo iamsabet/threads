@@ -17,7 +17,7 @@ const TopBar = async () => {
           width="35"
           height="35"
         />
-        <p className="text-heading3-bold text-light-1 max-xs:hidden">Threads</p>
+        <p className="header-gradient text-[27px] font-bold pb-0.5">Threads</p>
       </Link>
       <div className="flex flex-row items-center gap-1">
         <div className="block md:hidden">
