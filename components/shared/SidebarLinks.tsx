@@ -65,7 +65,9 @@ const SidebarLinks = ({
             href={item.route === "/profile" ? `/profile/${userId}` : item.route}
             key={item.label}
             className={`${type} ${
-              isActive ? "bg-primary-500 hover:shadow-xl" : "hover:bg-dark-1"
+              isActive
+                ? "bg-gradient-to-t from-[#d77cff] via-[#876cff] to-[#876cff] hover:shadow-xl"
+                : "hover:bg-dark-1"
             }`}
           >
             {item.route === "/profile" ? (
