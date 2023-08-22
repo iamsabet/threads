@@ -13,6 +13,13 @@
   .header-gradient {
     @apply text-transparent bg-clip-text gradient-primary
   }
+
+  .sort-by-link{
+    @apply text-center py-1 rounded-lg bg-dark-2 text-light-1 w-20 font-semibold
+  }
+  .sort-by-link_activate {
+    @apply text-center py-1 rounded-lg bg-primary-500 text-light-1 w-20 font-semibold
+  }
   /* /* Head Text * */
   .head-text {
     @apply text-heading2-bold text-light-1;
