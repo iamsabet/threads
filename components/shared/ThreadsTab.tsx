@@ -13,6 +13,7 @@ const ThreadsTab = ({
 }: ThreadsTabsPropsType) => {
   // console.log("Label = " + label);
   const sortBy: SortByType = "createdAt";
+
   if (!threadsResult) redirect("/");
 
   try {
@@ -49,6 +50,7 @@ const ThreadsTab = ({
       })}
       {threadsResult.hasNext && (
         <ThreadCardsClient
+          result={JSON.stringify(threadsResult)}
           currentUserId={currentUserId}
           baseUrl={`/api/account-threads/${accountId}`}
           label={label}
