@@ -15,7 +15,7 @@ const Avatar = ({
   className,
 }: {
   src: string | StaticImport;
-  loadingSize?: "big" | "small";
+  loadingSize?: "big" | "small" | "x-small";
   loadingText: string;
   alt: string;
   width?: number;

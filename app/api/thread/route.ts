@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     const pageNumber_int = parseInt(pageNumber)
     const pageSize_int = parseInt(pageSize)
 
-    const data = await fetchThreads({ pageNumber: pageNumber_int, pageSize: pageSize_int, currentUserId: currentUserId, sortBy: (sortBy as "votePoints" | "createdAt") });
+    const data = await fetchThreads({ pageNumber: pageNumber_int, pageSize: pageSize_int, currentUserId, sortBy: (sortBy as "votePoints" | "createdAt") });
 
     return NextResponse.json(data);
 }

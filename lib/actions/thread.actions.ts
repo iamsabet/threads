@@ -181,7 +181,7 @@ const fetchFollowingsThreads = async ({ pageNumber = 1, pageSize = 30, currentUs
             const followingsIds = followings.docs.reduce((ids, item) => {
                 return ids.concat(item.following._id.toString())
             }, []) as string[]
-            console.log(followingsIds)
+
             return await fetchThreadsByQuery({ pageNumber, pageSize, currentUserId, accountId: followingsIds, sortBy })
         }
         else {

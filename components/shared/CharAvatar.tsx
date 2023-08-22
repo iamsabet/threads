@@ -23,14 +23,26 @@ const CharAvatar = ({
     []
   );
   const textColor = useMemo(() => getContrastingColor(bg_color), []);
+  const sizeX = useMemo(() => {
+    switch (size) {
+      case undefined:
+        return "text-[24px]";
+      case "big":
+        return "text-[42px]";
+      case "small":
+        return "text-[24px]";
+      case "x-small":
+        return "text-[18px]";
+      default:
+        return "text-[24px]";
+    }
+  }, [size]);
   return (
     <div
       role="status"
       className={`${customClassNames} ${
         pulse ? "animate-pulse" : ""
-      } rounded-full w-full h-full flex justify-center items-center font-semibold ${
-        size ? `text-[43px]` : `text-[24px]`
-      }`}
+      } rounded-full w-full h-full flex justify-center items-center font-semibold ${sizeX}`}
       style={{
         backgroundColor: bg_color,
         color: textColor,

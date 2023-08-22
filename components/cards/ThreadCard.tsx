@@ -98,10 +98,10 @@ const ThreadCard = ({
               repost?._id
             }
       `}
-            className="w-fit"
+            className="w-fit text-light-3 hover-to-secondary"
           >
-            <h5 className="text-subtle-medium text-light-3">
-              Reposted from @
+            <h5 className="text-subtle-medium">
+              Reposted From @
               {
                 // @ts-ignore
                 repost.author.username
@@ -132,10 +132,10 @@ const ThreadCard = ({
               parentThread?._id
             }
       `}
-            className="w-fit"
+            className="w-fit text-light-3 hover-to-secondary"
           >
-            <h5 className="text-subtle-medium text-light-3">
-              Replied to @
+            <h5 className="text-subtle-medium">
+              Replied To @
               {
                 // @ts-ignore
                 parentThread.author.username
@@ -156,7 +156,7 @@ const ThreadCard = ({
     >
       <div className="flex justify-between items-start">
         <div className="flex w-full flex-1 flex-row gap-2">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center ml-1">
             <Link href={`/profile/${author.id}`} className="relative w-10 h-10">
               <Avatar
                 src={author.image}
@@ -247,52 +247,46 @@ const ThreadCard = ({
 
       {comments.length > 0 && (
         <div
-          className={`${comments.length === 1 && "ml-2"}
-            ${comments.length === 2 && "ml-1"}
-            ${comment.length >= 3 && "-ml-3"}
-          } mt-2 flex items-center gap-3`}
+          className={`mt-2 flex items-center gap-3 ${
+            comments.length === 1 ? "ml-2.5" : ""
+          }${comments.length === 2 ? "ml-2" : ""}${
+            comment.length >= 3 ? "" : ""
+          }`}
         >
           {/* <div
             className={`${comments.length >= 3 ? "w-[22px]" : "w-[33px]"}`}
           ></div> */}
           {comments.slice(0, 3).map((comment, index) => (
-            <Avatar
-              key={index}
-              src={comment.author.image}
-              alt={`user_${index} Profile Image`}
-              loadingText={comment.author.username.charAt(0)}
-              width={26}
-              height={26}
-              className={`${
-                index !== 0 && "-ml-7"
-              } rounded-full object-contain ${
+            <div
+              className={`w-[26px] h-[26px] ${index !== 0 && "-ml-7"} ${
                 comments.length >= 3 && index === 1 && "mb-7 z-[10]"
               }`}
-            />
+            >
+              <Avatar
+                key={index}
+                src={comment.author.image}
+                alt={`user_${index} Profile Image`}
+                loadingText={comment.author.username.charAt(0)}
+                loadingSize="x-small"
+                width={26}
+                height={26}
+                className={`rounded-full object-contain`}
+              />
+            </div>
           ))}
-          {/* {comments.slice(0, 3).map((comment, index) => (
-            <Image
-              key={index}
-              src={comment.author.image}
-              alt={`user_${index}`}
-              width={26}
-              height={26}
-              className={`${
-                index !== 0 && "-ml-7"
-              } rounded-full object-contain ${
-                comments.length >= 3 && index === 1 && "mb-7 z-[10]"
-              }`}
-            />
-          ))} */}
-          <Link href={`/thread/${id}`}>
-            <p className="mt-1 text-subtle-medium text-gray-1">
+
+          <Link
+            href={`/thread/${id}`}
+            className="text-light-3 hover-to-secondary"
+          >
+            <p className="mt-1 text-subtle-medium">
               {comments.length} repl{comments.length > 1 ? "ies" : "y"}
             </p>
           </Link>
         </div>
       )}
       <div className="">
-        <h5 className="text-subtle-medium text-gray-1 mt-3">
+        <h5 className="text-subtle-medium text-gray-1 mt-3 ml-0.5">
           {formattedDateString(createdAt)}
         </h5>
       </div>

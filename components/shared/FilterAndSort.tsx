@@ -17,13 +17,15 @@ const FilterAndSort = ({
       <div className="flex justify-start gap-2 items-center">
         <Link
           href={`/${sortQuery ? `?sortBy=${sortQuery}` : ""}`}
-          className={`${baseUrl === "/" ? "link-activate" : "sort-by-link"}`}
+          className={`w-28 ${
+            baseUrl === "/" ? "link-activate" : "sort-by-link"
+          }`}
         >
           Everybody
         </Link>
         <Link
           href={`/followings${sortQuery ? `?sortBy=${sortQuery}` : ""}`}
-          className={`${
+          className={`w-28 ${
             baseUrl === "/followings" ? "link-activate" : "sort-by-link"
           }`}
         >
@@ -33,7 +35,7 @@ const FilterAndSort = ({
       <div className="flex justify-end gap-2 items-center">
         <Link
           href={`${baseUrl}?sortBy=latest`}
-          className={`${
+          className={`w-20 ${
             sortBy === "createdAt" ? "link-activate" : "sort-by-link"
           }`}
         >
@@ -41,7 +43,7 @@ const FilterAndSort = ({
         </Link>
         <Link
           href={`${baseUrl}?sortBy=top`}
-          className={`${
+          className={`w-20 ${
             sortBy === "votePoints" ? "link-activate" : "sort-by-link"
           }`}
         >
