@@ -15,14 +15,16 @@
   }
 
   .sort-by-link{
-    @apply text-center py-1 transition-all duration-200 ease-in-out rounded-lg bg-dark-2 text-light-1 font-semibold hover:bg-primary-500 hover:bg-opacity-80
+    @apply text-center py-1.5 transition-all duration-200 ease-in-out rounded-lg bg-dark-2 text-light-1 font-semibold hover:bg-primary-500 hover:bg-opacity-80
+    text-[14px]
   }
   .link-activate{
-    @apply text-center py-1 transition-all duration-200 ease-in-out rounded-lg bg-primary-500 text-light-1 font-semibold
+    @apply text-center py-1.5 transition-all duration-200 ease-in-out rounded-lg bg-primary-500 text-light-1 font-semibold
+    text-[14px]
   }
   /* /* Head Text * */
   .head-text {
-    @apply text-heading2-bold text-light-1;
+    @apply text-heading4-medium font-bold xs:text-heading3-bold sm:text-heading2-bold text-light-1;
   }
 
   /* Activity */

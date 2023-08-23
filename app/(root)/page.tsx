@@ -1,6 +1,7 @@
 import ThreadCardsClient from "@/components/ThreadCardsClient";
 import ThreadCard from "@/components/cards/ThreadCard";
 import FilterAndSort from "@/components/shared/FilterAndSort";
+import FilterComponent from "@/components/shared/FilterComponent";
 import { fetchThreads } from "@/lib/actions/thread.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
@@ -36,6 +37,12 @@ const Home = async (params: {
     <>
       <div className="flex flex-row justify-between items-center">
         <h1 className="head-text text-left">Threads by</h1>
+        <FilterComponent
+          baseUrl={"/"}
+          sortQuery={sortQuery}
+          sortBy={sortBy}
+          type="smallDevice"
+        />
       </div>
 
       <FilterAndSort baseUrl={"/"} sortQuery={sortQuery} sortBy={sortBy} />

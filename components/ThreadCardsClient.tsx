@@ -78,8 +78,8 @@ const ThreadCardsClient = ({
           })}
           {loading && (
             <div
-              className={`flex justify-center items-center ${
-                initialPage === 1 ? "pb-30" : "pb-10"
+              className={`flex justify-center items-center pt-10 ${
+                initialPage === 1 ? "pb-40" : "pb-20"
               }`}
             >
               <Spinner />

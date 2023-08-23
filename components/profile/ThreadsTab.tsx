@@ -31,14 +31,6 @@ const ThreadsTab = ({
     return () => {};
   }, [sortByState]);
 
-  useEffect(() => {
-    window.addEventListener("popstate", (e) => {
-      // location.pathname+location.search
-      router.replace(location.pathname + location.search, { scroll: true });
-      router.refresh();
-    });
-  }, []);
-
   try {
     accountId = JSON.parse(accountId);
   } catch (e) {}

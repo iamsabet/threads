@@ -36,7 +36,8 @@ const SortClient = ({
     });
   };
   return (
-    <div className="w-full flex flex-row justify-between pt-2">
+    <div className="flex justify-between w-full xs:w-fit xs:justify-end gap-2 items-center">
+      <h2 className="text-light-2 font-semibold">Sort By</h2>
       <div className="flex justify-end gap-2 items-center">
         <Link
           href={`${baseUrl}?tab=${tab}&sort=latest`}

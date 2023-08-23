@@ -1,6 +1,7 @@
 import ThreadCardsClient from "@/components/ThreadCardsClient";
 import ThreadCard from "@/components/cards/ThreadCard";
 import FilterAndSort from "@/components/shared/FilterAndSort";
+import FilterComponent from "@/components/shared/FilterComponent";
 import {
   fetchFollowingsThreads,
   fetchThreads,
@@ -41,6 +42,12 @@ const Home = async (params: {
     <>
       <div className="w-full flex flex-row justify-between items-center">
         <h1 className="head-text text-left">Threads by</h1>
+        <FilterComponent
+          baseUrl={"/followings"}
+          sortQuery={sortQuery}
+          sortBy={sortBy}
+          type="smallDevice"
+        />
       </div>
 
       <FilterAndSort

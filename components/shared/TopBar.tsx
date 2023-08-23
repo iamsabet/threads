@@ -1,21 +1,21 @@
 import Link from "next/link";
 import Image from "next/image";
 import LogoutComponent from "./LogoutComponent";
-import { currentUser } from "@clerk/nextjs";
-import { fetchUser } from "@/lib/actions/user.actions";
+// import { currentUser } from "@clerk/nextjs";
+// import { fetchUser } from "@/lib/actions/user.actions";
 const TopBar = async () => {
-  const user = await currentUser();
-  let userInfo;
-  if (user) userInfo = await fetchUser(user.id);
+  // const user = await currentUser();
+  // let userInfo;
+  // if (user) userInfo = await fetchUser(user.id);
 
   return (
     <nav className="topbar">
       <Link href="/" className="flex flex-row items-center gap-4">
         <Image
-          src="/assets/logo_gradient.svg"
+          src="/assets/logo_gradient_2.svg"
           alt="logo"
-          width="35"
-          height="35"
+          width="34"
+          height="34"
         />
         <p className="header-gradient text-[27px] font-bold pb-0.5">Threads</p>
       </Link>
