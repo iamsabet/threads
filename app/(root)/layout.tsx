@@ -28,7 +28,7 @@ export default async function RootLayout({
           // className={inter.className}
           suppressHydrationWarning={true}
         >
-          <TopBar />
+          <TopBar withLogout={true} />
           <main className="flex flex-row">
             <LeftSidebar />
             <section className="main-container">

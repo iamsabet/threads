@@ -109,6 +109,20 @@
     @apply hover:text-secondary-500 transition-colors duration-200 ease-in-out
   }
 
+  /* Auth forms */
+  
+
+
+  .form-card-container {
+    @apply bg-dark-5 rounded-xl py-8 px-6 shadow-lg flex flex-col items-start justify-center gap-5
+    max-xs:w-[97%] w-[400px] 
+  }
+
+  .oauth-button{
+    @apply flex flex-row justify-between w-full relative items-center bg-opacity-0 transition-all duration-200 ease-in-out rounded-lg bg-transparent px-5 py-2 text-gray-400 hover:bg-light-2 hover:bg-opacity-5
+  }
+
+
 }
 
 @layer utilities {
