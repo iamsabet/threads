@@ -114,15 +114,19 @@
 
 
   .form-card-container {
-    @apply bg-dark-5 rounded-xl py-8 px-6 shadow-lg flex flex-col items-start justify-center gap-5
+    @apply bg-dark-5 rounded-xl py-10 px-10 max-md:px-5 max-md:pb-5 shadow-lg flex flex-col items-start justify-center gap-7
     max-xs:w-[97%] w-[400px] 
   }
 
   .oauth-button{
-    @apply flex flex-row justify-between w-full relative items-center bg-opacity-0 transition-all duration-200 ease-in-out rounded-lg bg-transparent px-5 py-2 text-gray-400 hover:bg-light-2 hover:bg-opacity-5
+    @apply flex flex-row justify-between w-full relative items-center shadow-md bg-opacity-0 transition-all duration-200 ease-in-out rounded-md bg-transparent px-5 py-2 text-gray-400 hover:bg-light-2 hover:bg-opacity-5
   }
 
-
+  .form-input{
+    @apply bg-transparent rounded-md outline-none focus:border-gray-500 border-gray-2 border-opacity-20 bg-dark-2 bg-opacity-30 autofill:bg-dark-2 autofill:border-0
+  }
+ 
+  
 }
 
 @layer utilities {

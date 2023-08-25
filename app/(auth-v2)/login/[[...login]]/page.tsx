@@ -1,8 +1,7 @@
 import GoogleButton from "@/components/auth/GoogleButton";
 import LinkedInButton from "@/components/auth/LinkedInButton";
+import SignInForm from "@/components/auth/forms/SignInForm";
 import Logo from "@/components/shared/Logo";
-import { IoLogoLinkedin } from "react-icons/io5";
-import { RiArrowRightLine } from "react-icons/ri";
 
 const Page = () => {
   return (
@@ -21,6 +20,20 @@ const Page = () => {
         <GoogleButton />
         <LinkedInButton />
       </div>
+
+      <div className="w-full flex flex-row justify-start gap-4 items-center">
+        <div
+          className="flex flex-1 h-[0.5px]"
+          style={{ background: "rgba(255, 255, 255, 0.15)" }}
+        />
+        <span className="text-gray-2 font-semibold text-small-medium">or</span>
+        <div
+          className="flex flex-1 h-[0.5px]"
+          style={{ background: "rgba(255, 255, 255, 0.15)" }}
+        />
+      </div>
+
+      <SignInForm />
     </div>
   );
 };

@@ -9,7 +9,7 @@ const GoogleButton = () => {
     <button
       className="oauth-button group"
       style={{
-        border: "1px solid rgba(255, 255, 255, 0.08)",
+        border: "1px solid rgba(255, 255, 255, 0.12)",
       }}
       onClick={(e) => {
         console.log("Google Oauth Clicked");
