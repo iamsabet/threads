@@ -14,7 +14,7 @@ const TabTriggerClient = ({ tab, total }: { tab: TabType; total: number }) => {
     if (!tab) tab = "threads";
     if (!sortBy) sortBy = "latest";
 
-    router.push(`${pathname}?tab=${tabValue}&sort=${sortBy}`, {
+    router.replace(`${pathname}?tab=${tabValue}&sort=${sortBy}`, {
       scroll: false,
     });
   };

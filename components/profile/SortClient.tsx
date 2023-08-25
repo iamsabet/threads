@@ -31,7 +31,7 @@ const SortClient = ({
         break;
     }
 
-    router.push(`${baseUrl}?tab=${tab}&sort=${sortByVal}`, {
+    router.replace(`${baseUrl}?tab=${tab}&sort=${sortByVal}`, {
       scroll: false,
     });
   };
