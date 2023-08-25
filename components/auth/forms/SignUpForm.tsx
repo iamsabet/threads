@@ -11,28 +11,26 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { SignInValidation } from "@/lib/validations/sign-in";
+import { SignUpValidation } from "@/lib/validations/sign-up";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const SignInForm = () => {
-  //   const pathname = usePathname();
-  //   const router = useRouter();
-
+const SignUpForm = () => {
   const [loading, setLoading] = useState(false);
   const form = useForm({
-    resolver: zodResolver(SignInValidation),
+    resolver: zodResolver(SignUpValidation),
     defaultValues: {
       username: "",
       password: "",
+      email: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof SignInValidation>) => {
-    console.log(values.username + "/" + values.password);
+  const onSubmit = async (values: z.infer<typeof SignUpValidation>) => {
+    console.log(values.username + "/" + values.email + "/" + values.password);
     setLoading((_) => true);
     // await createThread({
     //   text: values.thread,
@@ -71,7 +69,7 @@ const SignInForm = () => {
             render={({ field }) => (
               <FormItem className="flex flex-col gap-0 w-full">
                 <FormLabel className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5">
-                  Email address or username
+                  Username
                 </FormLabel>
                 <FormControl className="no-focus border border-gray-2 border-opacity-30 bg-dark-3 text-light-1 rounded-md shadow-md mt-0">
                   <Input
@@ -79,6 +77,30 @@ const SignInForm = () => {
                     type="text"
                     maxLength={30}
                     id="username"
+                    autoFocus={true}
+                    {...field}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="flex flex-col gap-0 w-full">
+                <FormLabel className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5">
+                  Email address
+                </FormLabel>
+                <FormControl className="no-focus border border-gray-2 border-opacity-30 bg-dark-3 text-light-1 rounded-md shadow-md mt-0">
+                  <Input
+                    className="form-input mt-0"
+                    type="email"
+                    // maxLength={30}
+                    id="email"
                     autoFocus={true}
                     {...field}
                   />
@@ -126,16 +148,16 @@ const SignInForm = () => {
         {loading && <Spinner />}
       </div>
       <p className="text-gray-2 text-[13px]">
-        No account?{" "}
+        Have an account?{" "}
         <Link
-          href="/register"
+          href="/login"
           className="text-primary-500 hover:text-secondary-500 transition-colors duration-150 ease-in-out"
         >
-          Sign Up
+          Sign In
         </Link>
       </p>
     </div>
   );
 };
 
-export default SignInForm;
+export default SignUpForm;
