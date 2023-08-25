@@ -151,9 +151,9 @@ const SignUpForm = () => {
                   }}
                 >
                   {showPass ? (
-                    <RiEyeOffFill size={18} color="#FFFFFF" />
+                    <RiEyeOffFill size={16} color="#FFFFFF" />
                   ) : (
-                    <RiEyeFill size={18} color="#FFFFFF" />
+                    <RiEyeFill size={16} color="#FFFFFF" />
                   )}
                 </Button>
               </FormItem>

@@ -96,7 +96,7 @@ const SignInForm = () => {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem className="flex flex-col gap-0 w-full">
+              <FormItem className="flex flex-col gap-0 w-full relative">
                 <FormLabel className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5">
                   Password
                 </FormLabel>
@@ -112,7 +112,7 @@ const SignInForm = () => {
 
                 <FormMessage />
                 <Button
-                  className="bg-dark-1 w-6 h-6 p-0.5 absolute right-3 top-6 rounded-md z-50 text-light-2 flex flex-col justify-center"
+                  className="bg-dark-1 w-6 h-6 p-0.5 absolute right-3 top-7 rounded-md z-50 text-light-2 flex flex-col justify-center"
                   onMouseDown={(e) => {
                     if (!showPass) setShowPass((_prev) => !_prev);
                   }}
@@ -121,9 +121,9 @@ const SignInForm = () => {
                   }}
                 >
                   {showPass ? (
-                    <RiEyeOffFill size={18} color="#FFFFFF" />
+                    <RiEyeOffFill size={16} color="#FFFFFF" />
                   ) : (
-                    <RiEyeFill size={18} color="#FFFFFF" />
+                    <RiEyeFill size={16} color="#FFFFFF" />
                   )}
                 </Button>
               </FormItem>
