@@ -13,13 +13,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { SignUpValidation } from "@/lib/validations/sign-up";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { IoEye, IoEyeSharp } from "react-icons/io5";
+import {
+  RiChatVoiceFill,
+  RiEye2Line,
+  RiEyeFill,
+  RiEyeOffFill,
+  RiLockPasswordFill,
+} from "react-icons/ri";
 import { z } from "zod";
 
 const SignUpForm = () => {
   const [loading, setLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(SignUpValidation),
     defaultValues: {
@@ -115,14 +126,14 @@ const SignUpForm = () => {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem className="flex flex-col gap-0 w-full">
+              <FormItem className="flex flex-col gap-0 w-full relative">
                 <FormLabel className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5">
                   Password
                 </FormLabel>
                 <FormControl className="no-focus border border-gray-2 border-opacity-30 bg-dark-3 text-light-1 rounded-md shadow-md">
                   <Input
                     className="form-input"
-                    type="password"
+                    type={showPass ? "text" : `password`}
                     id="password"
                     // maxLength={30}
                     {...field}
@@ -130,6 +141,21 @@ const SignUpForm = () => {
                 </FormControl>
 
                 <FormMessage />
+                <Button
+                  className="bg-dark-1 w-6 h-6 p-0.5 absolute right-3 top-7 rounded-md z-50 text-light-2 flex flex-col justify-center"
+                  onMouseDown={(e) => {
+                    if (!showPass) setShowPass((_prev) => !_prev);
+                  }}
+                  onMouseUp={(e) => {
+                    if (showPass) setShowPass((_prev) => !_prev);
+                  }}
+                >
+                  {showPass ? (
+                    <RiEyeOffFill size={18} color="#FFFFFF" />
+                  ) : (
+                    <RiEyeFill size={18} color="#FFFFFF" />
+                  )}
+                </Button>
               </FormItem>
             )}
           />

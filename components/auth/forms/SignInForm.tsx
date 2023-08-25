@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import { z } from "zod";
 
 const SignInForm = () => {
@@ -23,6 +24,8 @@ const SignInForm = () => {
   //   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(SignInValidation),
     defaultValues: {
@@ -100,7 +103,7 @@ const SignInForm = () => {
                 <FormControl className="no-focus border border-gray-2 border-opacity-30 bg-dark-3 text-light-1 rounded-md shadow-md">
                   <Input
                     className="form-input"
-                    type="password"
+                    type={showPass ? "text" : `password`}
                     id="password"
                     // maxLength={30}
                     {...field}
@@ -108,6 +111,21 @@ const SignInForm = () => {
                 </FormControl>
 
                 <FormMessage />
+                <Button
+                  className="bg-dark-1 w-6 h-6 p-0.5 absolute right-3 top-6 rounded-md z-50 text-light-2 flex flex-col justify-center"
+                  onMouseDown={(e) => {
+                    if (!showPass) setShowPass((_prev) => !_prev);
+                  }}
+                  onMouseUp={(e) => {
+                    if (showPass) setShowPass((_prev) => !_prev);
+                  }}
+                >
+                  {showPass ? (
+                    <RiEyeOffFill size={18} color="#FFFFFF" />
+                  ) : (
+                    <RiEyeFill size={18} color="#FFFFFF" />
+                  )}
+                </Button>
               </FormItem>
             )}
           />
