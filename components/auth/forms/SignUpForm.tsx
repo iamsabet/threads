@@ -175,10 +175,7 @@ const SignUpForm = () => {
       </div>
       <p className="text-gray-2 text-[13px]">
         Have an account?{" "}
-        <Link
-          href="/login"
-          className="text-primary-500 hover:text-secondary-500 transition-colors duration-150 ease-in-out"
-        >
+        <Link href="/login" className="form-link">
           Sign In
         </Link>
       </p>

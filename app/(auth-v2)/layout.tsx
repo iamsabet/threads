@@ -18,7 +18,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         className="bg-dark-1"
         suppressHydrationWarning={true}
       >
-        <TopBar withLogout={false} />
+        {/* <TopBar withLogout={false} /> */}
         <main className="w-full flex flex-row justify-center items-center min-h-screen">
           {children}
         </main>

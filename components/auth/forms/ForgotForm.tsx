@@ -11,31 +11,28 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { SignInValidation } from "@/lib/validations/sign-in";
+import { ForgotValidation } from "@/lib/validations/forgot";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import { z } from "zod";
 
-const SignInForm = () => {
+const ForgotForm = () => {
   //   const pathname = usePathname();
   //   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
-  const [showPass, setShowPass] = useState(false);
 
   const form = useForm({
-    resolver: zodResolver(SignInValidation),
+    resolver: zodResolver(ForgotValidation),
     defaultValues: {
-      username: "",
-      password: "",
+      email: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof SignInValidation>) => {
-    console.log(values.username + "/" + values.password);
+  const onSubmit = async (values: z.infer<typeof ForgotValidation>) => {
+    console.log(values.email);
     setLoading((_) => true);
     // await createThread({
     //   text: values.thread,
@@ -70,16 +67,16 @@ const SignInForm = () => {
         >
           <FormField
             control={form.control}
-            name="username"
+            name="email"
             render={({ field }) => (
               <FormItem className="flex flex-col gap-0 w-full">
                 <FormLabel className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5">
-                  Email address or username
+                  Email address
                 </FormLabel>
                 <FormControl className="no-focus border border-gray-2 border-opacity-30 bg-dark-3 text-light-1 rounded-md shadow-md mt-0">
                   <Input
                     className="form-input mt-0"
-                    type="text"
+                    type="email"
                     maxLength={30}
                     id="username"
                     autoFocus={true}
@@ -88,44 +85,6 @@ const SignInForm = () => {
                 </FormControl>
 
                 <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem className="flex flex-col gap-0 w-full relative">
-                <FormLabel className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5">
-                  Password
-                </FormLabel>
-                <FormControl className="no-focus border border-gray-2 border-opacity-30 bg-dark-3 text-light-1 rounded-md shadow-md">
-                  <Input
-                    className="form-input"
-                    type={showPass ? "text" : `password`}
-                    id="password"
-                    // maxLength={30}
-                    {...field}
-                  />
-                </FormControl>
-
-                <FormMessage />
-                <Button
-                  className="bg-dark-1 w-6 h-6 p-0.5 absolute right-3 top-7 rounded-md z-50 text-light-2 flex flex-col justify-center"
-                  onMouseDown={(e) => {
-                    if (!showPass) setShowPass((_prev) => !_prev);
-                  }}
-                  onMouseUp={(e) => {
-                    if (showPass) setShowPass((_prev) => !_prev);
-                  }}
-                >
-                  {showPass ? (
-                    <RiEyeOffFill size={16} color="#FFFFFF" />
-                  ) : (
-                    <RiEyeFill size={16} color="#FFFFFF" />
-                  )}
-                </Button>
               </FormItem>
             )}
           />
@@ -139,9 +98,9 @@ const SignInForm = () => {
             Continue
           </Button>
           <p className="text-[13px] text-gray-2">
-            Forgot your password ?{" "}
-            <Link href="/forgot" className="form-link">
-              Reset it
+            Remember it now ?{" "}
+            <Link href="/login" className="form-link">
+              Sign In
             </Link>
           </p>
         </form>
@@ -159,4 +118,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default ForgotForm;

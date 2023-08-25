@@ -12,7 +12,7 @@ const Page = () => {
           <h4 className="text-[22px] font-semibold text-light-1">Sign in</h4>
           <p className="text-gray-2">to continue to Threads</p>
         </div>
-        <Logo />
+        <Logo size={45} />
       </div>
       {/* Form Socials OAuth */}
       <div className="w-full flex flex-col justify-center items-start gap-2">
