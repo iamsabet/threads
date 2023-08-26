@@ -1,6 +1,6 @@
 import GoogleButton from "@/components/auth/GoogleButton";
 import LinkedInButton from "@/components/auth/LinkedInButton";
-import SignUpForm from "@/components/auth/forms/SignUpForm";
+import VerofifyForm from "@/components/auth/forms/VerofifyForm";
 import Logo from "@/components/shared/Logo";
 
 const Page = () => {
@@ -10,17 +10,11 @@ const Page = () => {
       <div className="w-full flex justify-between gap-2">
         <div className="flex flex-col items-start justify-start">
           <h4 className="text-[22px] font-semibold text-light-1">
-            Create your account
+            Verify your email
           </h4>
-          <p className="text-gray-2">to continue to Threads</p>
+          <p className="text-gray-2">To reset your password</p>
         </div>
         <Logo size={45} />
-      </div>
-      {/* Form Socials OAuth */}
-      <div className="w-full flex flex-col justify-center items-start gap-2">
-        {/* <button>Continue with Google</button> */}
-        <GoogleButton />
-        <LinkedInButton />
       </div>
 
       <div className="w-full flex flex-row justify-start gap-4 items-center">
@@ -35,7 +29,7 @@ const Page = () => {
         />
       </div>
 
-      <SignUpForm />
+      <VerofifyForm />
     </div>
   );
 };
