@@ -8,7 +8,7 @@ const VerifyValidation = z.object({
     "3": z.number().min(1).max(1),
     "4": z.number().min(1).max(1),
     "5": z.number().min(1).max(1),
-
+    "6": z.number().min(1).max(1),
 })
 
 export { VerifyValidation }

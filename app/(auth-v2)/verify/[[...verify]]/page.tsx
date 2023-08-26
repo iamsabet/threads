@@ -2,6 +2,14 @@ import GoogleButton from "@/components/auth/GoogleButton";
 import LinkedInButton from "@/components/auth/LinkedInButton";
 import VerofifyForm from "@/components/auth/forms/VerofifyForm";
 import Logo from "@/components/shared/Logo";
+import { Edit, PersonStanding } from "lucide-react";
+import Link from "next/link";
+import {
+  IoPersonCircle,
+  IoPersonCircleOutline,
+  IoPersonCircleSharp,
+} from "react-icons/io5";
+import { RiUserFill } from "react-icons/ri";
 
 const Page = () => {
   return (
@@ -17,16 +25,21 @@ const Page = () => {
         <Logo size={45} />
       </div>
 
-      <div className="w-full flex flex-row justify-start gap-4 items-center">
-        <div
-          className="flex flex-1 h-[0.5px]"
-          style={{ background: "rgba(255, 255, 255, 0.15)" }}
-        />
-        <span className="text-gray-2 font-semibold text-small-medium">or</span>
-        <div
-          className="flex flex-1 h-[0.5px]"
-          style={{ background: "rgba(255, 255, 255, 0.15)" }}
-        />
+      <div className="email-chip">
+        <IoPersonCircleSharp size={20} />
+        <p className="text-subtle-medium text-gray-2">iamsabet7@gmail.com</p>
+        <Link href="/forgot" className="form-link">
+          <Edit size={15} />
+        </Link>
+      </div>
+
+      <div className="w-full flex flex-col justify-start gap-1 items-start">
+        <h4 className="text-small-medium font-semibold text-light-1">
+          Verification code
+        </h4>
+        <p className="text-small-regular text-gray-2">
+          Enter the verification code sent to your email address
+        </p>
       </div>
 
       <VerofifyForm />

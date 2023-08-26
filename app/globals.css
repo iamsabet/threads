@@ -129,6 +129,10 @@
   .form-link{
     @apply text-primary-500 hover:text-secondary-500 transition-colors duration-150 ease-in-out;
   }
+  .email-chip{
+    @apply px-4 py-2 w-fit flex justify-evenly gap-3 items-center text-light-1 shadow-lg rounded-full
+    border border-gray-2 border-opacity-20
+  }
 }
 
 @layer utilities {

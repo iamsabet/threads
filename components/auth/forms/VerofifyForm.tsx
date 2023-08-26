@@ -15,7 +15,7 @@ import { VerifyValidation } from "@/lib/validations/verify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoEye, IoEyeSharp } from "react-icons/io5";
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
@@ -28,14 +28,58 @@ const VerifyForm = () => {
   const form = useForm({
     resolver: zodResolver(VerifyValidation),
     defaultValues: {
-      "1": 0,
-      "2": 0,
-      "3": 0,
-      "4": 0,
-      "5": 0,
+      "1": -1,
+      "2": -1,
+      "3": -1,
+      "4": -1,
+      "5": -1,
+      "6": -1,
     },
   });
-
+  const keyItems = [1, 2, 3, 4, 5, 6];
+  const inputRefs = keyItems.map((x) => useRef<HTMLInputElement>(null));
+  const handlerForward = (idx: number, e: ChangeEvent<HTMLInputElement>) => {
+    let value = e.currentTarget.value;
+    if (value) {
+      try {
+        let int_value = parseInt(value);
+        if (isNaN(int_value)) {
+          e.currentTarget.value = "";
+        }
+      } catch (e) {}
+    }
+    if (e.currentTarget.value !== "" && idx + 1 <= inputRefs.length - 1) {
+      if (inputRefs && inputRefs[idx + 1].current) {
+        const next = inputRefs[idx + 1].current;
+        if (next) {
+          next.focus();
+        }
+      }
+    }
+    if (idx + 1 === inputRefs.length) {
+      inputRefs[idx].current?.blur();
+    }
+  };
+  // @ts-ignore
+  const handlerBackward = (idx: number, e: KeyboardEvent<HTMLInputElement>) => {
+    e.currentTarget.value = "";
+    let target = idx - 1;
+    if (target < 0) return;
+    if (e.key.toString() === "Backspace" || e.key.toString() === "Delete") {
+      if (inputRefs && inputRefs[target].current) {
+        const prev = inputRefs[target].current;
+        if (prev) {
+          const prevVal = prev.value;
+          prev.focus();
+          setTimeout(() => {
+            prev.value = prevVal;
+            prev.selectionStart = 0;
+            prev.selectionEnd = 1;
+          }, 1);
+        }
+      }
+    }
+  };
   const onSubmit = async (values: z.infer<typeof VerifyValidation>) => {
     // console.log(values.username + "/" + values.email + "/" + values.password);
     setLoading((_) => true);
@@ -51,17 +95,7 @@ const VerifyForm = () => {
     setTimeout(() => {
       setLoading((_) => false);
     }, 2000);
-
-    // will be redirected by the server
-    // router.push("/profile/" + user_id);
   };
-
-  //   const setFormUsername = (value: string): void => {
-  //     form.setValue("username", value);
-  //   };
-  //   const setFormPassword = (value: string): void => {
-  //     form.setValue("password", value);
-  //   };
 
   return (
     <div className="w-full">
@@ -72,28 +106,46 @@ const VerifyForm = () => {
           className="flex flex-col gap-5"
         >
           <div className="flex flex-row justify-between">
-            <FormField
-              control={form.control}
-              name="1"
-              render={({ field }) => (
-                <FormItem className="flex">
-                  <FormControl
-                    className="no-focus border-0 border-opacity-30 bg-dark-3 text-light-1 rounded-md shadow-md
-                    "
-                  >
-                    <Input
-                      className="form-input w-8 p-1"
-                      type="text"
-                      maxLength={1}
-                      id="1"
-                      // maxLength={30}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />]
-                </FormItem>
-              )}
-            />
+            <div className="flex flex-row justify-between gap-2">
+              {keyItems.map((item, index) => {
+                const itemStr = item.toString() as
+                  | "1"
+                  | "2"
+                  | "3"
+                  | "4"
+                  | "5"
+                  | "6";
+                return (
+                  <FormField
+                    control={form.control}
+                    name={itemStr}
+                    render={({ field }) => (
+                      <FormItem className="flex">
+                        <FormControl className="no-focus bg-opacity-10 bg-dark-3 text-light-1 border-0 border-b-2 rounded-none">
+                          <Input
+                            className="w-7 p-1 text-center transition-colors duration-150 ease-in-out
+                            border-b-light-1 border-opacity-20 focus:border-b-purple-600 focus:border-opacity-100 
+                            border-b-2 text-[20px]"
+                            type="text"
+                            maxLength={1}
+                            ref={inputRefs[index]}
+                            onFocus={(e) => {
+                              e.currentTarget.selectionStart = 0;
+                              e.currentTarget.selectionEnd = 1;
+                            }}
+                            onChange={(e) => handlerForward(index, e)}
+                            onKeyDown={(e) => handlerBackward(index, e)}
+                            id={itemStr}
+                            // {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                );
+              })}
+            </div>
           </div>
           {/* <div className="text-center my-0 py-0 h-8 mt-5">
             {loading && <Spinner />}
