@@ -9,20 +9,23 @@ import clerkClient from "@clerk/clerk-sdk-node"
 import { fetchThreadsByQuery, fetchUserTotalThreadsCount } from "./thread.actions"
 import Vote from "../models/vote.model"
 import { fetchFollowers, findFollowRecord } from "./follow.action"
+import { redirect } from "next/dist/server/api-utils"
 
 interface ParamsType {
 
-    userId: string
-    username: string
-    name: string
-    bio: string
-    image: string
-    path: string
-}
+    userId: string;
+    username: string;
+    email: string;
+    name: string;
+    bio: string;
+    image: string;
+    path: string;
+};
 
 const updateUser = async ({
     userId,
     username,
+    email,
     name,
     bio,
     image,
@@ -34,9 +37,10 @@ const updateUser = async ({
             { id: userId },
             {
                 username: username.toLowerCase(),
+                email: email,
                 name,
                 bio,
-                image,
+                image: image.startsWith("https://img.clerk.com") ? "" : image,
                 onboarded: true
             }, { upsert: true }
         )

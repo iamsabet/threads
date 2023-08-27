@@ -23,7 +23,7 @@ const checkExists = async (value: string) => {
 }
 
 const UserValidation = z.object({
-    profile_photo: z.string().url().nonempty(),
+    profile_photo: z.string().url(),
     name: z.string().min(4, 'Minimum 4 characters').max(30, 'Maximum 30 characters'),
     // must check username does not have . / > < ( ) ? $ # @ ! % ^ & * = + [] {}
     username: z.string()

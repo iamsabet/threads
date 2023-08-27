@@ -26,6 +26,7 @@ interface PropsType {
     id: string;
     objectId: string;
     username: string;
+    email: string;
     name: string;
     bio: string;
     image: string;
@@ -72,28 +73,26 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
     }
   };
   const onSubmit = async (values: z.infer<typeof UserValidation>) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    // Upload thing has no benefit just resize image
-    // and create base64 from it with the resource
-    // from other projects then set base64 then send to api
     setLoading((_) => true);
     const blob = values.profile_photo;
-    const hasImageChanged = isBase64Image(blob);
-    if (hasImageChanged) {
-      const imgRes = await startUpload(files);
-      if (imgRes && imgRes[0].fileUrl) {
-        values.profile_photo = imgRes[0].fileUrl;
+    if (blob) {
+      const hasImageChanged = isBase64Image(blob);
+      if (hasImageChanged) {
+        const imgRes = await startUpload(files);
+        if (imgRes && imgRes[0].fileUrl) {
+          values.profile_photo = imgRes[0].fileUrl;
+        }
       }
     }
 
     await updateUser({
       userId: user.id,
       username: values.username,
+      email: user.email,
       name: values.name,
       image: values.profile_photo,
       bio: values.bio,
-      path: pathname,
+      path: pathname ?? "/",
     });
     setLoading((_) => false);
     if (pathname === "/profile/edit") {
@@ -165,7 +164,7 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
                   />
                 </FormControl>
 
-                <FormMessage className="text-red-600 text-[12px]" />assName="text-red-600 text-[12px]" />
+                <FormMessage className="text-red-600 text-[12px]" />
               </FormItem>
             )}
           />

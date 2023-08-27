@@ -15,9 +15,11 @@ const Page = async () => {
     id: user?.id,
     objectId: userInfo?.id,
     username: userInfo?.username || user?.username,
+    email: userInfo?.email || user?.emailAddresses[0].emailAddress,
     name: userInfo?.name || user?.firstName || "",
     bio: userInfo?.bio || "",
-    image: userInfo?.image || user?.imageUrl,
+    image:
+      userInfo && userInfo?.image.length > 0 ? userInfo?.image : user.imageUrl,
   };
   return (
     <main className="mx-auto flex flex-col justify-start px-10 py-20 max-w-3xl">

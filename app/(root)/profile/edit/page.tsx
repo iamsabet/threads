@@ -17,9 +17,11 @@ const Page = async () => {
     id: user.id,
     objectId: JSON.stringify(userInfo?._id),
     username: userInfo ? userInfo?.username : user.username,
+    email: userInfo?.email || user?.emailAddresses[0].emailAddress,
     name: userInfo ? userInfo?.name : user.firstName ?? "",
     bio: userInfo ? userInfo?.bio : "",
-    image: userInfo ? userInfo?.image : user.imageUrl,
+    image:
+      userInfo && userInfo?.image.length > 0 ? userInfo?.image : user.imageUrl,
   };
 
   return (
