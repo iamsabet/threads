@@ -1,35 +1,28 @@
 "use client";
 
 import Spinner from "@/components/Spinner";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { VerifyValidation } from "@/lib/validations/verify";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, RefObject, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { IoEye, IoEyeSharp, IoWarning, IoWarningSharp } from "react-icons/io5";
-import {
-  RiErrorWarningFill,
-  RiErrorWarningLine,
-  RiEyeFill,
-  RiEyeOffFill,
-} from "react-icons/ri";
+import { RiCheckboxCircleFill, RiErrorWarningFill } from "react-icons/ri";
 import { z } from "zod";
 
-const VerifyForm = () => {
+const VerifyForm = ({ source }: { source: VerifySourceType }) => {
   const [loading, setLoading] = useState(false);
   const [counter, setCounter] = useState(0);
   const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(VerifyValidation),
@@ -44,8 +37,10 @@ const VerifyForm = () => {
   });
   const keyItems = [1, 2, 3, 4, 5, 6];
   const inputRefs = keyItems.map((x) => useRef<HTMLInputElement>(null));
+
   const handlerForward = (idx: number, e: ChangeEvent<HTMLInputElement>) => {
     if (error) setError((_prev) => false);
+    if (success) setSuccess((_prev) => false);
     let value = e.currentTarget.value;
     if (value) {
       try {
@@ -120,10 +115,23 @@ const VerifyForm = () => {
       console.log("verificationCode :" + verificationCode);
 
       // send server action recieve true or false
-      const actionResult = false;
+      const actionResult = Math.random() > 0.5;
 
       setTimeout(() => {
-        setError((_) => !actionResult);
+        if (actionResult) {
+          setSuccess((_) => true);
+          // following success actions
+          const verificationEmail = localStorage.getItem(source + "emai");
+          localStorage.removeItem(source + "emai");
+
+          localStorage.setItem(
+            "verificationEmail",
+            verificationEmail?.toString() as string
+          );
+          localStorage.setItem("verificationCode", verificationCode);
+          router.push("/reset-pass");
+        } else setError((_) => true);
+
         setLoading((_) => false);
       }, 1500);
     }
@@ -145,7 +153,7 @@ const VerifyForm = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-5"
         >
-          <div className="flex flex-row justify-start items-center gap-5">
+          <div className="flex flex-row justify-between items-center gap-5">
             <div className="flex flex-row justify-between gap-2">
               {keyItems.map((item, index) => {
                 const itemStr = item.toString() as
@@ -169,6 +177,8 @@ const VerifyForm = () => {
                               border-b-2 text-[20px] ${
                                 error
                                   ? "border-b-red-600 border-opacity-90"
+                                  : success
+                                  ? "border-b-green-500 border-opacity-90"
                                   : "border-b-light-1 border-opacity-20"
                               }`}
                             type="text"
@@ -192,20 +202,29 @@ const VerifyForm = () => {
                 );
               })}
             </div>
-            <div className="text-center my-0 py-0 h-8 mt-5">
+            <div className="text-center py-0 h-8 my-0">
               {loading && <Spinner />}
             </div>
           </div>
         </form>
         <div
-          className={`flex justify-start gap-1 items-center transition-all duration-150 ease-in-out text-red-600 ${
-            error ? "opacity-100" : "opacity-0"
+          className={`flex justify-start gap-1 mt-2 items-center transition-all duration-150 ease-in-out 
+          ${error ? "text-red-600" : success ? "text-green-500" : ""} ${
+            error || success ? "opacity-100" : "opacity-0"
           }`}
         >
           <span className="text-body-normal">
-            <RiErrorWarningFill />
+            {error ? (
+              <RiErrorWarningFill />
+            ) : success ? (
+              <RiCheckboxCircleFill />
+            ) : (
+              <RiErrorWarningFill />
+            )}
           </span>
-          <span className="text-small-medium">Incorrect code</span>
+          <span className="text-small-medium">
+            {error ? "Incorrect code" : success ? "Correct code" : "!"}
+          </span>
         </div>
       </Form>
       <button

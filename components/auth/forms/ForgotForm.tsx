@@ -14,13 +14,14 @@ import { Input } from "@/components/ui/input";
 import { ForgotValidation } from "@/lib/validations/forgot";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const ForgotForm = () => {
   //   const pathname = usePathname();
-  //   const router = useRouter();
+  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
 
@@ -32,6 +33,7 @@ const ForgotForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof ForgotValidation>) => {
+    localStorage.setItem("verify-forgot-email", values.email);
     console.log(values.email);
     setLoading((_) => true);
     // await createThread({
@@ -44,6 +46,7 @@ const ForgotForm = () => {
     //
     // use login server action
     setTimeout(() => {
+      router.push("/verify/forgot");
       setLoading((_) => false);
     }, 2000);
 

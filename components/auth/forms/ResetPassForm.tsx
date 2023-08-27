@@ -11,38 +11,33 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { SignUpValidation } from "@/lib/validations/sign-up";
+import { ResetPassValidation } from "@/lib/validations/reset-pass";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { IoEye, IoEyeSharp } from "react-icons/io5";
-import {
-  RiChatVoiceFill,
-  RiEye2Line,
-  RiEyeFill,
-  RiEyeOffFill,
-  RiLockPasswordFill,
-} from "react-icons/ri";
+import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import { z } from "zod";
 
-const SignUpForm = () => {
+const ResetPassForm = () => {
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
 
   const form = useForm({
-    resolver: zodResolver(SignUpValidation),
+    resolver: zodResolver(ResetPassValidation),
     defaultValues: {
-      username: "",
       password: "",
-      email: "",
+      confirm: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof SignUpValidation>) => {
-    localStorage.setItem("verify-register-email", values.email);
-    console.log(values.username + "/" + values.email + "/" + values.password);
+  const onSubmit = async (values: z.infer<typeof ResetPassValidation>) => {
+    const email = localStorage.getItem("verificationEmail");
+    const code = localStorage.getItem("verificationCode");
+
+    console.log(values.password, "/", values.confirm);
+
+    console.log(email, "/", code);
     setLoading((_) => true);
     // await createThread({
     //   text: values.thread,
@@ -75,54 +70,6 @@ const SignUpForm = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-5"
         >
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem className="flex flex-col gap-0 w-full">
-                <FormLabel className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5">
-                  Username
-                </FormLabel>
-                <FormControl className="no-focus border border-gray-2 border-opacity-30 bg-dark-3 text-light-1 rounded-md shadow-md mt-0">
-                  <Input
-                    className="form-input mt-0"
-                    type="text"
-                    maxLength={30}
-                    id="username"
-                    autoFocus={true}
-                    {...field}
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="flex flex-col gap-0 w-full">
-                <FormLabel className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5">
-                  Email address
-                </FormLabel>
-                <FormControl className="no-focus border border-gray-2 border-opacity-30 bg-dark-3 text-light-1 rounded-md shadow-md mt-0">
-                  <Input
-                    className="form-input mt-0"
-                    type="email"
-                    // maxLength={30}
-                    id="email"
-                    autoFocus={true}
-                    {...field}
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <FormField
             control={form.control}
             name="password"
@@ -160,7 +107,43 @@ const SignUpForm = () => {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="confirm"
+            render={({ field }) => (
+              <FormItem className="flex flex-col gap-0 w-full relative">
+                <FormLabel className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5">
+                  Password
+                </FormLabel>
+                <FormControl className="no-focus border border-gray-2 border-opacity-30 bg-dark-3 text-light-1 rounded-md shadow-md">
+                  <Input
+                    className="form-input"
+                    type={showPass ? "text" : `password`}
+                    id="password"
+                    // maxLength={30}
+                    {...field}
+                  />
+                </FormControl>
 
+                <FormMessage />
+                <Button
+                  className="bg-dark-1 w-6 h-6 p-0.5 absolute right-3 top-7 rounded-md z-50 text-light-2 flex flex-col justify-center"
+                  onMouseDown={(e) => {
+                    if (!showPass) setShowPass((_prev) => !_prev);
+                  }}
+                  onMouseUp={(e) => {
+                    if (showPass) setShowPass((_prev) => !_prev);
+                  }}
+                >
+                  {showPass ? (
+                    <RiEyeOffFill size={16} color="#FFFFFF" />
+                  ) : (
+                    <RiEyeFill size={16} color="#FFFFFF" />
+                  )}
+                </Button>
+              </FormItem>
+            )}
+          />
           <Button
             className="rounded-md bg-primary-500 hover:bg-secondary-500 text-light-1 hover:text-dark-1 
                 transition-colors duration-150 ease-in-out shadow-md"
@@ -184,4 +167,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default ResetPassForm;

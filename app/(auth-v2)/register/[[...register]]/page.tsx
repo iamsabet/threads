@@ -1,5 +1,5 @@
-import GoogleButton from "@/components/auth/GoogleButton";
-import LinkedInButton from "@/components/auth/LinkedInButton";
+import GoogleButton from "@/components/auth/shared/GoogleButton";
+import LinkedInButton from "@/components/auth/shared/LinkedInButton";
 import SignUpForm from "@/components/auth/forms/SignUpForm";
 import Logo from "@/components/shared/Logo";
 
