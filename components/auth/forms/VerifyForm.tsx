@@ -22,6 +22,14 @@ const VerifyForm = ({ source }: { source: VerifySourceType }) => {
   const [counter, setCounter] = useState(0);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [user, setUser] = useState<{
+    username: string;
+    email: string;
+    password: string;
+    id?: string;
+    _id?: string;
+  } | null>(null);
+
   const router = useRouter();
 
   const form = useForm({
@@ -115,23 +123,54 @@ const VerifyForm = ({ source }: { source: VerifySourceType }) => {
       console.log("verificationCode :" + verificationCode);
 
       // send server action recieve true or false
-      const actionResult = Math.random() > 0.5;
+
+      let actionResult = false;
+      let registerData: any;
+      if (source === "verify-register") {
+        let registerData = localStorage.getItem("register");
+        if (registerData) {
+          setUser((_) => JSON.parse(registerData as string));
+        }
+
+        // console.log(registerData);
+        // check code with register server action async -> redirects or returns Bearer as result
+        actionResult = Math.random() > 0.5;
+      } else {
+        // source === "verify-forgot"
+        // check verification code async ->
+        actionResult = Math.random() > 0.5;
+      }
 
       setTimeout(() => {
+        // this would be gone
         if (actionResult) {
           setSuccess((_) => true);
-          // following success actions
-          const verificationEmail = localStorage.getItem(source + "-email");
-          localStorage.removeItem(source + "-email");
-          localStorage.setItem(
-            "verificationEmail",
-            verificationEmail as string
-          );
-          localStorage.setItem("verificationCode", verificationCode);
-          setLoading((_) => false);
-          setTimeout(() => {
-            router.push("/reset-pass");
-          }, 500);
+          if (source === "verify-forgot") {
+            actionResult = Math.random() > 0.5;
+
+            // following success actions
+            const verificationEmail = localStorage.getItem(source + "-email");
+            localStorage.removeItem(source + "-email");
+            localStorage.setItem(
+              "verificationEmail",
+              verificationEmail as string
+            );
+            localStorage.setItem("verificationCode", verificationCode);
+            setLoading((_) => false);
+            setTimeout(() => {
+              router.push("/reset-pass");
+            }, 500);
+            //
+          } else {
+            // source === verify-register
+            // this is after register got verified
+            // set bearer to cookie and do -> router.push("/onboarding")
+
+            if (user) {
+              console.log("Welcome " + user.username + " / " + user.email);
+            }
+            setLoading((_) => false);
+          }
         } else {
           setError((_) => true);
           setLoading((_) => false);

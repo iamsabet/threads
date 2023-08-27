@@ -13,23 +13,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { SignUpValidation } from "@/lib/validations/sign-up";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { IoEye, IoEyeSharp } from "react-icons/io5";
-import {
-  RiChatVoiceFill,
-  RiEye2Line,
-  RiEyeFill,
-  RiEyeOffFill,
-  RiLockPasswordFill,
-} from "react-icons/ri";
+import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import { z } from "zod";
 
 const SignUpForm = () => {
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
+  const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(SignUpValidation),
@@ -41,7 +35,6 @@ const SignUpForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof SignUpValidation>) => {
-    localStorage.setItem("verify-register-email", values.email);
     console.log(values.username + "/" + values.email + "/" + values.password);
     setLoading((_) => true);
     // await createThread({
@@ -54,6 +47,10 @@ const SignUpForm = () => {
     //
     // use login server action
     setTimeout(() => {
+      // on result true ->
+      localStorage.setItem("verify-register-email", values.email);
+      localStorage.setItem("register", JSON.stringify(values));
+      router.push("/verify/register");
       setLoading((_) => false);
     }, 2000);
 
