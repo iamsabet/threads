@@ -47,7 +47,7 @@ const ForgotForm = () => {
     // use login server action
     setTimeout(() => {
       router.push("/verify/forgot");
-      setLoading((_) => false);
+      // setLoading((_) => false);
     }, 2000);
 
     // will be redirected by the server
@@ -87,7 +87,7 @@ const ForgotForm = () => {
                   />
                 </FormControl>
 
-                <FormMessage />
+                <FormMessage className="text-red-600 text-[12px]" />
               </FormItem>
             )}
           />

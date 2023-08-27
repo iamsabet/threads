@@ -95,7 +95,7 @@ export const PostThread = ({
                     position: "absolute",
                   }}
                 />
-                <FormMessage />
+                <FormMessage className="text-red-600 text-[12px]" />
               </FormItem>
             )}
           />

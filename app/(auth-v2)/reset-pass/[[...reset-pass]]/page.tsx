@@ -2,6 +2,7 @@ import GoogleButton from "@/components/auth/shared/GoogleButton";
 import LinkedInButton from "@/components/auth/shared/LinkedInButton";
 import SignUpForm from "@/components/auth/forms/SignUpForm";
 import Logo from "@/components/shared/Logo";
+import ResetPassForm from "@/components/auth/forms/ResetPassForm";
 
 const Page = () => {
   return (
@@ -17,7 +18,7 @@ const Page = () => {
         <Logo size={45} />
       </div>
 
-      <SignUpForm />
+      <ResetPassForm />
     </div>
   );
 };

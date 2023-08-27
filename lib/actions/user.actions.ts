@@ -383,9 +383,22 @@ const getReplies = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pagi
 const checkUsernameExists = async ({ username, userId }: { username: string, userId?: string }) => {
     try {
         await connectToDb();
-        let result = await User.exists({ username: username })
+        let result = await User.findOne({ username: username }, { _id: 1, email: 1, username: 1 })
         if (result && userId && result?._id === userId)
             return false
+
+        return !result;
+    } catch (e: any) {
+        throw new Error("Check user exists error : " + e.message)
+    }
+}
+const checkEmailExists = async ({ email, userId }: { email: string, userId?: string }) => {
+    try {
+        await connectToDb();
+        let result = await User.findOne({ email: email }, { _id: 1, email: 1, username: 1 })
+        if (result && userId && result?._id === userId)
+            return false
+
 
         return !result;
     } catch (e: any) {
@@ -417,6 +430,7 @@ export {
     searchUsers,
     getActivity,
     checkUsernameExists,
+    checkEmailExists,
     autoCompleteUsernames,
     RandomDelay,
     fetchUserAccount,

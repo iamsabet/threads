@@ -87,7 +87,7 @@ const SignInForm = () => {
                   />
                 </FormControl>
 
-                <FormMessage />
+                <FormMessage className="text-red-600 text-[12px]" />
               </FormItem>
             )}
           />
@@ -110,7 +110,7 @@ const SignInForm = () => {
                   />
                 </FormControl>
 
-                <FormMessage />
+                <FormMessage className="text-red-600 text-[12px]" />
                 <Button
                   className="bg-dark-1 w-6 h-6 p-0.5 absolute right-3 top-7 rounded-md z-50 text-light-2 flex flex-col justify-center"
                   onMouseDown={(e) => {

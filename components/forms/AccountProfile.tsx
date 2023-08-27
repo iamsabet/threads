@@ -144,7 +144,7 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
                   />
                 </FormControl>
 
-                {/* <FormMessage /> */}
+                {/* <FormMessage className="text-red-600 text-[12px]" /> */}
               </FormItem>
             )}
           />
@@ -165,7 +165,7 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
                   />
                 </FormControl>
 
-                <FormMessage />
+                <FormMessage className="text-red-600 text-[12px]" />assName="text-red-600 text-[12px]" />
               </FormItem>
             )}
           />
@@ -185,7 +185,7 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
                   />
                 </FormControl>
 
-                <FormMessage />
+                <FormMessage className="text-red-600 text-[12px]" />
               </FormItem>
             )}
           />
@@ -206,7 +206,7 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
                   />
                 </FormControl>
 
-                <FormMessage />
+                <FormMessage className="text-red-600 text-[12px]" />
               </FormItem>
             )}
           />

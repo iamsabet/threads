@@ -121,18 +121,21 @@ const VerifyForm = ({ source }: { source: VerifySourceType }) => {
         if (actionResult) {
           setSuccess((_) => true);
           // following success actions
-          const verificationEmail = localStorage.getItem(source + "emai");
-          localStorage.removeItem(source + "emai");
-
+          const verificationEmail = localStorage.getItem(source + "-email");
+          localStorage.removeItem(source + "-email");
           localStorage.setItem(
             "verificationEmail",
-            verificationEmail?.toString() as string
+            verificationEmail as string
           );
           localStorage.setItem("verificationCode", verificationCode);
-          router.push("/reset-pass");
-        } else setError((_) => true);
-
-        setLoading((_) => false);
+          setLoading((_) => false);
+          setTimeout(() => {
+            router.push("/reset-pass");
+          }, 500);
+        } else {
+          setError((_) => true);
+          setLoading((_) => false);
+        }
       }, 1500);
     }
   };
@@ -195,7 +198,7 @@ const VerifyForm = ({ source }: { source: VerifySourceType }) => {
                             // {...field}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-red-600 text-[12px]" />
                       </FormItem>
                     )}
                   />

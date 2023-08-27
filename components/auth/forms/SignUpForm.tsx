@@ -80,7 +80,10 @@ const SignUpForm = () => {
             name="username"
             render={({ field }) => (
               <FormItem className="flex flex-col gap-0 w-full">
-                <FormLabel className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5">
+                <FormLabel
+                  htmlFor="username"
+                  className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5"
+                >
                   Username
                 </FormLabel>
                 <FormControl className="no-focus border border-gray-2 border-opacity-30 bg-dark-3 text-light-1 rounded-md shadow-md mt-0">
@@ -94,7 +97,7 @@ const SignUpForm = () => {
                   />
                 </FormControl>
 
-                <FormMessage />
+                <FormMessage className="text-red-600 text-[12px]" />
               </FormItem>
             )}
           />
@@ -104,7 +107,10 @@ const SignUpForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem className="flex flex-col gap-0 w-full">
-                <FormLabel className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5">
+                <FormLabel
+                  htmlFor="email"
+                  className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5"
+                >
                   Email address
                 </FormLabel>
                 <FormControl className="no-focus border border-gray-2 border-opacity-30 bg-dark-3 text-light-1 rounded-md shadow-md mt-0">
@@ -118,7 +124,7 @@ const SignUpForm = () => {
                   />
                 </FormControl>
 
-                <FormMessage />
+                <FormMessage className="text-red-600 text-[12px]" />
               </FormItem>
             )}
           />
@@ -128,7 +134,10 @@ const SignUpForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem className="flex flex-col gap-0 w-full relative">
-                <FormLabel className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5">
+                <FormLabel
+                  htmlFor="password"
+                  className="font-semibold text-[13px] text-light-2 mb-0 ml-0.5"
+                >
                   Password
                 </FormLabel>
                 <FormControl className="no-focus border border-gray-2 border-opacity-30 bg-dark-3 text-light-1 rounded-md shadow-md">
@@ -141,7 +150,7 @@ const SignUpForm = () => {
                   />
                 </FormControl>
 
-                <FormMessage />
+                <FormMessage className="text-red-600 text-[12px]" />
                 <Button
                   className="bg-dark-1 w-6 h-6 p-0.5 absolute right-3 top-7 rounded-md z-50 text-light-2 flex flex-col justify-center"
                   onMouseDown={(e) => {
