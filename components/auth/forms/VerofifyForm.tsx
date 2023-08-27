@@ -45,6 +45,7 @@ const VerifyForm = () => {
   const keyItems = [1, 2, 3, 4, 5, 6];
   const inputRefs = keyItems.map((x) => useRef<HTMLInputElement>(null));
   const handlerForward = (idx: number, e: ChangeEvent<HTMLInputElement>) => {
+    if (error) setError((_prev) => false);
     let value = e.currentTarget.value;
     if (value) {
       try {
@@ -59,7 +60,7 @@ const VerifyForm = () => {
         const next = inputRefs[idx + 1].current;
         if (next) {
           next.focus();
-          verifyRequest();
+          // verifyRequest();
         }
       }
     } else if (idx + 1 === inputRefs.length) {
@@ -69,6 +70,8 @@ const VerifyForm = () => {
   };
   // @ts-ignore
   const handlerBackward = (idx: number, e: KeyboardEvent<HTMLInputElement>) => {
+    if (error) setError((_prev) => false);
+
     e.currentTarget.value = "";
     let target = idx - 1;
     if (target < 0) return;
@@ -115,7 +118,12 @@ const VerifyForm = () => {
     if (verificationCode) {
       setLoading((_) => true);
       console.log("verificationCode :" + verificationCode);
+
+      // send server action recieve true or false
+      const actionResult = false;
+
       setTimeout(() => {
+        setError((_) => !actionResult);
         setLoading((_) => false);
       }, 1500);
     }
@@ -133,6 +141,7 @@ const VerifyForm = () => {
     <div className="w-full">
       <Form {...form}>
         <form
+          autoComplete="off"
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-5"
         >
@@ -149,16 +158,22 @@ const VerifyForm = () => {
                 return (
                   <FormField
                     control={form.control}
+                    key={itemStr}
                     name={itemStr}
                     render={({ field }) => (
                       <FormItem className="flex">
                         <FormControl className="no-focus bg-opacity-10 bg-dark-3 text-light-1 border-0 border-b-2 rounded-none">
                           <Input
-                            className="w-7 p-1 text-center transition-colors duration-150 ease-in-out
-                            border-b-light-1 border-opacity-20 focus:border-b-purple-600 focus:border-opacity-100 
-                            border-b-2 text-[20px]"
+                            className={`w-7 p-1 text-center transition-colors duration-150 ease-in-out
+                            focus:border-b-purple-600 focus:border-opacity-100 
+                              border-b-2 text-[20px] ${
+                                error
+                                  ? "border-b-red-600 border-opacity-90"
+                                  : "border-b-light-1 border-opacity-20"
+                              }`}
                             type="text"
                             maxLength={1}
+                            autoComplete="off"
                             ref={inputRefs[index]}
                             onFocus={(e) => {
                               e.currentTarget.selectionStart = 0;
@@ -196,7 +211,7 @@ const VerifyForm = () => {
       <button
         disabled={counter > 0}
         className={`text-small-regular mt-8 form-link h-5 ${
-          counter ? "opacity-50 hover:text-primary-500" : ""
+          counter ? "opacity-60 hover:text-primary-500" : ""
         }`}
         // href="?"
         onClick={(e) => {
