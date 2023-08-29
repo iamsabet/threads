@@ -10,6 +10,7 @@ import { fetchThreadsByQuery, fetchUserTotalThreadsCount } from "./thread.action
 import Vote from "../models/vote.model"
 import { fetchFollowers, findFollowRecord } from "./follow.action"
 import { redirect } from "next/dist/server/api-utils"
+import { digitalRainbowColors } from "@/constants"
 
 interface ParamsType {
 
@@ -21,6 +22,9 @@ interface ParamsType {
     image: string;
     path: string;
 };
+const randomColorKey = (min: number, max: number) => {
+    return Math.floor(Math.random() * max) + min;
+}
 
 const updateUser = async ({
     userId,
@@ -33,6 +37,9 @@ const updateUser = async ({
 }: ParamsType): Promise<void> => {
     try {
         await connectToDb()
+
+        const new_random_color = digitalRainbowColors[randomColorKey(1, 20)]
+
         await User.findOneAndUpdate(
             { id: userId },
             {
@@ -40,6 +47,7 @@ const updateUser = async ({
                 email: email,
                 name,
                 bio,
+                color: new_random_color,
                 image: image.startsWith("https://img.clerk.com") ? "" : image,
                 onboarded: true
             }, { upsert: true }
@@ -161,7 +169,7 @@ const searchUsers = async ({
             createdAt: sortBy
         }
 
-        const usersQuery = User.find(query, { _id: 1, id: 1, name: 1, username: 1, image: 1 })
+        const usersQuery = User.find(query, { _id: 1, id: 1, name: 1, username: 1, image: 1, color: 1 })
             .sort(sortOptions)
             .skip(skipAmount)
             .limit(pageSize)
@@ -287,7 +295,7 @@ const getVotes = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pagina
         .populate({
             path: "voter",
             model: User,
-            select: "_id id name username image"
+            select: "_id id name username image followersCount followingsCount color"
         })
         .populate({
             path: "thread",
@@ -321,7 +329,7 @@ const getMentions = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pag
         .populate({
             path: "author",
             model: User,
-            select: "_id id name username image"
+            select: "_id id name username image followersCount followingsCount color"
         })
         .sort({ createdAt: "desc" })
         .skip(skipAmount)
@@ -345,7 +353,7 @@ const getReposts = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pagi
     const reposts = await Thread.find(query).populate({
         path: "author",
         model: User,
-        select: "_id id name username image"
+        select: "_id id name username image followersCount followingsCount color"
     })
         .sort({ createdAt: "desc" })
         .skip(skipAmount)
@@ -371,7 +379,7 @@ const getReplies = async ({ pageNumber = 1, pageSize = 10, currentUserId }: Pagi
     const replies = await Thread.find(query).populate({
         path: "author",
         model: User,
-        select: "_id id name username image"
+        select: "_id id name username image followersCount followingsCount color"
     })
         .sort({ createdAt: "desc" })
         .skip(skipAmount)
@@ -388,8 +396,8 @@ const checkUsernameExists = async ({ username, userId }: { username: string, use
     try {
         await connectToDb();
         let result = await User.findOne({ username: username }, { _id: 1, email: 1, username: 1 })
-        if (result && userId && result?._id === userId)
-            return false
+        if (result && userId && result?._id.toString() === userId)
+            return true
 
         return !result;
     } catch (e: any) {
@@ -400,7 +408,7 @@ const checkEmailExists = async ({ email, userId }: { email: string, userId?: str
     try {
         await connectToDb();
         let result = await User.findOne({ email: email }, { _id: 1, email: 1, username: 1 })
-        if (result && userId && result?._id === userId)
+        if (result && userId && result?._id.toString() === userId)
             return false
 
 
@@ -418,7 +426,7 @@ const autoCompleteUsernames = async ({ input }: { input: string }) => {
         await connectToDb()
         const regex = RegExp("^" + input, 'i')
         // await RandomDelay(0.2)
-        return JSON.stringify(await User.find({ username: { $regex: regex } }, { _id: 1, id: 1, username: 1, image: 1, name: 1 }))
+        return JSON.stringify(await User.find({ username: { $regex: regex } }, { _id: 1, id: 1, username: 1, image: 1, name: 1, color: 1 }))
     } catch (e: any) {
         console.error("Check user exists error : " + e.message)
         return JSON.stringify([])

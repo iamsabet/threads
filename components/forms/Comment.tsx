@@ -24,12 +24,14 @@ interface PropsType {
   currentUserImage: string;
   currentUserId: string;
   currentUserName: string;
+  currentUserColor: string;
 }
 const Comment = ({
   threadId,
   currentUserImage,
   currentUserId,
   currentUserName,
+  currentUserColor,
 }: PropsType) => {
   const [loading, setLoading] = useState<boolean>(false);
   const pathname = usePathname();
@@ -98,6 +100,7 @@ const Comment = ({
                   <div className="w-12 h-12">
                     <Avatar
                       src={currentUserImage}
+                      bg_color={currentUserColor}
                       alt="profile picture"
                       loadingText={currentUserName.charAt(0)}
                       width={48}

@@ -61,13 +61,7 @@ const ThreadCardsClient = ({
                 repost={JSON.stringify(thread.repost)}
                 parentId={thread.parentId}
                 content={thread.text}
-                author={{
-                  name: thread.author.name,
-                  image: thread.author.image,
-                  username: thread.author.username,
-                  id: thread.author.id,
-                  _id: thread.author._id,
-                }} // TODO: check owner or not
+                author={thread.author} // TODO: check owner or not
                 createdAt={thread.createdAt}
                 comments={thread.children}
                 votes={thread.votePoints}

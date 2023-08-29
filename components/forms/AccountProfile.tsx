@@ -38,11 +38,14 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("media");
   const [loading, setLoading] = useState(false);
+
   try {
     user.objectId = JSON.parse(user.objectId);
+    localStorage.setItem("my_user_id", user.objectId);
   } catch (e) {}
   const pathname = usePathname();
   const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(UserValidation),
     defaultValues: {

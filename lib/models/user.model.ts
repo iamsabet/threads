@@ -8,6 +8,7 @@ const userSchema = new Schema({
     bio: String,
     followersCount: { type: Number, default: 0 },
     followingsCount: { type: Number, default: 0 },
+    color: { type: String, required: true },
     threads: [
         {
             type: Schema.Types.ObjectId,

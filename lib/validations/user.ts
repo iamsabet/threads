@@ -2,24 +2,8 @@ import * as z from 'zod'
 import { checkUsernameExists } from '../actions/user.actions'
 
 const checkExists = async (value: string) => {
-
-    // const token = window.localStorage.getItem("clerk-db-jwt")
-    // console.log(token)
-    // let headers: { Authorization?: string } = {}
-    // if (token)
-    //     headers["Authorization"] = `Bearer ${token}`
-
-    // const result = await fetch(
-    //     `/api/user/check-exists?username=${value}`,
-    //     {
-    //         headers: headers,
-    //         cache: "no-cache",
-    //     }
-    // ).then((res) => res.json()).then((res) => res.result);
-    // return result
-
-    // must handle if the taken one was actually for himself then return true
-    return await checkUsernameExists({ username: value })
+    const user_id = localStorage.getItem("my_user_id") ?? undefined
+    return await checkUsernameExists({ username: value, userId: user_id })
 }
 
 const UserValidation = z.object({

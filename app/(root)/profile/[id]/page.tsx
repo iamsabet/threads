@@ -57,6 +57,7 @@ const Page = async (params: {
         authUser_id={current_user._id}
         name={userInfo.name}
         username={userInfo.username}
+        color={userInfo.color}
         followersCount={userInfo?.followersCount}
         followingsCount={userInfo?.followingsCount}
         follow={userInfo?.follow} // do i follow or not

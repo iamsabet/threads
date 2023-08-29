@@ -38,10 +38,11 @@ const ActivitiesComponent = () => {
                         <div className="w-12 h-12 mr-2">
                           <Avatar
                             src={act.subject.image}
+                            bg_color={act.subject.color}
                             alt="Profile Picture"
                             width={48}
                             height={48}
-                            loadingText={act.subject.username.charAt(0)}
+                            loadingText={act.subject.name.charAt(0)}
                           />
                           <ActivityIcon
                             type={act.type}

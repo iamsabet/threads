@@ -18,6 +18,7 @@ const SidebarLinks = ({
   const { userId, getToken } = useAuth();
   const [loading, setLoading] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [profileColor, setProfileColor] = useState<string>("#555555");
   const replaceProfilePicture = async (abortController: AbortController) => {
     if (!loading) {
       setLoading((_) => true);
@@ -41,6 +42,7 @@ const SidebarLinks = ({
         }).then((res) => res.json());
 
         setProfileImage(res.image);
+        setProfileColor(res.color);
       }
     }
   };
@@ -71,6 +73,7 @@ const SidebarLinks = ({
             {item.route === "/profile" && profileImage ? (
               <Avatar
                 src={profileImage}
+                bg_color={profileColor}
                 alt={item.label}
                 width={26}
                 height={26}

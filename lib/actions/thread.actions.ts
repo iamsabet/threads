@@ -108,7 +108,7 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
             populate: [{
                 path: "author",
                 model: User,
-                select: "_id username name parentId image createdAt"
+                select: "_id username name parentId image createdAt followersCount followingsCount color"
             }],
 
         })
@@ -120,7 +120,7 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
             populate: {
                 path: "author",
                 model: User,
-                select: "_id id name username image"
+                select: "_id id name username image followersCount followingsCount color"
             }
         })
     }
@@ -292,7 +292,7 @@ const fetchThreadById = async (id: string, currentUserId: string) => {
             .populate({
                 path: "author",
                 model: User,
-                select: "_id id name username image createdAt"
+                select: "_id id name username image createdAt followersCount followingsCount color"
             })
             .populate({
                 path: "children",
@@ -300,7 +300,7 @@ const fetchThreadById = async (id: string, currentUserId: string) => {
                     {
                         path: "author",
                         model: User,
-                        select: "_id id name parentId username image createdAt",
+                        select: "_id id name parentId username image createdAt followersCount followingsCount color",
                     },
                     {
                         path: "children",
@@ -308,7 +308,7 @@ const fetchThreadById = async (id: string, currentUserId: string) => {
                         populate: [{
                             path: "author",
                             model: User,
-                            select: "_id id name parentId username image createdAt"
+                            select: "_id id name parentId username image createdAt followersCount followingsCount color"
                         }]
                     },
                 ]
@@ -325,7 +325,7 @@ const fetchThreadById = async (id: string, currentUserId: string) => {
             .populate({
                 path: "author",
                 model: User,
-                select: "_id id name username image createdAt"
+                select: "_id id name username image createdAt followersCount followingsCount color"
             })
             .populate({
                 path: "children",

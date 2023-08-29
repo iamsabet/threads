@@ -1,7 +1,5 @@
 import { autoCompleteUsernames } from "@/lib/actions/user.actions";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { UseFormReturn } from "react-hook-form";
 import { parseFoundText } from "../utils";
 import Avatar from "./Avatar";
 interface UsersSuggestionsProps {
@@ -275,10 +273,11 @@ const UsersSuggestions = ({
                 <div className="h-10 w-10">
                   <Avatar
                     src={user.image}
+                    bg_color={user.color}
                     alt="Profile Image"
                     width={40}
                     height={40}
-                    loadingText={user.username.charAt(0)}
+                    loadingText={user.name.charAt(0)}
                   />
                 </div>
 

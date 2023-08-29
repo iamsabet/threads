@@ -4,8 +4,9 @@ import { checkUsernameExists, fetchUser } from '@/lib/actions/user.actions';
 export async function GET(req: Request) {
     const { userId } = auth();
     if (userId) {
-        const image = (await fetchUser(userId)).image
-        return NextResponse.json({ image });
+        const user = (await fetchUser(userId))
+        const data = { image: user.image, color: user.color }
+        return NextResponse.json({ data });
     } else {
         return NextResponse.json({ "result": false, message: "Not Authorized" }, { status: 401 })
     }

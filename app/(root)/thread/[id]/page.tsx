@@ -46,6 +46,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
           currentUserImage={userInfo?.image}
           currentUserId={JSON.stringify(userInfo?._id)}
           currentUserName={userInfo?.name}
+          currentUserColor={userInfo?.color}
         />
       </div>
       <div className="mt-9">

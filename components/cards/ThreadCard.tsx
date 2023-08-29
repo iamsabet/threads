@@ -11,32 +11,7 @@ import RepostModal from "../modals/RepostModal";
 import ShareModal from "../modals/ShareModal";
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import Avatar from "../shared/Avatar";
-interface ThreadProps {
-  id: string;
-  currentUserId: string;
-  repost: string | null;
-  parentId: string;
-  content: string;
-  author: {
-    _id: string;
-    id: string;
-    username: string;
-    name: string;
-    image: string;
-  };
-  createdAt: string;
-  comments: {
-    author: {
-      image: string;
-      username: string;
-      name: string;
-    };
-  }[];
-  isComment?: boolean;
-  isMainThread?: boolean;
-  votes: number;
-  myVote?: VoteType;
-}
+
 const ThreadCard = ({
   id,
   currentUserId,
@@ -59,13 +34,7 @@ const ThreadCard = ({
   const parentThread: {
     _id: string;
     text: string;
-    author: {
-      _id: string;
-      id: string;
-      name: string;
-      username: string;
-      image: string;
-    };
+    author: AuthorType;
   } | null = typeof parentId === "object" ? parentId : null;
 
   const contentRef = useRef(null);
@@ -160,8 +129,9 @@ const ThreadCard = ({
             <Link href={`/profile/${author.id}`} className="relative w-10 h-10">
               <Avatar
                 src={author.image}
+                bg_color={author.color}
                 alt="profile image"
-                loadingText={author.username.charAt(0)}
+                loadingText={author.name.charAt(0)}
               />
             </Link>
 
@@ -262,8 +232,9 @@ const ThreadCard = ({
             >
               <Avatar
                 src={comment.author.image}
+                bg_color={comment.author.color}
                 alt={`user_${index} Profile Image`}
-                loadingText={comment.author.username.charAt(0)}
+                loadingText={comment.author.name.charAt(0)}
                 loadingSize="x-small"
                 width={26}
                 height={26}

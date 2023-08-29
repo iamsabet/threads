@@ -1,12 +1,11 @@
 "use client";
-import { digitalRainbowColors } from "@/constants";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
-import { Suspense, useMemo } from "react";
+import { Suspense } from "react";
 import CharAvatar from "./CharAvatar";
-import { getContrastingColor } from "./helpers";
 const Avatar = ({
   src,
+  bg_color,
   loadingSize,
   loadingText = "small",
   alt,
@@ -15,6 +14,7 @@ const Avatar = ({
   className,
 }: {
   src: string | StaticImport;
+  bg_color: string;
   loadingSize?: "big" | "small" | "x-small";
   loadingText: string;
   alt: string;
@@ -25,6 +25,7 @@ const Avatar = ({
   const loadingFrame = (
     <CharAvatar
       text={loadingText.toUpperCase()}
+      bg_color={bg_color}
       pulse={true}
       size={loadingSize}
       customClassNames={className}
@@ -33,6 +34,7 @@ const Avatar = ({
   const replaceFrame = (
     <CharAvatar
       text={loadingText.toUpperCase()}
+      bg_color={bg_color}
       pulse={false}
       size={loadingSize}
       customClassNames={className}
@@ -51,6 +53,10 @@ const Avatar = ({
               alt={alt}
               width={width}
               height={height}
+              style={{
+                width,
+                height,
+              }}
               // sizes=""
               className={`rounded-full object-cover shadow-2xl ${className}`}
             />

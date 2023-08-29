@@ -4,11 +4,16 @@ import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import Avatar from "../shared/Avatar";
 
 interface FollowPageButtonType {
-  accountUsername: string;
+  accountUserName: string;
+  accountColor: string;
   src: string;
 }
 
-const ProfileAvatarModal = ({ accountUsername, src }: FollowPageButtonType) => {
+const ProfileAvatarModal = ({
+  accountUserName,
+  accountColor,
+  src,
+}: FollowPageButtonType) => {
   const [showModalConfirmation, setShowModalConfirmation] = useState(false);
 
   const handleShowModal = (state: boolean) => {
@@ -32,29 +37,32 @@ const ProfileAvatarModal = ({ accountUsername, src }: FollowPageButtonType) => {
             >
               <Avatar
                 src={src}
+                bg_color={accountColor}
                 alt="Profile Image"
                 loadingSize="big"
-                loadingText={accountUsername.charAt(0)}
+                loadingText={accountUserName.charAt(0)}
               />
             </button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[430px] bg-dark-2 outline-none border-light-3 shadow-lg px-3 justify-center items-center">
             <Avatar
               src={src}
+              bg_color={accountColor}
               alt="Profile Image"
               width={300}
               height={300}
               loadingSize="big"
-              loadingText={accountUsername.charAt(0)}
+              loadingText={accountUserName.charAt(0)}
             />
           </DialogContent>
         </Dialog>
       ) : (
         <Avatar
           src={src}
+          bg_color={accountColor}
           alt="Profile Image"
           loadingSize="big"
-          loadingText={accountUsername.charAt(0)}
+          loadingText={accountUserName.charAt(0)}
         />
       )}
     </>

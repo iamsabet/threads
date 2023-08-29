@@ -1,28 +1,30 @@
 "use client";
-import { digitalRainbowColors } from "@/constants";
+// import { digitalRainbowColors } from "@/constants";
 import React, { useMemo } from "react";
 import { getContrastingColor } from "./helpers";
 
 const CharAvatar = ({
   text,
+  bg_color,
   customClassNames,
   pulse,
   size,
 }: {
   text: string;
+  bg_color: string;
   customClassNames?: string;
   size?: string;
   pulse: boolean;
 }) => {
-  const randomColorKey = (min: number, max: number) => {
-    return Math.floor(Math.random() * max) + min;
-  };
+  // const randomColorKey = (min: number, max: number) => {
+  //   return Math.floor(Math.random() * max) + min;
+  // };
 
-  const bg_color = useMemo(
-    () => digitalRainbowColors[randomColorKey(1, 20)],
-    []
-  );
-  const textColor = useMemo(() => getContrastingColor(bg_color), []);
+  // const bg_color = useMemo(
+  //   () => digitalRainbowColors[randomColorKey(1, 20)],
+  //   []
+  // );
+  const textColor = useMemo(() => getContrastingColor(bg_color), [bg_color]);
   const sizeX = useMemo(() => {
     switch (size) {
       case undefined:

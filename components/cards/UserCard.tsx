@@ -3,12 +3,7 @@ import Link from "next/link";
 import { parseFoundText } from "../utils";
 import Avatar from "../shared/Avatar";
 interface UserCardProps {
-  user: {
-    id: string;
-    username: string;
-    name: string;
-    image: string;
-  };
+  user: AuthorType;
   type: string;
   searchString: string;
 }
@@ -37,10 +32,11 @@ const UserCard = ({ user, type, searchString }: UserCardProps) => {
           <div className="w-9 h-9">
             <Avatar
               src={image}
+              bg_color={user.color}
               alt="Profile Picture"
               width={40}
               height={40}
-              loadingText={username.toString().charAt(0).toUpperCase()}
+              loadingText={name.toString().charAt(0).toUpperCase()}
             />
           </div>
           <div className="flex-1 text-ellipsis">

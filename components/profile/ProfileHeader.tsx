@@ -15,6 +15,7 @@ interface PropsType {
   username: string;
   followersCount: number;
   followingsCount: number;
+  color: string;
   follow: boolean;
   img: string;
   bio: string;
@@ -26,6 +27,7 @@ const ProfileHeader = ({
   authUser_id,
   name,
   username,
+  color,
   followersCount,
   followingsCount,
   follow,
@@ -37,7 +39,11 @@ const ProfileHeader = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="relative h-24 w-24 object-cover">
-            <ProfileAvatarModal accountUsername={username} src={img} />
+            <ProfileAvatarModal
+              accountUserName={name}
+              accountColor={color}
+              src={img}
+            />
           </div>
           <div className="flex-1">
             <h2 className="text-left text-heading3-bold text-light-1">

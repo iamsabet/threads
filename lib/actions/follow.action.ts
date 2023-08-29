@@ -81,12 +81,12 @@ const fetchFollowings = async ({ accountId, pageNumber = 1, pageSize = 20 }: { a
             .populate({
                 path: "follower",
                 model: User,
-                select: "_id id name username image followersCount followingsCount"
+                select: "_id id name username image followersCount followingsCount color"
             })
             .populate({
                 path: "following",
                 model: User,
-                select: "_id id name username image followersCount followingsCount"
+                select: "_id id name username image followersCount followingsCount color"
             })
             .sort({ createdAt: "desc" })
             .skip(skipAmount)
@@ -117,12 +117,12 @@ const fetchFollowers = async ({ accountId, pageNumber = 1, pageSize = 20 }: { ac
             .populate({
                 path: "follower",
                 model: User,
-                select: "_id id name username image followersCount followingsCount"
+                select: "_id id name username image followersCount followingsCount color"
             })
             .populate({
                 path: "following",
                 model: User,
-                select: "_id id name username image followersCount followingsCount"
+                select: "_id id name username image followersCount followingsCount color"
             })
             .sort({ createdAt: "desc" })
             .skip(skipAmount)
