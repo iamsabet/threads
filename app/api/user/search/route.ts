@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs';
 import { fetchUser, searchUsers } from '@/lib/actions/user.actions';
 import { SortOrder } from 'mongoose';
+
+
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url)
     let pageNumber = searchParams.get('pageNumber') || "1"
