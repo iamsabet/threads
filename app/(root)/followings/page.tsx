@@ -27,7 +27,6 @@ export async function generateMetadata(
     },
   };
 }
-
 const Home = async (params: {
   params: { [key: string]: string | string[] | undefined };
   searchParams?: {
