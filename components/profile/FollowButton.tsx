@@ -48,9 +48,7 @@ const FollowButton = ({
         path: pathname,
       });
     }
-
     updateFollowersCountNonReactMethod("followers-btn", type);
-
     setLoading((_) => false);
   };
 
