@@ -12,8 +12,14 @@ import JumpTopButton from "@/components/shared/JumpTopButton";
 // const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Threads",
-  description: "A Next.js 13 Meta Threads Clone Application",
+  title: "Hex-Threads",
+  description: "A Next.js 13 Meta Threads Clone Application Named Hext-Threads",
+  creator: "Sabet",
+  applicationName: "Hext-Threads",
+  metadataBase:
+    process.env.NODE_ENV === "development"
+      ? new URL("http://localhost:3000")
+      : new URL("https://hex-threads.site"),
 };
 
 export default async function RootLayout({

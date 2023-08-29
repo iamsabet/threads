@@ -2,22 +2,58 @@
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
-import {
-  fetchUser,
-  fetchUserAccount,
-  fetchUserThreads,
-} from "@/lib/actions/user.actions";
+import { fetchUser, fetchUserAccount } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { notFound, redirect } from "next/navigation";
 import ThreadsTab from "@/components/profile/ThreadsTab";
 import TabTriggerClient from "@/components/profile/TabTriggerClient";
 import { fetchUserTotalThreadsCount } from "@/lib/actions/thread.actions";
-const Page = async (params: {
+import { Metadata, ResolvingMetadata } from "next";
+
+type Props = {
   params: { id: string };
-  searchParams?: {
-    [key: string]: string | string[] | undefined;
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(
+  params: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // fetch data
+  const parentData = await parent;
+  const user = await currentUser();
+
+  const host = parentData.metadataBase;
+  if (!user) return {};
+
+  const current_user = await fetchUser(user.id);
+  if (!current_user) return redirect("/sign-in");
+  if (!current_user?.onboarded) return redirect("/onboarding");
+  const userInfo = await fetchUserAccount(params.params.id, current_user._id);
+
+  return {
+    title: `${userInfo.name} (@${userInfo.username}) on Hex-Threads`, // change My App to your app name
+    description: userInfo.bio,
+    icons: userInfo.profileImage, // Make sure the URL is absolute
+    openGraph: {
+      type: "website",
+      url: `${host}profile/${userInfo.id}`, // Edit to your app URL
+      title: `${userInfo.name} (@${userInfo.username}) on Hex-Threads`,
+      description: userInfo.bio,
+      images: [
+        {
+          url: userInfo.image, // Make sure the URL is absolute
+          width: 200,
+          height: 200,
+          alt: `Profile picture of ${userInfo.username}`,
+        },
+      ],
+      siteName: "Hex-Threads", // change My App to your actual app name
+    },
   };
-}) => {
+}
+
+const Page = async (params: Props) => {
   const user = await currentUser();
 
   if (!user) return null;
