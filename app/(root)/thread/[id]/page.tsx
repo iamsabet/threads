@@ -3,9 +3,51 @@ import Comment from "@/components/forms/Comment";
 import { fetchThreadById } from "@/lib/actions/thread.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
+import { Metadata, ResolvingMetadata } from "next";
 import { redirect, notFound } from "next/navigation";
 
-const Page = async ({ params }: { params: { id: string } }) => {
+interface Props {
+  params: { id: string };
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // fetch data
+  if (!params.id) return {};
+  const parentData = await parent;
+  const user = await currentUser();
+  const host = parentData.metadataBase;
+  if (!user) return {};
+  const userInfo = await fetchUser(user.id);
+  const thread = await fetchThreadById(params.id, userInfo?._id);
+
+  if (!thread) return notFound();
+
+  return {
+    title: `${userInfo.name} (@${userInfo.username})'s Thread on Hex-Threads`, // change My App to your app name
+    description: thread.text,
+    icons: userInfo.profileImage, // Make sure the URL is absolute
+    openGraph: {
+      type: "website",
+      url: `${host}thread/${thread._id.toString()}`, // Edit to your app URL
+      title: `${userInfo.name} (@${userInfo.username})'s Thread on Hex-Threads`,
+      description: thread.text,
+      images: [
+        {
+          url: userInfo.image, // Make sure the URL is absolute
+          width: 200,
+          height: 200,
+          alt: `Profile picture of ${userInfo.username}`,
+        },
+      ],
+      siteName: "Hex-Threads", // change My App to your actual app name
+    },
+  };
+}
+
+const Page = async ({ params }: Props) => {
   if (!params.id) return null;
   const user = await currentUser();
   if (!user) return null;

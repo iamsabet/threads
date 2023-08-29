@@ -2,13 +2,32 @@ import ThreadCardsClient from "@/components/ThreadCardsClient";
 import ThreadCard from "@/components/cards/ThreadCard";
 import FilterAndSort from "@/components/shared/FilterAndSort";
 import FilterComponent from "@/components/shared/FilterComponent";
-import {
-  fetchFollowingsThreads,
-  fetchThreads,
-} from "@/lib/actions/thread.actions";
+import { fetchFollowingsThreads } from "@/lib/actions/thread.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+
+import { Metadata, ResolvingMetadata } from "next";
+export async function generateMetadata(
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // fetch data
+  const parentData = await parent;
+  const host = parentData.metadataBase;
+
+  return {
+    title: `Hex-Threads Followings`, // change My App to your app name
+    description: "Followings page of Hex-Threads",
+    openGraph: {
+      type: "website",
+      url: `${host}/followings`, // Edit to your app URL
+      title: `Hex-Threads Followings`,
+      description: "Followings page of Hex-Threads",
+      siteName: "Hex-Threads", // change My App to your actual app name
+    },
+  };
+}
+
 const Home = async (params: {
   params: { [key: string]: string | string[] | undefined };
   searchParams?: {

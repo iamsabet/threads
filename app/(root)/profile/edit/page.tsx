@@ -3,7 +3,40 @@ import { redirect } from "next/navigation";
 
 import { fetchUser } from "@/lib/actions/user.actions";
 import { AccountProfile } from "@/components/forms/AccountProfile";
+import { Metadata, ResolvingMetadata } from "next";
 
+export async function generateMetadata(
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // fetch data
+  const parentData = await parent;
+  const host = parentData.metadataBase;
+  const user = await currentUser();
+  if (!user) return {};
+  const userInfo = await fetchUser(user.id);
+  if (userInfo && userInfo.onboarded) return {};
+
+  return {
+    title: `Edit Profile of (@${userInfo.username}) on Hex-Threads`, // change My App to your app name
+    description: userInfo.bio,
+    icons: userInfo.profileImage, // Make sure the URL is absolute
+    openGraph: {
+      type: "website",
+      url: `${host}profile/${userInfo.id}`, // Edit to your app URL
+      title: `Edit Profile of (@${userInfo.username}) on Hex-Threads`,
+      description: userInfo.bio,
+      images: [
+        {
+          url: userInfo.image, // Make sure the URL is absolute
+          width: 200,
+          height: 200,
+          alt: `Profile picture of ${userInfo.username}`,
+        },
+      ],
+      siteName: "Hex-Threads", // change My App to your actual app name
+    },
+  };
+}
 // Copy paste most of the code as it is from the /onboarding
 
 const Page = async () => {

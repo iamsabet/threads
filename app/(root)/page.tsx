@@ -5,8 +5,26 @@ import FilterComponent from "@/components/shared/FilterComponent";
 import { fetchThreads } from "@/lib/actions/thread.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import { Metadata, ResolvingMetadata } from "next";
+export async function generateMetadata(
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // fetch data
+  const parentData = await parent;
+  const host = parentData.metadataBase;
+
+  return {
+    title: `Hex-Threads`, // change My App to your app name
+    description: "Home page of Hex-Threads",
+    openGraph: {
+      type: "website",
+      url: `${host}`, // Edit to your app URL
+      title: `Hex-Threads`,
+      description: "Home page of Hex-Threads",
+      siteName: "Hex-Threads", // change My App to your actual app name
+    },
+  };
+}
 const Home = async (params: {
   params: { [key: string]: string | string[] | undefined };
   searchParams?: {
