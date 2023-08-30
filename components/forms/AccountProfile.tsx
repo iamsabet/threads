@@ -121,10 +121,14 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
                     <Image
                       src={field.value}
                       alt="profile_photo"
+                      style={{
+                        width: 96,
+                        height: 96,
+                      }}
                       width="96"
                       height="96"
                       priority
-                      className="rounded-full object-contain"
+                      className="rounded-full object-cover"
                     />
                   ) : (
                     <Image
@@ -132,7 +136,7 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
                       alt="profile_photo"
                       width="24"
                       height="24"
-                      className="object-contain"
+                      className="object-cover"
                     />
                   )}
                 </FormLabel>

@@ -138,7 +138,7 @@ interface SearchUsersType {
 const searchUsers = async ({
     searchString = "",
     pageNumber = 1,
-    pageSize = 20,
+    pageSize = 10,
     userId,
     sortBy = "desc" }: SearchUsersType) => {
     try {
@@ -165,8 +165,9 @@ const searchUsers = async ({
                 { name: { $regex: regex } }
             ]
         }
+
         const sortOptions = {
-            createdAt: sortBy
+            followersCount: sortBy
         }
 
         const usersQuery = User.find(query, { _id: 1, id: 1, name: 1, username: 1, image: 1, color: 1 })

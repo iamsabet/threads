@@ -58,8 +58,8 @@ const usePagination = ({ options, initialValues, getToken, targetClass }: UsePag
                 element = document.querySelector(targetClass)
             }
 
-            const condition = element ? Math.round(element.scrollTop) + element.clientHeight + 50 >= element.scrollHeight
-                : Math.round(window.scrollY) + window.outerHeight + 50 >= document.body.offsetHeight
+            const condition = element ? Math.round(element.scrollTop) + element.clientHeight + 100 >= element.scrollHeight
+                : Math.round(window.scrollY) + window.outerHeight + 100 >= document.body.offsetHeight
 
             if (condition) {
                 if (!prev) {
