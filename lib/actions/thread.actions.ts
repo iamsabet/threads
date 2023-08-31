@@ -71,9 +71,9 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
                 baseQuery = { author: { $in: [accountId] }, parentId: { $nin: [null, undefined] } }
             }
             else if (label === "mentioned") {
-                const account = (await User.findOne({ _id: accountId }, { username: 1 }))
+                const account = (await User.findOne({ _id: accountId }, { username: 1, id: 1 }))
                 if (!account) return { result: false, message: "Account not found", status: 404 }
-                const regex = RegExp(`>@${account.username}`, 'i')  // only username matches having a tag around
+                const regex = RegExp(`/${account.id}">`, 'i')  // only username matches having a tag around
                 baseQuery = { text: { $regex: regex } }
             }
         }
@@ -167,9 +167,9 @@ const fetchUserTotalThreadsCount = async ({ accountId, label }: { accountId: str
         baseQuery = { author: { $in: [accountId] }, parentId: { $nin: [null, undefined] } }
     }
     else if (label === "mentioned") {
-        const account = (await User.findOne({ _id: accountId }, { username: 1 }))
+        const account = (await User.findOne({ _id: accountId }, { username: 1, id: 1 }))
         if (!account) return { result: false, message: "Account not found", status: 404 }
-        const regex = RegExp(`>@${account.username}`, 'i')  // only username matches having a tag around
+        const regex = RegExp(`/${account.id}">`, 'i')  // only username matches having a tag around
         baseQuery = { text: { $regex: regex } }
     }
     const totalThreadsCount = await Thread.countDocuments(baseQuery)
