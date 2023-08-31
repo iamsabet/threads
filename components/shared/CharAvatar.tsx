@@ -42,7 +42,7 @@ const CharAvatar = ({
   return (
     <div
       role="status"
-      className={`${customClassNames} ${
+      className={`${customClassNames ?? ""} ${
         pulse ? "animate-pulse" : ""
       } rounded-full w-full h-full flex justify-center items-center font-semibold ${sizeX}`}
       style={{
