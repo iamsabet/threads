@@ -22,15 +22,15 @@ const Avatar = ({
   height?: number;
   className?: string;
 }) => {
-  const loadingFrame = (
-    <CharAvatar
-      text={loadingText.toUpperCase()}
-      bg_color={bg_color}
-      pulse={true}
-      size={loadingSize}
-      customClassNames={className}
-    />
-  );
+  // const loadingFrame = (
+  //   <CharAvatar
+  //     text={loadingText.toUpperCase()}
+  //     bg_color={bg_color}
+  //     pulse={true}
+  //     size={loadingSize}
+  //     customClassNames={className}
+  //   />
+  // );
   const replaceFrame = (
     <CharAvatar
       text={loadingText.toUpperCase()}
@@ -40,6 +40,7 @@ const Avatar = ({
       customClassNames={className}
     />
   );
+  const loadingFrame = <div className="animate-pulse">Loading</div>;
   // return loadingFrame;
   return (
     <>

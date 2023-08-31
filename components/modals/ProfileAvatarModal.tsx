@@ -44,15 +44,19 @@ const ProfileAvatarModal = ({
               />
             </button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[430px] bg-dark-2 outline-none border-light-3 shadow-lg px-3 justify-center items-center">
+          <DialogContent
+            className="sm:w-[500px] sm:h-[500px] bg-dark-2 outline-none border-light-3 
+            shadow-lg px-3 justify-center items-center"
+          >
             <Avatar
               src={src}
               bg_color={accountColor}
               alt="Profile Image"
-              width={300}
-              height={300}
+              // width={300}
+              // height={300}
               loadingSize="big"
               loadingText={accountUserName.charAt(0)}
+              className=""
             />
           </DialogContent>
         </Dialog>

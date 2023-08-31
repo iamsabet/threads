@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import FollowButton from "./FollowButton";
-import Avatar from "../shared/Avatar";
 import FollowPageModalButton from "../modals/FollowPageModalButton";
 import ProfileAvatarModal from "../modals/ProfileAvatarModal";
 import ShareModal from "../modals/ShareModal";

@@ -45,6 +45,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.4",
     "react-icons": "^4.10.1",
+    "react-image-file-resizer": "^0.4.8",
     "react-share": "^4.4.1",
     "sharp": "^0.32.5",
     "svix": "^1.8.0",

@@ -21,6 +21,7 @@ import { useUploadThing } from "@/lib/uploadthing";
 import { updateUser } from "@/lib/actions/user.actions";
 import { usePathname, useRouter } from "next/navigation";
 import Spinner from "../Spinner";
+import { dataURItoBlob, readerResizer } from "../shared/helpers";
 interface PropsType {
   user: {
     id: string;
@@ -60,19 +61,29 @@ export const AccountProfile = ({ user, btnTitle }: PropsType) => {
     fieldChange: (value: string) => void
   ) => {
     e.preventDefault();
-    const fileReader = new FileReader();
+    // const fileReader = new FileReader();
     if (e.target.files && e.target.files.length) {
       // not empty
       const file = e.target.files[0];
-      // @ts-ignore
-      setFiles((_) => Array.from(e.target.files));
-      if (!file.type.includes("image")) return;
-      fileReader.onload = async (event) => {
-        const imageDataUrl = event.target?.result?.toString() || "";
-        fieldChange(imageDataUrl);
-      };
+      readerResizer(file)
+        .then((imageDataUrl) => {
+          fieldChange(imageDataUrl as string);
+          const blob = dataURItoBlob(imageDataUrl as string);
+          const new_file = new File([blob], file.name, { type: blob.type });
+          setFiles((_) => [new_file]);
+        })
+        .catch((_e) => {
+          // console.log(e);
+        });
+      //   // @ts-ignore
+      //   setFiles((_) => Array.from(e.target.files));
+      //   if (!file.type.includes("image")) return;
+      //   fileReader.onload = async (event) => {
+      //     const imageDataUrl = event.target?.result?.toString() || "";
+      //     fieldChange(imageDataUrl);
+      //   };
 
-      fileReader.readAsDataURL(file);
+      //   fileReader.readAsDataURL(file);
     }
   };
   const onSubmit = async (values: z.infer<typeof UserValidation>) => {

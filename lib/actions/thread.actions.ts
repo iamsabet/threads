@@ -73,8 +73,7 @@ const fetchThreadsByQuery = async ({ pageNumber = 1, pageSize = 30, currentUserI
             else if (label === "mentioned") {
                 const account = (await User.findOne({ _id: accountId }, { username: 1 }))
                 if (!account) return { result: false, message: "Account not found", status: 404 }
-                const account_id = account.id
-                const regex = RegExp(`"${account_id}">`, 'i')  // only username matches having a tag around
+                const regex = RegExp(`>@${account.username}`, 'i')  // only username matches having a tag around
                 baseQuery = { text: { $regex: regex } }
             }
         }
@@ -170,8 +169,7 @@ const fetchUserTotalThreadsCount = async ({ accountId, label }: { accountId: str
     else if (label === "mentioned") {
         const account = (await User.findOne({ _id: accountId }, { username: 1 }))
         if (!account) return { result: false, message: "Account not found", status: 404 }
-        const account_id = account.id
-        const regex = RegExp(`"${account_id}">`, 'i')  // only username matches having a tag around
+        const regex = RegExp(`>@${account.username}`, 'i')  // only username matches having a tag around
         baseQuery = { text: { $regex: regex } }
     }
     const totalThreadsCount = await Thread.countDocuments(baseQuery)
